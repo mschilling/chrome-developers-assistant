@@ -1,0 +1,23 @@
+{
+  "name": "chrome-developers-assistant",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mschilling/chrome-developers-assistant.git"
+  },
+  "author": "Michael Schilling",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mschilling/chrome-developers-assistant/issues"
+  },
+  "homepage": "https://github.com/mschilling/chrome-developers-assistant#readme",
+  "devDependencies": {
+    "eslint": "^4.7.2",
+    "eslint-config-google": "^0.9.1"
+  }
+}
