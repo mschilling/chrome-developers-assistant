@@ -1,0 +1,6 @@
+{
+  "projects": {
+    "default": "chrome-developers-assistant",
+    "develop": "chrome-developers-assistant"
+  }
+}
