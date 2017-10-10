@@ -86,8 +86,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const functions = __webpack_require__(0);
 const admin = __webpack_require__(1);
 const EchoService = __webpack_require__(3);
+const Assistant = __webpack_require__(4);
 admin.initializeApp(functions.config().firebase);
 exports.echo = EchoService.listener;
+exports.assistant = Assistant.listener;
 
 
 /***/ }),
@@ -122,6 +124,61 @@ exports.listener = functions.https.onRequest((req, res) => __awaiter(this, void 
     }
 }));
 
+
+/***/ }),
+/* 4 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const functions = __webpack_require__(0);
+const actions_on_google_ts_1 = __webpack_require__(5);
+// import { Response.RichResponse } from 'actions-on-google-ts'
+/**
+ * The entry point to handle a http request
+ * @param {Request} request An Express like Request object of the HTTP request
+ * @param {Response} response An Express like Response object to send back data
+ */
+exports.listener = functions.https.onRequest((request, response) => __awaiter(this, void 0, void 0, function* () {
+    console.log(`Request headers: ${JSON.stringify(request.headers)}`);
+    console.log(`Request body: ${JSON.stringify(request.body)}`);
+    const app = new actions_on_google_ts_1.ApiAiApp({ request, response });
+    /*
+    const actionMap = new Map();
+    actionMap.set(app.StandardIntents.MAIN, () => {
+        const richResponse: any = app.buildRichResponse()
+          .addSimpleResponse('Hello Webhook')
+          .addSuggestions(['foo', 'bar']);
+        app.ask(richResponse);
+  
+    });
+    app.handleRequest(actionMap);
+  */
+    const richResponse = app.buildRichResponse()
+        .addSimpleResponse('Hello Webhook')
+        .addSuggestions(['foo', 'bar']);
+    app.ask(richResponse);
+    // const app = new ApiAiApp({request, response});
+    // const actionMap = new Map<string, RequestHandler>();
+    // // app.handleRequest(actionMap);
+    // app.ask('How do you mean?')
+}));
+
+
+/***/ }),
+/* 5 */
+/***/ (function(module, exports) {
+
+module.exports = require("actions-on-google-ts");
 
 /***/ })
 /******/ ])));
