@@ -8,9 +8,11 @@ const admin = require('firebase-admin');
 admin.initializeApp(functions.config().firebase);
 
 const TwitterHandleIntent = require('./get-twitter-handle');
+const NextEventIntentHandler = require('./intent-next-event');
 
 // API.AI Intent names
 const TWITTER_HANDLE_INTENT = 'twitter-handle';
+const NEXT_EVENT_INTENT = 'next-event';
 
 // // Contexts
 const WELCOME_CONTEXT = 'welcome';
@@ -24,5 +26,6 @@ exports.assistant = functions.https.onRequest((request, response) => {
 
   const actionMap = new Map();
   actionMap.set(TWITTER_HANDLE_INTENT, TwitterHandleIntent.twitterHandle);
+  actionMap.set(NEXT_EVENT_INTENT, NextEventIntentHandler.nextEvent);
   assistant.handleRequest(actionMap);
 });
