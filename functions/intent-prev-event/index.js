@@ -19,7 +19,7 @@ function previousEventHandler(assistant) {
         .then( event => {
         if (event) {
             const speech = `<speak>
-                The next event was ${event.name} in ${event.location}<break time="2"/>
+                The last event was ${event.name} in ${event.location}<break time="1"/>
                 Anything else?
                 </speak>`;
             assistant.ask(speech);
