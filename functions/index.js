@@ -11,10 +11,14 @@ const TwitterHandleIntent = require('./get-twitter-handle');
 const NextEventIntentHandler = require('./intent-next-event');
 const PreviousEventIntentHandler = require('./intent-prev-event');
 
+// Speaker related
+const SpeakerInfoIntentHandler = require('./intent-speaker-info');
+
 // API.AI Intent names
 const TWITTER_HANDLE_INTENT = 'twitter-handle';
 const NEXT_EVENT_INTENT = 'next-event';
 const PREV_EVENT_INTENT = 'prev-event';
+const SPEAKER_INFO_KNOW_FOR_INTENT = 'speaker-info.known-for';
 
 // // Contexts
 const WELCOME_CONTEXT = 'welcome';
@@ -30,5 +34,6 @@ exports.assistant = functions.https.onRequest((request, response) => {
   actionMap.set(TWITTER_HANDLE_INTENT, TwitterHandleIntent.twitterHandle);
   actionMap.set(NEXT_EVENT_INTENT, NextEventIntentHandler.nextEvent);
   actionMap.set(PREV_EVENT_INTENT, PreviousEventIntentHandler.previousEvent);
+  actionMap.set(SPEAKER_INFO_KNOW_FOR_INTENT, SpeakerInfoIntentHandler.knownFor);
   assistant.handleRequest(actionMap);
 });
