@@ -19,6 +19,7 @@ const TWITTER_HANDLE_INTENT = 'twitter-handle';
 const NEXT_EVENT_INTENT = 'next-event';
 const PREV_EVENT_INTENT = 'prev-event';
 const SPEAKER_INFO_KNOW_FOR_INTENT = 'speaker-info.known-for';
+const SPEAKER_INFO_GITHUB_HANDLE_INTENT = 'speaker-info.github-handle';
 
 // // Contexts
 const WELCOME_CONTEXT = 'welcome';
@@ -35,5 +36,6 @@ exports.assistant = functions.https.onRequest((request, response) => {
   actionMap.set(NEXT_EVENT_INTENT, NextEventIntentHandler.nextEvent);
   actionMap.set(PREV_EVENT_INTENT, PreviousEventIntentHandler.previousEvent);
   actionMap.set(SPEAKER_INFO_KNOW_FOR_INTENT, SpeakerInfoIntentHandler.knownFor);
+  actionMap.set(SPEAKER_INFO_GITHUB_HANDLE_INTENT, SpeakerInfoIntentHandler.githubHandle);
   assistant.handleRequest(actionMap);
 });
