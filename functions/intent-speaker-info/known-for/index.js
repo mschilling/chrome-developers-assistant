@@ -29,5 +29,5 @@ function getPerson(key) {
 }
 
 module.exports = {
-  githubHandle: handleAction
+  knownFor: handleAction
 };
