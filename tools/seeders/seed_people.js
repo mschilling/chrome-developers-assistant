@@ -1,3 +1,5 @@
+'use strict';
+
 var GoogleSpreadsheet = require('google-spreadsheet');
 var async = require('async');
 
@@ -34,7 +36,7 @@ async.series([
     function writeDataToFirebase(step) {
         sheet.getRows({
             offset: 1,
-            limit: 20,
+            limit: 50,
             orderby: 'col2'
         }, function (err, rows) {
             console.log('Read ' + rows.length + ' rows');
@@ -54,6 +56,7 @@ async.series([
                     github: asFbString(row.githubhandle),
                     bio: asFbString(row.bio),
                     email: asFbString(row.email),
+                    pictureUrl: asFbString(row.pictureurl),
                     homepage: asFbString(row.homepage),
                     is_speaker: asFbBool(row.isspeaker)
                 };
