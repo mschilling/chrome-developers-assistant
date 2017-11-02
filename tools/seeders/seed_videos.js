@@ -59,6 +59,7 @@ async.series([
           dateAdded: asFbDate(row.dateadded),
           description: asFbString(row.description),
           eventId: asFbString(row.videoid),
+          speakers: asFbStringArray(row.featuredspeakers),
           tags: asFbStringArray(row.tags)
         };
 
