@@ -49,13 +49,15 @@ async.series([
                 // console.log(rows[i]);
 
                 let row = rows[i];
-                let docId = row.id;
+                let docId = asFbString(row.id);
 
                 let obj = {
-                    name: row.name,
+                    eventKey: asFbString(row.eventkey),
+                    name: asFbString(row.name),
                     description: asFbString(row.description),
                     location: asFbString(row.location),
                     venue: asFbString(row.venue),
+                    website: asFbString(row.website),
                     startDate: asFbDate(row.startdate),
                     endDate: asFbDate(row.enddate),
                     numberOfDays: asFbNumber(row.numberofdays),

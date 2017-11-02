@@ -9,17 +9,17 @@ const SEARCH_DATE_PARAM = 'search-date';
 
 function nextEventHandler(assistant) {
 
-    let inputDate = (new Date()).toISOString();
+    let inputDate = new Date();
     const searchDate = assistant.getArgument(SEARCH_DATE_PARAM);
     if(searchDate) {
-        inputDate = moment(searchDate, "YYYY-MM-DD").toISOString();
+        inputDate = moment(searchDate, "YYYY-MM-DD").toDate();
     }
 
     GetNextEvent(inputDate)
         .then( event => {
         if (event) {
             const speech = `<speak>
-                The next event is ${event.name}<break time="1"/>
+                The next event is ${event.name}.<break time="1"/>
                 Anything else?
                 </speak>`;
             assistant.ask(speech);
