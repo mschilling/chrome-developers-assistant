@@ -1,5 +1,7 @@
 'use strict';
 
+require('dotenv').config({ silent: true });
+
 var GoogleSpreadsheet = require('google-spreadsheet');
 var async = require('async');
 
@@ -14,7 +16,7 @@ admin.initializeApp({
 const db = admin.firestore();
 
 // spreadsheet key is the long id in the sheets URL
-var doc = new GoogleSpreadsheet('1uXvW6zdf8DJdupsnmDQ0OGrfsnVd-WUX555QxtyQB-8');
+var doc = new GoogleSpreadsheet(process.env.SOURCE_DOC_ID);
 var sheet;
 
 async.series([
