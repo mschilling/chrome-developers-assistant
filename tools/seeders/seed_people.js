@@ -10,7 +10,7 @@ var serviceAccount = require('../firestore-service-account.json');
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
-  databaseURL: 'https://chrome-developers-assistant.firebaseio.com/'
+  databaseURL: process.env.FIREBASE_DB_URL
 });
 
 const db = admin.firestore();
