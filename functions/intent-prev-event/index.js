@@ -6,6 +6,7 @@ const eventsRef = admin.firestore().collection('events');
 
 // Context Parameters
 const SEARCH_DATE_PARAM = 'search-date';
+const FILTER_COUNTRY_PARAM = 'country';
 
 function previousEventHandler(assistant) {
 
@@ -15,7 +16,12 @@ function previousEventHandler(assistant) {
         inputDate = moment(searchDate, "YYYY-MM-DD").toDate();
     }
 
-    GetPreviousEvent(inputDate)
+    let filterCountry = assistant.getArgument(FILTER_COUNTRY_PARAM);
+    if(filterCountry) {
+      filterCountry = filterCountry.toLowerCase();
+    }
+
+    GetPreviousEvent(inputDate, filterCountry)
         .then( event => {
         if (event) {
             const speech = `<speak>
@@ -30,19 +36,37 @@ function previousEventHandler(assistant) {
     })
 }
 
-function GetPreviousEvent(dateString) {
-     return eventsRef
-        .where('startDate', '<', dateString)
-        .orderBy('startDate', 'desc').limit(1)
-        .get()
-        .then(snapshot => {
-            if(snapshot.docs.length > 0) {
-                return snapshot.docs[0].data();
-            }
-            return {};
-        });
+function GetPreviousEvent(dateString, country) {
+
+  if(country) {
+    return GetPreviousEventByCountry(dateString, country)
+  }
+
+  return eventsRef
+     .where('startDate', '<', dateString)
+     .orderBy('startDate', 'desc').limit(1)
+     .get()
+     .then(snapshot => {
+         if(snapshot.docs.length > 0) {
+             return snapshot.docs[0].data();
+         }
+         return {};
+     });
 }
 
+function GetPreviousEventByCountry(dateString, country) {
+  return eventsRef
+     .where('country', '==', country)
+     .where('startDate', '<', dateString)
+     .orderBy('startDate', 'desc').limit(1)
+     .get()
+     .then(snapshot => {
+         if(snapshot.docs.length > 0) {
+             return snapshot.docs[0].data();
+         }
+         return {};
+     });
+}
 module.exports = {
   previousEvent: previousEventHandler
 };

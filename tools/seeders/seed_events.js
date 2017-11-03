@@ -55,6 +55,7 @@ async.series([
                     eventKey: asFbString(row.eventkey),
                     name: asFbString(row.name),
                     description: asFbString(row.description),
+                    country: asFbString(row.country),
                     location: asFbString(row.location),
                     venue: asFbString(row.venue),
                     website: asFbString(row.website),
