@@ -58,9 +58,11 @@ async.series([
           name: asFbString(row.name),
           dateAdded: asFbDate(row.dateadded),
           description: asFbString(row.description),
-          eventId: asFbString(row.videoid),
+          eventId: asFbString(row.eventid),
+          eventKey: asFbString(row.eventkey),
           speakers: asFbStringArray(row.featuredspeakers),
-          tags: asFbStringArray(row.tags)
+          tags: asFbStringArray(row.tags),
+          isKeynote: asFbBool(row.iskeynote)
         };
 
         // console.log(obj)
