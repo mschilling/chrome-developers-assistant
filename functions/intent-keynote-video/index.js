@@ -4,6 +4,8 @@ const moment = require('moment');
 const admin = require('firebase-admin');
 const db = admin.firestore();
 
+const responses = require('../helpers/responses');
+
 // Context Parameters
 const EVENT_KEY_PARAM = 'event-key';
 
@@ -17,11 +19,29 @@ function keynoteVideoHandler(assistant) {
     getKeynoteVideo(eventKey)
         .then( result => {
         if (result) {
-            const url = `https://www.youtube.com/watch?v=${result.videoId}`;
-            const speech = `<speak>
-                Here is the keynote video on YouTube ${url}.<break time="1"/>
-                </speak>`;
-            assistant.ask(speech);
+            // const url = `https://www.youtube.com/watch?v=${result.videoId}`;
+            // const speech = `<speak>
+            //     I've found the keynote on YouTube. It's called ${result.name}.
+            //     </speak>`;
+
+            // const displayText = `I've found the keynote on YouTube.
+            // Here's the link: https://www.youtube.com/watch?v=${result.videoId}`;
+
+            const params = {
+              videoId: result.videoId,
+              videoTitle: result.name
+            };
+
+            responses.responseIntentKeynoteVideo(assistant, true, params);
+
+            // assistant.ask(
+            //   assistant.buildRichResponse()
+            //     .addSimpleResponse({
+            //       speech: speech,
+            //       displayText: displayText
+            //     })
+            //     .addSuggestionLink(`Open "${result.name}" on YouTube.`, url));
+
         } else {
             const speech = 'Sorry, I couldn\'t find anything right now';
             assistant.ask(speech);
