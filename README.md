@@ -18,3 +18,6 @@ A lot of online docs are available to build a Google Assistant using Dialogflow 
 - [Conversation Responses](https://developers.google.com/actions/assistant/responses)
 - [Speech Synthesis Markup Language (SSML) reference](https://developers.google.com/actions/reference/ssml)
 
+## Firebase Firestore
+- [Get Data with Cloud Firestore](https://firebase.google.com/docs/firestore/query-data/get-data)
+- [Working with Arrays, Lists, and Sets](https://firebase.google.com/docs/firestore/solutions/arrays)
