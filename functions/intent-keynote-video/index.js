@@ -12,44 +12,23 @@ const EVENT_KEY_PARAM = 'event-key';
 function keynoteVideoHandler(assistant) {
 
     const eventKey = assistant.getArgument(EVENT_KEY_PARAM);
-    // if(searchDate) {
-    //     inputDate = moment(searchDate, "YYYY-MM-DD").toDate();
-    // }
 
     getKeynoteVideo(eventKey)
         .then( result => {
         if (result) {
-            // const url = `https://www.youtube.com/watch?v=${result.videoId}`;
-            // const speech = `<speak>
-            //     I've found the keynote on YouTube. It's called ${result.name}.
-            //     </speak>`;
-
-            // const displayText = `I've found the keynote on YouTube.
-            // Here's the link: https://www.youtube.com/watch?v=${result.videoId}`;
-
             const params = {
               videoId: result.videoId,
               videoTitle: result.name
             };
-
             responses.responseIntentKeynoteVideo(assistant, true, params);
-
-            // assistant.ask(
-            //   assistant.buildRichResponse()
-            //     .addSimpleResponse({
-            //       speech: speech,
-            //       displayText: displayText
-            //     })
-            //     .addSuggestionLink(`Open "${result.name}" on YouTube.`, url));
-
         } else {
-            const speech = 'Sorry, I couldn\'t find anything right now';
-            assistant.ask(speech);
+            responses.responseIntentKeynoteVideo(assistant, false);
         }
-    })
+    });
 }
 
 function getKeynoteVideo(eventKeyParam) {
+  console.log(`Find keynote video for event: ${eventKeyParam}`);
   return db.collection('videos')
      .where('eventKey', '==', eventKeyParam)
      .where('isKeynote', '==', true)

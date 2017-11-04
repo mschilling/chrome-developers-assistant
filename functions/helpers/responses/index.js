@@ -1,27 +1,24 @@
 'use strict';
 
 function responseIntentKeynoteVideo(assistant, success, params) {
-
   let response;
   if (success) {
     const videoId = params.videoId;
-    const videoTitle = params.videoTitle;
+    const videoTitle = params.videoTitle || '';
     const url = 'https://www.youtube.com/watch?v=' + videoId;
 
     const speech = `<speak>
         I've found the keynote on YouTube. It's called ${videoTitle}.
         </speak>`;
 
-    const displayText = `I've found the title "${videoTitle}" on YouTube.
-    Here's the link: https://www.youtube.com/watch?v=${url}`;
+    const displayText = `I've found "${videoTitle}" on YouTube, here it is.`;
 
     response = assistant.buildRichResponse()
         .addSimpleResponse({
           speech: speech,
           displayText: displayText
         })
-        .addSuggestionLink('Open video on YouTube.', url);
-
+        .addSuggestionLink('video on YouTube', url);
   } else {
     response = assistant.buildRichResponse()
     .addSimpleResponse({
@@ -32,7 +29,6 @@ function responseIntentKeynoteVideo(assistant, success, params) {
 
   assistant.ask(response);
 }
-
 
 module.exports = {
   responseIntentKeynoteVideo: responseIntentKeynoteVideo
