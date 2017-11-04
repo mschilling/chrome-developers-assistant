@@ -18,6 +18,7 @@ A lot of online docs are available to build a Google Assistant using Dialogflow 
 - [Contexts](https://dialogflow.com/docs/contexts)
 
 ## Actions on Google
+- [Conversation Basics](https://developers.google.com/actions/assistant/basics)
 - [Conversation Responses](https://developers.google.com/actions/assistant/responses)
 - [Node.js Client Library reference](https://developers.google.com/actions/reference/nodejs/AssistantApp)
 - [Speech Synthesis Markup Language (SSML) reference](https://developers.google.com/actions/reference/ssml)
