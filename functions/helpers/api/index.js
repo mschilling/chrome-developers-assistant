@@ -33,6 +33,16 @@ class AssistantDataApi {
     debug('getNextEvent', timestamp);
     return apiEvents.getNextEvent(timestamp);
   }
+
+  static getPreviousEvent(timestamp) {
+    debug('getPreviousEvent', timestamp);
+    return apiEvents.getPreviousEvent(timestamp);
+  }
+
+  static getPreviousEventByCountry(timestamp, country) {
+    debug('getPreviousEventByCountry', timestamp, country);
+    return apiEvents.getPreviousEventByCountry(timestamp, country);
+  }
 }
 
 module.exports = AssistantDataApi;
