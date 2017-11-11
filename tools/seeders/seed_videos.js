@@ -62,8 +62,8 @@ async.series([
           description: asFbString(row.description),
           eventId: asFbString(row.eventid),
           eventKey: asFbString(row.eventkey),
-          speakers: asFbStringArray(row.featuredspeakers),
-          tags: asFbStringArray(row.tags),
+          speakers: asFbArrayAsObjectKeys(row.featuredspeakers),
+          tags: asFbArrayAsObjectKeys(row.tags),
           isKeynote: asFbBool(row.iskeynote)
         };
 
@@ -113,4 +113,13 @@ function asFbDate(input) {
   if (!input) return null;
   let date = moment(input, INPUT_DATE_FORMAT);
   return date.utc(true).toDate();
+}
+
+function asFbArrayAsObjectKeys(input) {
+  if (!input) return null;
+  const props = input.split(',').map(p => (p + '').trim()).reduce(function(acc, cur, i) {
+    acc[cur] = true;
+    return acc;
+  }, {});
+  return props;
 }
