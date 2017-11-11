@@ -117,7 +117,7 @@ function asFbDate(input) {
 
 function asFbArrayAsObjectKeys(input) {
   if (!input) return null;
-  const props = input.split(',').reduce(function(acc, cur, i) {
+  const props = input.split(',').map(p => (p + '').trim()).reduce(function(acc, cur, i) {
     acc[cur] = true;
     return acc;
   }, {});
