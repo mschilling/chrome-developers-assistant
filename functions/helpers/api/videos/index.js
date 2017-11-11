@@ -5,10 +5,10 @@ const debug = Debug('bite-api:debug');
 const error = Debug('bite-api:error');
 
 const admin = require('firebase-admin');
-const ordersRef = admin.firestore().collection('videos');
+const videosRef = admin.firestore().collection('videos');
 
 function searchKeynoteVideos(eventName, year, limit = 3) {
-  return ordersRef
+  return videosRef
     .where('isKeynote', '==', true)
     .limit(limit)
     .get()
@@ -21,6 +21,25 @@ function searchKeynoteVideos(eventName, year, limit = 3) {
     });
 }
 
+function searchEventHighlightsVideo(eventKey) {
+  if (!eventKey) {
+    return undefined;
+  };
+
+  return videosRef
+    .where('eventKey', '==', eventKey)
+    .limit(1)
+    .get()
+    .then(snapshot => {
+      if (snapshot.docs.length > 0) {
+          return snapshot.docs[0].data();
+      }
+      return undefined;
+    });
+}
+
+
 module.exports = {
-  searchKeynoteVideos: searchKeynoteVideos
+  searchKeynoteVideos: searchKeynoteVideos,
+  searchEventHighlightsVideo: searchEventHighlightsVideo
 };

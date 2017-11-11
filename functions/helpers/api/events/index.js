@@ -44,7 +44,6 @@ function getPreviousEvent(maxDateIsoString) {
     });
   }
 
-
   function getPreviousEventByCountry(maxDateIsoString, country) {
   let date = moment().toDate();
   if (maxDateIsoString) {

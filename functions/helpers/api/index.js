@@ -43,6 +43,11 @@ class AssistantDataApi {
     debug('getPreviousEventByCountry', timestamp, country);
     return apiEvents.getPreviousEventByCountry(timestamp, country);
   }
+
+  static searchEventHighlightsVideo(eventKey) {
+    debug('searchEventHighlightsVideo', eventKey);
+    return apiVideos.searchEventHighlightsVideo(eventKey);
+  }
 }
 
 module.exports = AssistantDataApi;
