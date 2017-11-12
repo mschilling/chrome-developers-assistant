@@ -73,7 +73,7 @@ function returnVideoResponse(assistant, success, params) {
         I've found a video on YouTube. It's called ${videoTitle}.
         </speak>`;
 
-    const displayText = 'Here\'s a video I found on YouTube :-)';
+    const displayText = 'Here\'s a video I found on YouTube';
 
     response = assistant.buildRichResponse()
       .addSimpleResponse({
