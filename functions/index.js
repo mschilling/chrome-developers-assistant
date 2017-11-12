@@ -11,6 +11,7 @@ const TwitterHandleIntent = require('./get-twitter-handle');
 const NextEventIntentHandler = require('./intent-next-event');
 const PreviousEventIntentHandler = require('./intent-prev-event');
 const KeynoteVideoIntentHandler = require('./intent-keynote-video');
+const YouTubeVideosIntentHandler = require('./intent-youtube-videos');
 
 const SpeakerInfoIntentHandler = require('./intent-speaker-info');
 const VideosIntentHandler = require('./intent-videos');
@@ -44,6 +45,7 @@ exports.assistant = functions.https.onRequest((request, response) => {
   actionMap.set(SPEAKER_INFO_KNOW_FOR_INTENT, SpeakerInfoIntentHandler.knownFor);
   actionMap.set(SPEAKER_INFO_GITHUB_HANDLE_INTENT, SpeakerInfoIntentHandler.githubHandle);
   actionMap.set(KEYNOTE_VIDEO_INTENT, KeynoteVideoIntentHandler.keynoteVideo);
+  // actionMap.set(YOUTUBE_VIDEO_BY_SPEAKER_INTENT, YouTubeVideosIntentHandler.videoBySpeaker);
   actionMap.set(EVENT_HIGHLIGHTS_INTENT, VideosIntentHandler.eventHighlights);
   actionMap.set(VIDEO_BY_SPEAKER_INTENT, VideosIntentHandler.speakerVideos);
   assistant.handleRequest(actionMap);
