@@ -7,20 +7,6 @@ function responseYouTubeVideos(assistant, success, params) {
     const displayText = 'I\'ve found some video\'s on YouTube. Here it is.';
     const speech = `<speak>${displayText}</speak>`;
 
-    // let videos = params.videos || [];
-    //   videos.forEach( vid => {
-    //   const videoId = params.videoId;
-    //   const videoTitle = params.videoTitle || '';
-    //   const url = 'https://www.youtube.com/watch?v=' + videoId;
-    // })
-
-    // response = assistant.buildRichResponse()
-    //     .addSimpleResponse({
-    //       speech: speech,
-    //       displayText: displayText
-    //     })
-    //     .addSuggestionLink('video on YouTube', url);
-
     let options = assistant.buildCarousel();
 
     for (let i=0; i<5; i++) {
@@ -105,7 +91,6 @@ function returnVideoResponse(assistant, success, params) {
 
   assistant.ask(response);
 }
-
 
 module.exports = {
   responseYouTubeVideos: responseYouTubeVideos,
