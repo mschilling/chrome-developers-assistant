@@ -42,30 +42,37 @@ function searchEventHighlightsVideo(eventKey) {
     });
 }
 
-function filterVideosBySpeaker(speaker) {
-  if (!speaker) {
-    debug('speaker is undefined');
+function filterVideosBySpeakers(speakers, limit = 3) {
+  if ((speakers || []).length === 0) {
+    debug('speakers is undefined');
     return undefined;
   };
 
-  const speakerKey = speaker.toLowerCase();
+  debug(speakers);
 
-  return videosRef
-    .where(`speakers.${speakerKey}`, '==', true)
+  const speakersList = speakers.map( p => p.trim() );
+
+  let promise = videosRef;
+
+  for (let i=0; i< speakersList.length; i++) {
+    promise = promise.where(`speakers.${speakersList[i]}`, '==', true);
+  }
+
+  return promise
     // .orderBy('dateAdded', 'asc')
-    .limit(1)
+    .limit(limit)
     .get()
     .then(snapshot => {
-      if (snapshot.docs.length > 0) {
-        return snapshot.docs[0].data();
+      const docs = [];
+      for (let i = 0; i < snapshot.docs.length; i++) {
+        docs.push(snapshot.docs[i].data());
       }
-      debug('no results found');
-      return undefined;
+      return docs;
     });
 }
 
 module.exports = {
   searchKeynoteVideos: searchKeynoteVideos,
   searchEventHighlightsVideo: searchEventHighlightsVideo,
-  filterVideosBySpeaker: filterVideosBySpeaker
+  filterVideosBySpeakers: filterVideosBySpeakers
 };

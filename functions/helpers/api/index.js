@@ -49,9 +49,9 @@ class AssistantDataApi {
     return apiVideos.searchEventHighlightsVideo(eventKey);
   }
 
-  static filterVideosBySpeaker(speaker) {
-    debug('filterVideosBySpeaker', speaker);
-    return apiVideos.filterVideosBySpeaker(speaker);
+  static filterVideosBySpeakers(speakers, limit) {
+    debug('filterVideosBySpeakers', speakers, limit);
+    return apiVideos.filterVideosBySpeakers(speakers, limit);
   }
 }
 

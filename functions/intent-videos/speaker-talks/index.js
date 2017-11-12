@@ -4,13 +4,16 @@ const api = require('../../helpers/api');
 const responses = require('../../helpers/responses');
 
 // Context Parameters
-const PERSON_PARAM = 'person';
+const SPEAKERS_PARAM = 'speakers';
 
 function handleAction(assistant) {
-  const person = assistant.getArgument(PERSON_PARAM);
-  api.filterVideosBySpeaker(person)
-    .then(result => {
-      if (result) {
+  const speakers = assistant.getArgument(SPEAKERS_PARAM);
+  console.log(speakers);
+  const speakerList = speakers || [];
+  api.filterVideosBySpeakers(speakerList, 3)
+    .then(results => {
+      if (results && results.length > 0) {
+        const result = results[0];
         const params = {
           videoId: result.videoId,
           videoTitle: result.name
