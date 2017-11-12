@@ -13,8 +13,8 @@ const PreviousEventIntentHandler = require('./intent-prev-event');
 const KeynoteVideoIntentHandler = require('./intent-keynote-video');
 const YouTubeVideosIntentHandler = require('./intent-youtube-videos');
 
-// Speaker related
 const SpeakerInfoIntentHandler = require('./intent-speaker-info');
+const VideosIntentHandler = require('./intent-videos');
 
 // API.AI Intent names
 const TWITTER_HANDLE_INTENT = 'twitter-handle';
@@ -24,9 +24,10 @@ const SPEAKER_INFO_INTENT = 'speaker-info';
 const SPEAKER_INFO_KNOW_FOR_INTENT = 'speaker-info.known-for';
 const SPEAKER_INFO_GITHUB_HANDLE_INTENT = 'speaker-info.github-handle';
 const KEYNOTE_VIDEO_INTENT = 'keynote-video';
-const YOUTUBE_VIDEO_BY_SPEAKER_INTENT = 'youtube-video.by-speaker';
+const EVENT_HIGHLIGHTS_INTENT = 'youtube-video.event-highlights';
+const VIDEO_BY_SPEAKER_INTENT = 'youtube-video.by-speaker';
 
-// // Contexts
+// Contexts
 const WELCOME_CONTEXT = 'welcome';
 const TWITTER_HANDLE_CONTEXT = 'twitter-handle';
 
@@ -44,6 +45,8 @@ exports.assistant = functions.https.onRequest((request, response) => {
   actionMap.set(SPEAKER_INFO_KNOW_FOR_INTENT, SpeakerInfoIntentHandler.knownFor);
   actionMap.set(SPEAKER_INFO_GITHUB_HANDLE_INTENT, SpeakerInfoIntentHandler.githubHandle);
   actionMap.set(KEYNOTE_VIDEO_INTENT, KeynoteVideoIntentHandler.keynoteVideo);
-  actionMap.set(YOUTUBE_VIDEO_BY_SPEAKER_INTENT, YouTubeVideosIntentHandler.videoBySpeaker);
+  // actionMap.set(YOUTUBE_VIDEO_BY_SPEAKER_INTENT, YouTubeVideosIntentHandler.videoBySpeaker);
+  actionMap.set(EVENT_HIGHLIGHTS_INTENT, VideosIntentHandler.eventHighlights);
+  actionMap.set(VIDEO_BY_SPEAKER_INTENT, VideosIntentHandler.speakerVideos);
   assistant.handleRequest(actionMap);
 });

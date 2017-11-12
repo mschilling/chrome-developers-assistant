@@ -1,72 +1,45 @@
 'use strict';
 
 const moment = require('moment');
-const admin = require('firebase-admin');
-const eventsRef = admin.firestore().collection('events');
+const api = require('../helpers/api');
 
 // Context Parameters
 const SEARCH_DATE_PARAM = 'search-date';
 const FILTER_COUNTRY_PARAM = 'country';
 
 function previousEventHandler(assistant) {
-
-    let inputDate = new Date();
-    const searchDate = assistant.getArgument(SEARCH_DATE_PARAM);
-    if(searchDate) {
-        inputDate = moment(searchDate, "YYYY-MM-DD").toDate();
-    }
-
-    let filterCountry = assistant.getArgument(FILTER_COUNTRY_PARAM);
-    if(filterCountry) {
-      filterCountry = filterCountry.toLowerCase();
-    }
-
-    GetPreviousEvent(inputDate, filterCountry)
-        .then( event => {
-        if (event) {
-            const speech = `<speak>
-                The last event was ${event.name} in ${event.location}.<break time="1"/>
-                Anything else?
-                </speak>`;
-            assistant.ask(speech);
-        } else {
-            const speech = 'Sorry, I couldn\'t find any event right now';
-            assistant.ask(speech);
-        }
-    })
-}
-
-function GetPreviousEvent(dateString, country) {
-
-  if(country) {
-    return GetPreviousEventByCountry(dateString, country)
+  let inputDate = new Date();
+  const searchDate = assistant.getArgument(SEARCH_DATE_PARAM);
+  if (searchDate) {
+      inputDate = moment(searchDate, 'YYYY-MM-DD').toDate();
   }
 
-  return eventsRef
-     .where('startDate', '<', dateString)
-     .orderBy('startDate', 'desc').limit(1)
-     .get()
-     .then(snapshot => {
-         if(snapshot.docs.length > 0) {
-             return snapshot.docs[0].data();
-         }
-         return {};
-     });
+  let filterCountry = assistant.getArgument(FILTER_COUNTRY_PARAM);
+  if (filterCountry) {
+    filterCountry = filterCountry.toLowerCase();
+  }
+
+  let getEventPromise;
+  if (filterCountry) {
+    getEventPromise = api.getPreviousEventByCountry(inputDate, filterCountry);
+  } else {
+    getEventPromise = api.getPreviousEvent(inputDate);
+  }
+
+  getEventPromise.then( event => {
+    if (event) {
+        const speech = `<speak>
+            The last event was ${event.name} in ${event.location}.<break time="1"/>
+            Anything else?
+            </speak>`;
+        assistant.ask(speech);
+    } else {
+        const speech = 'Sorry, I couldn\'t find any event right now';
+        assistant.ask(speech);
+    }
+  });
 }
 
-function GetPreviousEventByCountry(dateString, country) {
-  return eventsRef
-     .where('country', '==', country)
-     .where('startDate', '<', dateString)
-     .orderBy('startDate', 'desc').limit(1)
-     .get()
-     .then(snapshot => {
-         if(snapshot.docs.length > 0) {
-             return snapshot.docs[0].data();
-         }
-         return {};
-     });
-}
 module.exports = {
   previousEvent: previousEventHandler
 };
