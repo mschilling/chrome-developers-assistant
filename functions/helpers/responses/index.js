@@ -38,7 +38,7 @@ function returnVideoResponse(assistant, success, params) {
     const url = 'https://www.youtube.com/watch?v=' + videoId;
 
     const speech = `<speak>
-        I've found the keynote on YouTube. It's called ${videoTitle}.
+        I've found a video YouTube. It's called ${videoTitle}.
         </speak>`;
 
     const displayText = 'Here\'s a video I found on YouTube :-)';

@@ -42,8 +42,30 @@ function searchEventHighlightsVideo(eventKey) {
     });
 }
 
+function filterVideosBySpeaker(speaker) {
+  if (!speaker) {
+    debug('speaker is undefined');
+    return undefined;
+  };
+
+  const speakerKey = speaker.toLowerCase();
+
+  return videosRef
+    .where(`speakers.${speakerKey}`, '==', true)
+    // .orderBy('dateAdded', 'asc')
+    .limit(1)
+    .get()
+    .then(snapshot => {
+      if (snapshot.docs.length > 0) {
+        return snapshot.docs[0].data();
+      }
+      debug('no results found');
+      return undefined;
+    });
+}
 
 module.exports = {
   searchKeynoteVideos: searchKeynoteVideos,
-  searchEventHighlightsVideo: searchEventHighlightsVideo
+  searchEventHighlightsVideo: searchEventHighlightsVideo,
+  filterVideosBySpeaker: filterVideosBySpeaker
 };

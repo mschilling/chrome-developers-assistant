@@ -48,6 +48,11 @@ class AssistantDataApi {
     debug('searchEventHighlightsVideo', eventKey);
     return apiVideos.searchEventHighlightsVideo(eventKey);
   }
+
+  static filterVideosBySpeaker(speaker) {
+    debug('filterVideosBySpeaker', speaker);
+    return apiVideos.filterVideosBySpeaker(speaker);
+  }
 }
 
 module.exports = AssistantDataApi;
