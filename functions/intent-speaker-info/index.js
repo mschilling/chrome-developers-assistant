@@ -24,7 +24,7 @@ function handleAction(assistant) {
         const speech = `<speak>${speechText}</speak>`;
 
         const cardTitle = `${person.first_name} ${person.last_name}`;
-        const cardDescription = person.shortbio || person.bio || 'n.a.';
+        const cardDescription = person.short_bio || person.bio || 'n.a.';
         const cardPicture = person.pictureUrl || 'http://lorempixel.com/200/400';
         const cardPictureAltText = 'This is my Face';
         const cardUrl = person.homepage;
