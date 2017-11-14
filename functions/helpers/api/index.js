@@ -7,12 +7,18 @@ const error = Debug('google-developer-assistant-api:error');
 // const moment = require('moment');
 const apiVideos = require('./videos');
 const apiEvents = require('./events');
+const apiPeople = require('./people');
 
 // Configure logging for hosting platforms that only support console.log and console.error
 debug.log = console.log.bind(console);
 error.log = console.error.bind(console);
 
 class AssistantDataApi {
+  static getPerson(id) {
+    debug('getPerson', id);
+    return apiPeople.getPerson(id);
+  }
+
   static getKeynoteVideo(event, year) {
     debug('getKeynoteVideo', event, year);
     return this.getKeynoteVideos(event, year, 1)

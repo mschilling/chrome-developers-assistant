@@ -57,6 +57,7 @@ async.series([
                     twitter: asFbString(row.twitterhandle),
                     github: asFbString(row.githubhandle),
                     bio: asFbString(row.bio),
+                    short_bio: asFbString(row.shortbio),
                     email: asFbString(row.email),
                     pictureUrl: asFbString(row.pictureurl),
                     homepage: asFbString(row.homepage),
