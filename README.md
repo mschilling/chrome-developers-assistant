@@ -7,8 +7,37 @@ Chrome Developers Assistant can:
 - Find keynote video's of events
 - Provide speaker information
 
-# Example phrases
-(in progress..)
+# Dialogs - Things you can ask
+
+**Talk to the Agent**
+
+| Actor | Command |
+| :--- | :--- |
+| **User** | Hey Google, let me talk to Chrome Developers. |
+| **Google Assistant** | Sure, here's Chrome Developers. |
+| **Chrome Developers** | Hi there! |
+
+**Ask for Summit information**
+
+| Actor | Command |
+| :--- | :--- |
+| **User** | When is the next summit? |
+| **Chrome Developers** | The next summit is Google Developer Days India. Anything else? |
+
+**Ask for speaker information**
+
+| Actor | Command |
+| :--- | :--- |
+| **User** | Tell me something about Monica Dinculescu? |
+| **Chrome Developers** | Monica Dinculescu is an emojineer at Google. She works on Polymer, web components and Chrome, and has probably at least once broken the Internet for you. She is unreasonably excited about emoji, wary of web fonts, and will probably eat all of your Oreos, if you have any. |
+
+**Ask for Conference videos**
+
+| Actor | Command |
+| :--- | :--- |
+| **User** | Show me a conference talk with Jake and Paul |
+| **Chrome Developers** | Here's a video I found on YouTube. (provide: _link to video_) |
+
 
 # Developer docs and resources
 
