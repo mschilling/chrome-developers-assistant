@@ -14,6 +14,7 @@ const KeynoteVideoIntentHandler = require('./intent-keynote-video');
 const YouTubeVideosIntentHandler = require('./intent-youtube-videos');
 
 const SpeakerInfoIntentHandler = require('./intent-speaker-info');
+const SpeakerSelectionIntentHandler = require('./intent-speaker-selection');
 const VideosIntentHandler = require('./intent-videos');
 
 // API.AI Intent names
@@ -23,6 +24,7 @@ const PREV_EVENT_INTENT = 'prev-event';
 const SPEAKER_INFO_INTENT = 'speaker-info';
 const SPEAKER_INFO_KNOW_FOR_INTENT = 'speaker-info.known-for';
 const SPEAKER_INFO_GITHUB_HANDLE_INTENT = 'speaker-info.github-handle';
+const SPEAKER_SELECTION_INTENT = 'select-speaker';
 const KEYNOTE_VIDEO_INTENT = 'keynote-video';
 const EVENT_HIGHLIGHTS_INTENT = 'youtube-video.event-highlights';
 const VIDEO_BY_SPEAKER_INTENT = 'youtube-video.by-speaker';
@@ -48,5 +50,6 @@ exports.assistant = functions.https.onRequest((request, response) => {
   // actionMap.set(YOUTUBE_VIDEO_BY_SPEAKER_INTENT, YouTubeVideosIntentHandler.videoBySpeaker);
   actionMap.set(EVENT_HIGHLIGHTS_INTENT, VideosIntentHandler.eventHighlights);
   actionMap.set(VIDEO_BY_SPEAKER_INTENT, VideosIntentHandler.speakerVideos);
+  actionMap.set(SPEAKER_SELECTION_INTENT, SpeakerSelectionIntentHandler.speakerSelection);
   assistant.handleRequest(actionMap);
 });
