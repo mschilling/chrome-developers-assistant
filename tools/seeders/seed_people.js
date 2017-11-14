@@ -52,6 +52,7 @@ async.series([
                 let docId = rows[i].id;
 
                 let obj = {
+                    id: docId,
                     first_name: row.firstname,
                     last_name: row.lastname,
                     twitter: asFbString(row.twitterhandle),

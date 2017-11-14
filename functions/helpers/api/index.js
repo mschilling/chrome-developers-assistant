@@ -19,6 +19,11 @@ class AssistantDataApi {
     return apiPeople.getPerson(id);
   }
 
+  static getPeople(limit = 5) {
+    debug('getPeople', limit);
+    return apiPeople.getPeople(limit);
+  }
+
   static getKeynoteVideo(event, year) {
     debug('getKeynoteVideo', event, year);
     return this.getKeynoteVideos(event, year, 1)
