@@ -27,7 +27,6 @@ const SPEAKER_SELECTION_INTENT = 'select-speaker';
 
 // Contexts
 const WELCOME_CONTEXT = 'welcome';
-const TWITTER_HANDLE_CONTEXT = 'twitter-handle';
 
 exports.assistant = functions.https.onRequest((request, response) => {
   console.log('headers: ' + JSON.stringify(request.headers));
