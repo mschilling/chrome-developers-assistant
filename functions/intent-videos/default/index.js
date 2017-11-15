@@ -6,6 +6,10 @@ const responses = require('../../helpers/responses');
 // Context Parameters
 const EVENT_PARAM = 'summit';
 const TAGS_PARAM = 'tags';
+const SPEAKERS_PARAM = 'speakers';
+// const PERSON_PARAM = 'person';
+// const DATE_PERIOD_PARAM = 'date-period';
+// const EVENT_PARAM = 'event';
 
 function handleAction(assistant) {
   const params = parseParameters(assistant);
@@ -25,19 +29,28 @@ function handleAction(assistant) {
     });
 }
 
-function parseParameters( assistant ) {
+function parseParameters(assistant) {
   const eventParam = assistant.getArgument(EVENT_PARAM);
   const tagsParam = assistant.getArgument(TAGS_PARAM) || [];
-  console.log(eventParam, tagsParam)
+  const speakersParam = assistant.getArgument(SPEAKERS_PARAM) || [];
+  // const speaker = assistant.getArgument(PERSON_PARAM);
+  // const datePeriod = assistant.getArgument(DATE_PERIOD_PARAM);
+  // const event = assistant.getArgument(EVENT_PARAM);
 
-  const params = {}
+  console.log(eventParam, tagsParam, speakersParam);
 
-  if(eventParam) {
+  const params = {};
+
+  if (eventParam) {
     params.event = eventParam;
   }
 
-  if(tagsParam) {
+  if (tagsParam) {
     params.tags = tagsParam;
+  }
+
+  if (speakersParam) {
+    params.speakers = speakersParam;
   }
 
   return params;
