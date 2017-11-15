@@ -55,6 +55,11 @@ class AssistantDataApi {
     return apiEvents.getPreviousEventByCountry(timestamp, country);
   }
 
+  static searchVideos(searchParams, limit) {
+    debug('searchVideos', searchParams, limit);
+    return apiVideos.search(searchParams, limit);
+  }
+
   static searchEventHighlightsVideo(eventKey) {
     debug('searchEventHighlightsVideo', eventKey);
     return apiVideos.searchEventHighlightsVideo(eventKey);
