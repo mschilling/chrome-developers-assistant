@@ -10,11 +10,6 @@ admin.initializeApp(functions.config().firebase);
 const TwitterHandleIntent = require('./get-twitter-handle');
 const NextEventIntentHandler = require('./intent-next-event');
 const PreviousEventIntentHandler = require('./intent-prev-event');
-<<<<<<< HEAD
-const KeynoteVideoIntentHandler = require('./intent-keynote-video');
-=======
-const YouTubeVideosIntentHandler = require('./intent-youtube-videos');
->>>>>>> develop
 
 const SpeakerInfoIntentHandler = require('./intent-speaker-info');
 const SpeakerSelectionIntentHandler = require('./intent-speaker-selection');
