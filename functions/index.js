@@ -18,6 +18,7 @@ const SpeakerSelectionIntentHandler = require('./intent-speaker-selection');
 const VideosIntentHandler = require('./intent-videos');
 
 // API.AI Intent names
+const VIDEO_SEARCH_INTENT = 'video-search';
 const TWITTER_HANDLE_INTENT = 'twitter-handle';
 const NEXT_EVENT_INTENT = 'next-event';
 const PREV_EVENT_INTENT = 'prev-event';
@@ -48,7 +49,7 @@ exports.assistant = functions.https.onRequest((request, response) => {
   actionMap.set(SPEAKER_INFO_GITHUB_HANDLE_INTENT, SpeakerInfoIntentHandler.githubHandle);
   actionMap.set(KEYNOTE_VIDEO_INTENT, KeynoteVideoIntentHandler.keynoteVideo);
   // actionMap.set(YOUTUBE_VIDEO_BY_SPEAKER_INTENT, YouTubeVideosIntentHandler.videoBySpeaker);
-  actionMap.set(EVENT_HIGHLIGHTS_INTENT, VideosIntentHandler.eventHighlights);
+  actionMap.set(VIDEO_SEARCH_INTENT, VideosIntentHandler.searchVideos);
   actionMap.set(VIDEO_BY_SPEAKER_INTENT, VideosIntentHandler.speakerVideos);
   actionMap.set(SPEAKER_SELECTION_INTENT, SpeakerSelectionIntentHandler.speakerSelection);
   assistant.handleRequest(actionMap);

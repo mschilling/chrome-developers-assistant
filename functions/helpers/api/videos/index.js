@@ -7,6 +7,37 @@ const error = Debug('google-developer-assistant-api:error');
 const admin = require('firebase-admin');
 const videosRef = admin.firestore().collection('videos');
 
+function search(searchParams, limit = 10) {
+  if (!searchParams) {
+    debug('searchParams is undefined');
+    return undefined;
+  };
+
+  let query = videosRef;
+
+  if(searchParams.event) {
+    query = query.where('eventKey', '==', searchParams.event);
+  }
+
+  if(searchParams.tags && searchParams.tags.length > 0) {
+    for (let i = 0; i < searchParams.tags.length; i++) {
+      const tag = searchParams.tags[i] || '';
+      query = query.where(`tags.${tag}`, '==', true)
+    }
+  }
+
+  return query
+    .limit(limit)
+    .get()
+    .then(snapshot => {
+      const docs = [];
+      for (let i = 0; i < snapshot.docs.length; i++) {
+        docs.push(snapshot.docs[i].data());
+      }
+      return docs;
+    });
+}
+
 function searchKeynoteVideos(eventName, year, limit = 3) {
   return videosRef
     .where('isKeynote', '==', true)
@@ -72,6 +103,7 @@ function filterVideosBySpeakers(speakers, limit = 3) {
 }
 
 module.exports = {
+  search: search,
   searchKeynoteVideos: searchKeynoteVideos,
   searchEventHighlightsVideo: searchEventHighlightsVideo,
   filterVideosBySpeakers: filterVideosBySpeakers
