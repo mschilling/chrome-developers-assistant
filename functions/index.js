@@ -7,13 +7,17 @@ const functions = require('firebase-functions');
 const admin = require('firebase-admin');
 admin.initializeApp(functions.config().firebase);
 
+// EVENTS
 const NextEventIntentHandler = require('./intent-next-event');
 const PreviousEventIntentHandler = require('./intent-prev-event');
 
+// SPEAKERS
 const SpeakerInfoIntentHandler = require('./intent-speaker-info');
 const SpeakerSelectionIntentHandler = require('./intent-speaker-selection');
-const VideosIntentHandler = require('./intent-videos');
 const SpeakersIntentHandler = require('./intent-speakers');
+
+// VIDEOS
+const VideosIntentHandler = require('./intent-videos');
 
 // API.AI Intent names
 const VIDEO_SEARCH_INTENT = 'video-search';
@@ -30,10 +34,9 @@ exports.assistant = functions.https.onRequest((request, response) => {
   console.log('headers: ' + JSON.stringify(request.headers));
   console.log('body: ' + JSON.stringify(request.body));
 
-  const assistant = new Assistant({request: request, response: response});
+  const assistant = new Assistant({ request: request, response: response });
 
   const actionMap = new Map();
-  // actionMap.set(TWITTER_HANDLE_INTENT, TwitterHandleIntent.twitterHandle);
   actionMap.set(NEXT_EVENT_INTENT, NextEventIntentHandler.nextEvent);
   actionMap.set(PREV_EVENT_INTENT, PreviousEventIntentHandler.previousEvent);
   actionMap.set(SPEAKER_INFO_INTENT, SpeakerInfoIntentHandler.speakerInfo);
