@@ -1,12 +1,8 @@
 'use strict';
 
-const admin = require('firebase-admin');
-const peopleRef = admin.firestore().collection('people');
-
 const api = require('../helpers/api');
 
 const KnownForHandler = require('./known-for');
-const GithubHandleHandler = require('./github-handle');
 
 // Context Parameters
 const PERSON_PARAM = 'person';
@@ -18,7 +14,7 @@ function handleAction(assistant) {
     .then(person => {
       if (person) {
         let speechText = `${person.first_name} ${person.last_name} is a developer from the Chrome Team`;
-        if(person.shortbio) {
+        if (person.shortbio) {
           speechText = person.shortbio;
         }
         const speech = `<speak>${speechText}</speak>`;
@@ -50,7 +46,6 @@ function handleAction(assistant) {
 }
 
 module.exports = {
-    speakerInfo: handleAction,
-    knownFor: KnownForHandler.knownFor,
-    githubHandle: GithubHandleHandler.githubHandle
+  speakerInfo: handleAction,
+  knownFor: KnownForHandler.knownFor,
 };
