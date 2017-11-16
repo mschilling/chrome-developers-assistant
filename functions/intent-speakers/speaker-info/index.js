@@ -27,7 +27,7 @@ function handleAction(assistant) {
           break;
         case 'homepage':
           if (person.homepage) {
-            displayText = `${person.first_name}'s Github handle is ${person.homepage}`;
+            displayText = `${person.first_name}'s personal website is ${person.homepage}`;
             speech = `<speak>${displayText}<break time="1"/>Anything else?</speak>`;
           }
           break;
