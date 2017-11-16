@@ -15,16 +15,25 @@ function search(searchParams, limit = 10) {
 
   let query = videosRef;
 
-  if(searchParams.event) {
+  if (searchParams.event) {
     query = query.where('eventKey', '==', searchParams.event);
   }
 
-  if(searchParams.tags && searchParams.tags.length > 0) {
+  if (searchParams.tags && searchParams.tags.length > 0) {
     for (let i = 0; i < searchParams.tags.length; i++) {
       const tag = searchParams.tags[i] || '';
-      query = query.where(`tags.${tag}`, '==', true)
+      query = query.where(`tags.${tag}`, '==', true);
     }
   }
+
+  if (searchParams.speakers && searchParams.speakers.length > 0) {
+    const speakersList = searchParams.speakers.map(p => p.trim());
+    for (let i = 0; i < speakersList.length; i++) {
+      const speaker = speakersList[i] || '';
+      query = query.where(`speakers.${speaker}`, '==', true);
+    }
+  }
+
 
   return query
     .limit(limit)
@@ -81,11 +90,11 @@ function filterVideosBySpeakers(speakers, limit = 3) {
 
   debug(speakers);
 
-  const speakersList = speakers.map( p => p.trim() );
+  const speakersList = speakers.map(p => p.trim());
 
   let promise = videosRef;
 
-  for (let i=0; i< speakersList.length; i++) {
+  for (let i = 0; i < speakersList.length; i++) {
     promise = promise.where(`speakers.${speakersList[i]}`, '==', true);
   }
 
