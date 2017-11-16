@@ -38,6 +38,10 @@ Chrome Developers Assistant can:
 | **User** | Show me a conference talk with Jake and Paul |
 | **Chrome Developers** | Here's a video I found on YouTube. (provide: _link to video_) |
 
+| Actor | Command |
+| :--- | :--- |
+| **User** | Show me the keynote of Polymer Summit |
+| **Chrome Developers** | Here's a video I found on YouTube. (provide: _link to video_) |
 
 # Developer docs and resources
 
