@@ -21,14 +21,20 @@ function handleAction(assistant) {
           break;
         case 'github':
           if (person.github) {
-            displayText = `${person.first_name}'s Github username is ${person.github}`;
+            displayText = `${person.first_name}'s Github handle is ${person.github}`;
+            speech = `<speak>${displayText}<break time="1"/>Anything else?</speak>`;
+          }
+          break;
+        case 'homepage':
+          if (person.homepage) {
+            displayText = `${person.first_name}'s Github handle is ${person.homepage}`;
             speech = `<speak>${displayText}<break time="1"/>Anything else?</speak>`;
           }
           break;
       }
 
       assistant.ask(assistant.buildRichResponse()
-        .addSimpleResponse({speech: speech, displayText: displayText}));
+        .addSimpleResponse({ speech: speech, displayText: displayText }));
     } else {
       const speech = 'Sorry, I couldn\'t find any';
       assistant.ask(speech);
