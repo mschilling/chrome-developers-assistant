@@ -31,6 +31,24 @@ function handleAction(assistant) {
     });
 }
 
+function selectVideoByOption(assistant) {
+  const videoId = assistant.getSelectedOption();
+
+  if (videoId) {
+    const url = 'https://www.youtube.com/watch?v=' + videoId;
+    const displayText = 'Here\'s a video I found on YouTube';
+
+    assistant.ask( assistant.buildRichResponse()
+      .addSimpleResponse({
+        speech: displayText,
+        displayText: displayText
+      })
+      .addSuggestionLink('video on YouTube', url));
+  } else {
+    app.ask('Sorry, I couldn\'t find the video 😥');
+  }
+}
+
 function parseParameters(assistant) {
   const eventParam = assistant.getArgument(EVENT_PARAM);
   const tagsParam = assistant.getArgument(TAGS_PARAM) || [];
@@ -59,5 +77,6 @@ function parseParameters(assistant) {
 }
 
 module.exports = {
-  handleAction: handleAction
+  handleAction: handleAction,
+  selectVideoByOption: selectVideoByOption
 };

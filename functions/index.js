@@ -21,6 +21,7 @@ const VideosIntentHandler = require('./intent-videos');
 
 // API.AI Intent names
 const VIDEO_SEARCH_INTENT = 'video-search';
+const VIDEO_SEARCH_FALLBACK_INTENT = 'option.select';
 const NEXT_EVENT_INTENT = 'next-event';
 const PREV_EVENT_INTENT = 'prev-event';
 const SPEAKER_INFO_INTENT = 'speaker-info';
@@ -42,6 +43,7 @@ exports.assistant = functions.https.onRequest((request, response) => {
   actionMap.set(SPEAKER_INFO_INTENT, SpeakerInfoIntentHandler.speakerInfo);
   actionMap.set(SPEAKER_INFO_KNOW_FOR_INTENT, SpeakerInfoIntentHandler.knownFor);
   actionMap.set(VIDEO_SEARCH_INTENT, VideosIntentHandler.searchVideos);
+  actionMap.set(VIDEO_SEARCH_FALLBACK_INTENT, VideosIntentHandler.selectVideoByOption);
   actionMap.set(SPEAKER_INFO_INTENT, SpeakersIntentHandler.speakerInfo);
   actionMap.set(SPEAKER_SELECTION_INTENT, SpeakerSelectionIntentHandler.speakerSelection);
   assistant.handleRequest(actionMap);
