@@ -7,22 +7,24 @@ const responses = require('../../helpers/responses');
 const EVENT_PARAM = 'summit';
 const TAGS_PARAM = 'tags';
 const SPEAKERS_PARAM = 'speakers';
-// const PERSON_PARAM = 'person';
-// const DATE_PERIOD_PARAM = 'date-period';
-// const EVENT_PARAM = 'event';
 
 function handleAction(assistant) {
   const params = parseParameters(assistant);
 
-  api.searchVideos(params, 5)
+  api.searchVideos(params, 10)
     .then(results => {
+      console.log('Number of videos found: ' + (results || []).length);
       if (results && results.length > 0) {
         const result = results[0];
-        const params = {
+        const videoParams = {
           videoId: result.videoId,
           videoTitle: result.name
         };
-        responses.returnVideoResponse(assistant, true, params);
+        if (params.speakers && params.speakers.length > 0 && results.length >= 4) {
+          responses.returnVideosResponse(assistant, true, results, videoParams);
+        } else {
+          responses.returnVideoResponse(assistant, true, videoParams);
+        }
       } else {
         responses.returnVideoResponse(assistant, false);
       }
