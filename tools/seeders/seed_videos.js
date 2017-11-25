@@ -42,7 +42,7 @@ async.series([
   function writeDataToFirebase(step) {
     sheet.getRows({
       offset: 1,
-      limit: 50,
+      // limit: 50,
       orderby: 'col2'
     }, function (err, rows) {
       console.log('Read ' + rows.length + ' rows');
