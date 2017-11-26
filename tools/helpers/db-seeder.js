@@ -31,6 +31,7 @@ class DbLoader {
         twitter: asFbString(row.twitterhandle),
         github: asFbString(row.githubhandle),
         lanyrd: asFbString(row.lanyrdhandle),
+        speaker_deck: asFbString(row.speakerdeck),
         bio: asFbString(row.bio),
         short_bio: asFbString(row.shortbio),
         email: asFbString(row.email),
