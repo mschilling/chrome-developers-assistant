@@ -43,7 +43,7 @@ function buildCarouselForYouTubeVideos(assistant, items, maxLength = 10) {
     // const cardUrl = 'https://www.youtube.com/watch?v=' + item.videoId;
     // const cardUrlText = 'Visit homepage';
 
-    const newOption = assistant.buildOptionItem(uniqueId, ['keynote', 'talk', 'highlights'])
+    const newOption = assistant.buildOptionItem(uniqueId, [uniqueId + '_alias'])
       .setTitle(cardTitle)
       .setDescription(cardDescription)
       .setImage(cardPicture, cardPictureAltText);
