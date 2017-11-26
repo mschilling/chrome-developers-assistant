@@ -11,33 +11,14 @@ Chrome Developers Assistant can:
 
 **Talk to the Agent**
 
-| Actor | Command |
-| :--- | :--- |
-| **User** | Hey Google, let me talk to Chrome Developers. |
-| **Google Assistant** | Sure, here's Chrome Developers. |
-| **Chrome Developers** | Hi there! |
-
-| Various things you can ask |
+| Things you can ask the Assistant |
 | :--- |
 | When is the next summit? |
 | Tell me something about Monica Dinculescu? |
 | What is the Big Web Quiz? |
 | Show me talks of Jake Archibald |
 | What were the hightlights for Polymer Summit? |
-
-
-**Ask for Conference videos**
-
-| Actor | Command |
-| :--- | :--- |
-| **User** | Show me a conference talk with Jake and Paul |
-| **Chrome Developers** | Here's a video I found on YouTube. (provide: _link to video_) |
-
-| Actor | Command |
-| :--- | :--- |
-| **User** | Show me the keynote of Polymer Summit |
-| **Chrome Developers** | Here's a video I found on YouTube. (provide: _link to video_) |
-
+| Show me the keynote of Chrome Dev Summit |
 
 # Developer docs and resources
 
