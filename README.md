@@ -17,19 +17,14 @@ Chrome Developers Assistant can:
 | **Google Assistant** | Sure, here's Chrome Developers. |
 | **Chrome Developers** | Hi there! |
 
-**Ask for Summit information**
+| Various things you can ask |
+| :--- |
+| When is the next summit? |
+| Tell me something about Monica Dinculescu? |
+| What is the Big Web Quiz? |
+| Show me talks of Jake Archibald |
+| What were the hightlights for Polymer Summit? |
 
-| Actor | Command |
-| :--- | :--- |
-| **User** | When is the next summit? |
-| **Chrome Developers** | The next summit is Google Developer Days India. Anything else? |
-
-**Ask for speaker information**
-
-| Actor | Command |
-| :--- | :--- |
-| **User** | Tell me something about Monica Dinculescu? |
-| **Chrome Developers** | Monica Dinculescu is an emojineer at Google. She works on Polymer, web components and Chrome, and has probably at least once broken the Internet for you. She is unreasonably excited about emoji, wary of web fonts, and will probably eat all of your Oreos, if you have any. |
 
 **Ask for Conference videos**
 
@@ -42,6 +37,7 @@ Chrome Developers Assistant can:
 | :--- | :--- |
 | **User** | Show me the keynote of Polymer Summit |
 | **Chrome Developers** | Here's a video I found on YouTube. (provide: _link to video_) |
+
 
 # Developer docs and resources
 
