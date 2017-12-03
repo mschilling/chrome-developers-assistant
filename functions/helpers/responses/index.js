@@ -40,6 +40,8 @@ function buildCarouselForYouTubeVideos(assistant, items, maxLength = 10) {
     const thumbId = String(Math.ceil(Math.random() * 3));
     const cardPicture = `https://img.youtube.com/vi/${item.videoId}/hq${thumbId}.jpg`;
     const cardPictureAltText = item.name;
+    // const cardUrl = 'https://www.youtube.com/watch?v=' + item.videoId;
+    // const cardUrlText = 'Visit homepage';
 
     const newOption = assistant.buildOptionItem(uniqueId, [uniqueId + '_alias'])
       .setTitle(cardTitle)
@@ -58,9 +60,13 @@ function returnVideoResponse(assistant, success, params) {
     const videoTitle = params.videoTitle || '';
     const url = 'https://www.youtube.com/watch?v=' + videoId;
 
-    const speech = `<speak>
-        I've found a video on YouTube. It's called ${videoTitle}.
-        </speak>`;
+    const speech = `
+      <speak>
+        <p>
+          <s>I've found a video on YouTube.</s>
+          <s>It's called ${videoTitle}.</s>
+        </p>
+      </speak>`;
 
     const displayText = 'Here\'s a video I found on YouTube';
 
