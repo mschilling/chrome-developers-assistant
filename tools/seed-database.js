@@ -69,6 +69,17 @@ async.series([
     });
   },
 
+  function seedBlogPosts(step) {
+    const dataSheet = getSheetByName(worksheets, 'blogposts');
+    dataSheet.getRows({
+      offset: 1,
+    }, function(err, rows) {
+      dbHelper.seedBlogPosts(rows).then(() => {
+        step();
+      });
+    });
+  },
+
 ], function(err) {
   if (err) {
     console.log('Error: ' + err);

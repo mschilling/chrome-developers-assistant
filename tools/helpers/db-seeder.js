@@ -92,6 +92,27 @@ class DbLoader {
     };
     return Promise.all(actions);
   }
+
+  static seedBlogPosts(rows) {
+    debug('seedBlogPosts', rows.length);
+    const dbRef = db.collection('blogposts');
+
+    const actions = [];
+    for (const row of rows) {
+      const docId = asFbString(row.id);
+      const obj = {
+        id: docId,
+        // videoId: asFbString(row.videoid),
+        title: asFbString(row.title),
+        publishDate: asFbDate(row.publishdate),
+        authors: asFbArrayAsObjectKeys(row.authors),
+        postUrl: asFbString(row.posturl),
+        tags: asFbArrayAsObjectKeys(row.tags)
+      };
+      actions.push(dbRef.doc(docId).set(obj, { merge: true }));
+    };
+    return Promise.all(actions);
+  }
 }
 
 function asFbBool(input) {
