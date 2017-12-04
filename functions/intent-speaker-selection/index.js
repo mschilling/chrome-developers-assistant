@@ -20,7 +20,7 @@ function handleAction(assistant) {
         let options = assistant.buildCarousel();
         for (var i = 0; i < people.length; i++) {
           var doc = people[i];
-          if(doc.pictureUrl) {
+          if (doc.pictureUrl) {
             options = options.addItems(getCarouselOption(assistant, doc));
           }
         }
@@ -38,13 +38,11 @@ function getCarouselOption( assistant, person ) {
   const cardDescription = person.short_bio || person.bio || 'n.a.';
   const cardPicture = person.pictureUrl || 'http://lorempixel.com/200/400';
   const cardPictureAltText = 'This is my Face';
-  const cardUrl = person.homepage;
-  const cardUrlText = 'Visit homepage';
 
-  return assistant.buildOptionItem(uniqueId, ['math', 'math and prime', 'prime numbers', 'prime'])
+  return assistant.buildOptionItem(uniqueId, [cardTitle])
         .setTitle(cardTitle)
         .setDescription(cardDescription)
-        .setImage(cardPicture, cardPictureAltText)
+        .setImage(cardPicture, cardPictureAltText);
 }
 
 module.exports = {
