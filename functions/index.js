@@ -27,6 +27,7 @@ const PREV_EVENT_INTENT = 'prev-event';
 const SPEAKER_INFO_INTENT = 'speaker-info';
 const SPEAKER_INFO_KNOW_FOR_INTENT = 'speaker-info.known-for';
 const SPEAKER_SELECTION_INTENT = 'select-speaker';
+const SPEAKER_SELECT_FALLBACK_INTENT = 'option.select-speaker';
 
 // Contexts
 const WELCOME_CONTEXT = 'welcome';
@@ -46,5 +47,6 @@ exports.assistant = functions.https.onRequest((request, response) => {
   actionMap.set(VIDEO_SEARCH_FALLBACK_INTENT, VideosIntentHandler.selectVideoByOption);
   actionMap.set(SPEAKER_INFO_INTENT, SpeakersIntentHandler.speakerInfo);
   actionMap.set(SPEAKER_SELECTION_INTENT, SpeakerSelectionIntentHandler.speakerSelection);
+  actionMap.set(SPEAKER_SELECT_FALLBACK_INTENT, SpeakerInfoIntentHandler.selectSpeakerByOption);
   assistant.handleRequest(actionMap);
 });

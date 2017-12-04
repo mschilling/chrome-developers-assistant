@@ -45,7 +45,24 @@ function handleAction(assistant) {
     });
 }
 
+function selectSpeakerByOption(assistant) {
+  console.log('getSelectedOption', assistant.getSelectedOption());
+  const speakerId = assistant.getSelectedOption();
+
+  return api.getPerson(speakerId)
+    .then(person => {
+      if (person && person.bio) {
+        const speech = `<speak>${person.bio}</speak>`;
+        assistant.ask(speech);
+      } else {
+        const speech = 'There isn\'t much I can tell you about ' + person + ' right know..';
+        assistant.ask(speech);
+      }
+    });
+}
+
 module.exports = {
   speakerInfo: handleAction,
   knownFor: KnownForHandler.knownFor,
+  selectSpeakerByOption: selectSpeakerByOption
 };
