@@ -90,7 +90,7 @@ function buildCarouselForBlogPosts(assistant, items, maxLength = 10) {
     const item = items[i];
     const uniqueId = item.id;
     const cardTitle = item.title;
-    const cardDescription = `Published ${moment(item.publishDate).fromNow()}`;
+    const cardDescription = `Published ${moment(item.publishDate).fromNow()} by ${item.author}`;
     const cardPicture = item.postImageUrl;
     const cardPictureAltText = 'blog post';
 

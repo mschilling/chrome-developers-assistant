@@ -105,6 +105,7 @@ class DbLoader {
         // videoId: asFbString(row.videoid),
         title: asFbString(row.title),
         publishDate: asFbDate(row.publishdate),
+        author: asFbString(row.author),
         authors: asFbArrayAsObjectKeys(row.authors),
         postUrl: asFbString(row.posturl),
         postImageUrl: asFbString(row.postimageurl),
