@@ -107,6 +107,7 @@ class DbLoader {
         publishDate: asFbDate(row.publishdate),
         authors: asFbArrayAsObjectKeys(row.authors),
         postUrl: asFbString(row.posturl),
+        postImageUrl: asFbString(row.postimageurl),
         tags: asFbArrayAsObjectKeys(row.tags)
       };
       actions.push(dbRef.doc(docId).set(obj, { merge: true }));

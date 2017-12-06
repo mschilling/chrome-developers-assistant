@@ -8,6 +8,7 @@ const error = Debug('google-developer-assistant-api:error');
 const apiVideos = require('./videos');
 const apiEvents = require('./events');
 const apiPeople = require('./people');
+const apiBlogPosts = require('./blog-posts');
 
 // Configure logging for hosting platforms that only support console.log and console.error
 debug.log = console.log.bind(console);
@@ -68,6 +69,11 @@ class AssistantDataApi {
   static filterVideosBySpeakers(speakers, limit) {
     debug('filterVideosBySpeakers', speakers, limit);
     return apiVideos.filterVideosBySpeakers(speakers, limit);
+  }
+
+  static searchBlogPosts(searchParams, limit) {
+    debug('searchBlogPosts', searchParams, limit);
+    return apiBlogPosts.search(searchParams, limit);
   }
 }
 
