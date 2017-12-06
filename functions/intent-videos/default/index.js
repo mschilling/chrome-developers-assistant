@@ -20,7 +20,7 @@ function handleAction(assistant) {
           videoId: result.videoId,
           videoTitle: result.name
         };
-        if (params.speakers && params.speakers.length > 0 && results.length >= 4) {
+        if (results.length > 1) {
           responses.returnVideosResponse(assistant, true, results, videoParams);
         } else {
           responses.returnVideoResponse(assistant, true, videoParams);
