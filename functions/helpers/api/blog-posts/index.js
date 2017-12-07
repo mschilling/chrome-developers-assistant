@@ -36,6 +36,7 @@ function search(searchParams, limit = 10) {
 
 
   return query
+    .orderBy('publishDate', 'desc')
     .limit(limit)
     .get()
     .then(snapshot => {
