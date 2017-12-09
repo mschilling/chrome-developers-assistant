@@ -22,6 +22,9 @@ const VideosIntentHandler = require('./intent-videos');
 // VIDEOS
 const BlogPostsIntentHandler = require('./intent-blogposts');
 
+// Shows
+const ShowsIntentHandler = require('./intents/youtube-shows-handler');
+
 // API.AI Intent names
 const VIDEO_SEARCH_INTENT = 'video-search';
 const VIDEO_SEARCH_FALLBACK_INTENT = 'option.select';
@@ -53,5 +56,6 @@ exports.assistant = functions.https.onRequest((request, response) => {
   actionMap.set(SPEAKER_SELECTION_INTENT, SpeakerSelectionIntentHandler.speakerSelection);
   actionMap.set(SPEAKER_SELECT_FALLBACK_INTENT, SpeakerInfoIntentHandler.selectSpeakerByOption);
   actionMap.set(BLOGPOST_SEARCH_INTENT, BlogPostsIntentHandler.searchBlogPosts);
+  actionMap.set('find-show-episode', ShowsIntentHandler.findEpisode);
   assistant.handleRequest(actionMap);
 });
