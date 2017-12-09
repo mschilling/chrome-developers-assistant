@@ -1,16 +1,17 @@
 'use strict';
 
+require('dotenv').config({silent: true});
+
 const Debug = require('debug');
 const debug = Debug('google-developer-assistant-api:debug');
 const error = Debug('google-developer-assistant-api:error');
 
 const functions = require('firebase-functions');
-// const admin = require('firebase-admin');
 
 const axios = require('axios');
 
 const BASE_URL = 'https://www.googleapis.com/youtube/v3';
-const ACCESS_TOKEN = functions.config().youtube.key;
+const ACCESS_TOKEN = process.env.YOUTUBE_KEY || functions.config().youtube.key;
 
 const client = axios.create({
   baseURL: BASE_URL,
