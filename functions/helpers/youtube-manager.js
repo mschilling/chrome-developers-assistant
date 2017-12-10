@@ -25,6 +25,27 @@ error.log = console.error.bind(console);
 
 class YouTubeManager {
 
+  static getVideoById(videoId) {
+    debug('getVideoById', videoId);
+
+    return client.get('/videos', {
+      params: {
+        'maxResults': '5',
+        'part': 'snippet,contentDetails',
+        'id': videoId,
+        'key': ACCESS_TOKEN
+      }
+    })
+      .then((response) => {
+        const items = response.data.items || [];
+        if (items.length > 0) {
+          // console.log(items[0]);
+          return OpenGraphObject.asYouTubeVideo(items[0]);
+        }
+        return;
+      });
+  }
+
   static getLastEpisode(playlistId) {
     debug('getLastEpisode', playlistId);
 
