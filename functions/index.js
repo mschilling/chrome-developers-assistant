@@ -20,7 +20,7 @@ const SpeakersIntentHandler = require('./intent-speakers');
 const VideosIntentHandler = require('./intent-videos');
 
 // VIDEOS
-const BlogPostsIntentHandler = require('./intent-blogposts');
+const BlogPostsIntentHandler = require('./intents/blogposts-handler');
 
 // Shows
 const ShowsIntentHandler = require('./intents/youtube-shows-handler');
