@@ -212,8 +212,8 @@ function responseYouTubeVideoAsBasicCard(assistant, cardData) {
   const publishDate = moment(cardData.publishedAt);
   assistant.ask(assistant.buildRichResponse()
     .addSimpleResponse({
-      displayText: 'I\'ve found some video\'s on YouTube. Here it is.',
-      speech: `I've found a video on YouTube. It's called ${cardData.title}`
+      displayText: 'Here\'s a YouTube result',
+      speech: `Here's a matching video. It's called ${cardData.title}`
     })
     .addBasicCard(assistant.buildBasicCard(cardData.description)
       .setTitle(cardData.title)
