@@ -8,7 +8,7 @@ function findEpisode(assistant) {
   const playlistId = assistant.getArgument('playlistId');
 
   if (!playlistId) {
-    assistant.ask('Sorry, I couldn\`t find the show on YouTube');
+    assistant.ask('Sorry, I could not find any show on YouTube');
     return;
   }
 
@@ -18,14 +18,17 @@ function findEpisode(assistant) {
         responseBasicCard(assistant, card);
         return;
       }
-      assistant.ask('Sorry, I couldn\`t find the show on YouTube');
+      assistant.ask('Sorry, I could not find the show on YouTube');
     });
 }
 
 function responseBasicCard(assistant, data) {
   const publishDate = moment(data.publishedAt);
   assistant.ask(assistant.buildRichResponse()
-    .addSimpleResponse('Here\'s the latest and greatest ✌🏼')
+    .addSimpleResponse({
+      displayText: 'Here\'s the latest and greatest ✌🏼',
+      speech: 'Sure, here\'s the latest and greatest'
+    })
     .addBasicCard(assistant.buildBasicCard(data.description)
       .setTitle(data.title)
       .setSubtitle(`Published ${publishDate.fromNow()}`)
