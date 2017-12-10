@@ -2,6 +2,7 @@
 
 const api = require('../helpers/api');
 const responses = require('../helpers/responses');
+const DialogflowOption = require('../helpers/option-helper');
 
 // Context Parameters
 const EVENT_PARAM = 'summit';
@@ -31,6 +32,25 @@ function handleAction(assistant) {
     });
 }
 
+function genericOptionsHandler(assistant) {
+  const optionData = assistant.getSelectedOption();
+  console.log('2 optionData', optionData);
+  const dfo = DialogflowOption.fromString(optionData);
+  console.log('2 dfo', dfo);
+
+  if (dfo && dfo.value) {
+    assistant.ask( assistant.buildRichResponse()
+    .addSimpleResponse({
+      speech: 'Here you go',
+      displayText: 'Here you go'
+    })
+    .addSuggestionLink('blog on website', dfo.value));
+    return;
+  };
+  assistant.ask('Sorry, I could not find the show on YouTube');
+}
+
 module.exports = {
-  searchBlogPosts: handleAction
+  searchBlogPosts: handleAction,
+  genericOptionsHandler: genericOptionsHandler
 };
