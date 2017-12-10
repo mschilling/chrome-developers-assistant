@@ -218,7 +218,7 @@ function responseYouTubeVideoAsBasicCard(assistant, cardData) {
     .addBasicCard(assistant.buildBasicCard(cardData.description)
       .setTitle(cardData.title)
       .setSubtitle(`Published ${publishDate.fromNow()}`)
-      .addButton('Watch on YouTube', 'https://youtube.com/v/' + cardData.videoId)
+      .addButton('Watch on YouTube', 'https://youtube.com/watch?v=' + cardData.videoId)
       .setImage(cardData.imageUrl, cardData.title)
       .setImageDisplay('CROPPED')
       )

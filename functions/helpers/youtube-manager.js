@@ -77,7 +77,7 @@ class OpenGraphObject {
       description: data.snippet.description,
       imageUrl: data.snippet.thumbnails.high.url,
       publishedAt: data.snippet.publishedAt,
-      videoId: data.contentDetails.videoId
+      videoId: data.contentDetails.videoId ||data.id
     };
     return obj;
   }
