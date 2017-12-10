@@ -115,6 +115,26 @@ class DbLoader {
     };
     return Promise.all(actions);
   }
+
+  static seedShows(rows) {
+    debug('seedShows', rows.length);
+    const dbRef = db.collection('shows');
+
+    const actions = [];
+    for (const row of rows) {
+      const docId = asFbString(row.id);
+      const obj = {
+        id: docId,
+        title: asFbString(row.title),
+        description: asFbString(row.description),
+        author: asFbString(row.author),
+        channel: asFbString(row.channel),
+        playlistId: asFbString(row.playlistid)
+      };
+      actions.push(dbRef.doc(docId).set(obj, { merge: true }));
+    };
+    return Promise.all(actions);
+  }
 }
 
 function asFbBool(input) {

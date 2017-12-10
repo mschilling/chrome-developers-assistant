@@ -80,6 +80,18 @@ async.series([
     });
   },
 
+  function seedShows(step) {
+    const dataSheet = getSheetByName(worksheets, 'shows');
+    dataSheet.getRows({
+      offset: 1,
+    }, function(err, rows) {
+      dbHelper.seedShows(rows).then(() => {
+        step();
+      });
+    });
+  },
+
+
 ], function(err) {
   if (err) {
     console.log('Error: ' + err);
