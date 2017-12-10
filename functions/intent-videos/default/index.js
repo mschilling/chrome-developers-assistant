@@ -3,6 +3,8 @@
 const api = require('../../helpers/api');
 const responses = require('../../helpers/responses');
 
+const youtube = require('../../helpers/youtube-manager');
+
 // Context Parameters
 const EVENT_PARAM = 'summit';
 const TAGS_PARAM = 'tags';
@@ -35,27 +37,22 @@ function selectVideoByOption(assistant) {
   const videoId = assistant.getSelectedOption();
 
   if (videoId) {
-    const url = 'https://www.youtube.com/watch?v=' + videoId;
-    const displayText = 'Here\'s a video I found on YouTube';
-
-    assistant.ask( assistant.buildRichResponse()
-      .addSimpleResponse({
-        speech: displayText,
-        displayText: displayText
-      })
-      .addSuggestionLink('video on YouTube', url));
-  } else {
-    app.ask('Sorry, I couldn\'t find the video 😥');
-  }
+    return youtube.getVideoById(videoId)
+      .then( (card) => {
+        if (card) {
+          responses.responseYouTubeVideoAsBasicCard(assistant, card);
+          return;
+        }
+      });
+  };
+  assistant.ask('Sorry, I could not find the show on YouTube');
 }
+
 
 function parseParameters(assistant) {
   const eventParam = assistant.getArgument(EVENT_PARAM);
   const tagsParam = assistant.getArgument(TAGS_PARAM) || [];
   const speakersParam = assistant.getArgument(SPEAKERS_PARAM) || [];
-  // const speaker = assistant.getArgument(PERSON_PARAM);
-  // const datePeriod = assistant.getArgument(DATE_PERIOD_PARAM);
-  // const event = assistant.getArgument(EVENT_PARAM);
 
   console.log(eventParam, tagsParam, speakersParam);
 

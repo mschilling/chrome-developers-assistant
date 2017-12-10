@@ -203,6 +203,23 @@ function responseIntentKeynoteVideo(assistant, success, params) {
   assistant.ask(response);
 }
 
+function responseYouTubeVideoAsBasicCard(assistant, cardData) {
+  const publishDate = moment(cardData.publishedAt);
+  assistant.ask(assistant.buildRichResponse()
+    .addSimpleResponse({
+      displayText: 'I\'ve found some video\'s on YouTube. Here it is.',
+      speech: `I've found a video on YouTube. It's called ${cardData.title}`
+    })
+    .addBasicCard(assistant.buildBasicCard(cardData.description)
+      .setTitle(cardData.title)
+      .setSubtitle(`Published ${publishDate.fromNow()}`)
+      .addButton('Watch on YouTube', 'https://youtube.com/v/' + cardData.videoId)
+      .setImage(cardData.cardData, data.title)
+      .setImageDisplay('CROPPED')
+      )
+    );
+}
+
 module.exports = {
   returnVideosResponse: returnVideosResponse,
   returnVideoResponse: returnVideoResponse,
