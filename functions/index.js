@@ -36,9 +36,6 @@ const SPEAKER_SELECTION_INTENT = 'select-speaker';
 const SPEAKER_SELECT_FALLBACK_INTENT = 'option.select-speaker';
 const BLOGPOST_SEARCH_INTENT = 'blogpost-search';
 
-// Contexts
-const WELCOME_CONTEXT = 'welcome';
-
 exports.assistant = functions.https.onRequest((request, response) => {
   console.log('headers: ' + JSON.stringify(request.headers));
   console.log('body: ' + JSON.stringify(request.body));
@@ -57,5 +54,6 @@ exports.assistant = functions.https.onRequest((request, response) => {
   actionMap.set(SPEAKER_SELECT_FALLBACK_INTENT, SpeakerInfoIntentHandler.selectSpeakerByOption);
   actionMap.set(BLOGPOST_SEARCH_INTENT, BlogPostsIntentHandler.searchBlogPosts);
   actionMap.set('find-show-episode', ShowsIntentHandler.findEpisode);
+  actionMap.set('generic.options.handler', BlogPostsIntentHandler.genericOptionsHandler);
   assistant.handleRequest(actionMap);
 });

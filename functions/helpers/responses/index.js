@@ -97,7 +97,9 @@ function buildCarouselForBlogPosts(assistant, items, maxLength = 10) {
     const cardPicture = item.postImageUrl;
     const cardPictureAltText = 'blog post';
 
-    const newOption = assistant.buildOptionItem(uniqueId, [uniqueId + '_alias'])
+    const dfo = new DialogflowOption('blog#url', item.postUrl, 'open');
+
+    const newOption = assistant.buildOptionItem(dfo.toString(), [uniqueId + '_alias'])
       .setTitle(cardTitle)
       .setDescription(cardDescription)
       .setImage(cardPicture, cardPictureAltText)
