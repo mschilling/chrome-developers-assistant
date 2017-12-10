@@ -9,7 +9,7 @@ class DialogflowOptionHelper {
 
   static fromString( stringValue ) {
     const obj = JSON.parse(stringValue);
-    return new DialogflowOption(obj.type, obj.value, obj.action);
+    return new DialogflowOptionHelper(obj.type, obj.value, obj.action);
   }
 
   toString() {

@@ -1,6 +1,7 @@
 'use strict';
 
 const moment = require('moment');
+const DialogflowOption = require('../option-helper');
 
 function returnVideosResponse(assistant, success, videos, params) {
   let response;
@@ -69,7 +70,9 @@ function buildCarouselForYouTubeVideos(assistant, items, maxLength = 10) {
     // const cardUrl = 'https://www.youtube.com/watch?v=' + item.videoId;
     // const cardUrlText = 'Visit homepage';
 
-    const newOption = assistant.buildOptionItem(uniqueId, [uniqueId + '_alias'])
+    const dfo = new DialogflowOption('youtube#video', uniqueId, null);
+
+    const newOption = assistant.buildOptionItem(dfo.toString(), [uniqueId + '_alias'])
       .setTitle(cardTitle)
       .setDescription(cardDescription)
       .setImage(cardPicture, cardPictureAltText);
@@ -214,7 +217,7 @@ function responseYouTubeVideoAsBasicCard(assistant, cardData) {
       .setTitle(cardData.title)
       .setSubtitle(`Published ${publishDate.fromNow()}`)
       .addButton('Watch on YouTube', 'https://youtube.com/v/' + cardData.videoId)
-      .setImage(cardData.cardData, data.title)
+      .setImage(cardData.imageUrl, cardData.title)
       .setImageDisplay('CROPPED')
       )
     );

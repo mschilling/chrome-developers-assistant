@@ -4,6 +4,7 @@ const api = require('../../helpers/api');
 const responses = require('../../helpers/responses');
 
 const youtube = require('../../helpers/youtube-manager');
+const DialogflowOption = require('../../helpers/option-helper');
 
 // Context Parameters
 const EVENT_PARAM = 'summit';
@@ -34,10 +35,13 @@ function handleAction(assistant) {
 }
 
 function selectVideoByOption(assistant) {
-  const videoId = assistant.getSelectedOption();
+  const optionData = assistant.getSelectedOption();
+  console.log('optionData', optionData);
+  const dfo = DialogflowOption.fromString(optionData);
+  console.log('dfo', dfo);
 
-  if (videoId) {
-    return youtube.getVideoById(videoId)
+  if (dfo && dfo.value) {
+    return youtube.getVideoById(dfo.value)
       .then( (card) => {
         if (card) {
           responses.responseYouTubeVideoAsBasicCard(assistant, card);
