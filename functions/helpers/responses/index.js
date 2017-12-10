@@ -225,5 +225,6 @@ module.exports = {
   returnVideoResponse: returnVideoResponse,
   responseIntentKeynoteVideo: responseIntentKeynoteVideo,
   returnBlogPostsResponse: returnBlogPostsResponse,
-  returnBlogPostResponse: returnBlogPostResponse
+  returnBlogPostResponse: returnBlogPostResponse,
+  responseYouTubeVideoAsBasicCard: responseYouTubeVideoAsBasicCard
 };
