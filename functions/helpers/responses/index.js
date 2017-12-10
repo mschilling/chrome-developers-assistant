@@ -1,6 +1,7 @@
 'use strict';
 
 const moment = require('moment');
+const DialogflowOption = require('../option-helper');
 
 function returnVideosResponse(assistant, success, videos, params) {
   let response;
@@ -69,7 +70,9 @@ function buildCarouselForYouTubeVideos(assistant, items, maxLength = 10) {
     // const cardUrl = 'https://www.youtube.com/watch?v=' + item.videoId;
     // const cardUrlText = 'Visit homepage';
 
-    const newOption = assistant.buildOptionItem(uniqueId, [uniqueId + '_alias'])
+    const dfo = new DialogflowOption('youtube#video', uniqueId, null);
+
+    const newOption = assistant.buildOptionItem(dfo.toString(), [uniqueId + '_alias'])
       .setTitle(cardTitle)
       .setDescription(cardDescription)
       .setImage(cardPicture, cardPictureAltText);
@@ -203,10 +206,28 @@ function responseIntentKeynoteVideo(assistant, success, params) {
   assistant.ask(response);
 }
 
+function responseYouTubeVideoAsBasicCard(assistant, cardData) {
+  const publishDate = moment(cardData.publishedAt);
+  assistant.ask(assistant.buildRichResponse()
+    .addSimpleResponse({
+      displayText: 'I\'ve found some video\'s on YouTube. Here it is.',
+      speech: `I've found a video on YouTube. It's called ${cardData.title}`
+    })
+    .addBasicCard(assistant.buildBasicCard(cardData.description)
+      .setTitle(cardData.title)
+      .setSubtitle(`Published ${publishDate.fromNow()}`)
+      .addButton('Watch on YouTube', 'https://youtube.com/v/' + cardData.videoId)
+      .setImage(cardData.imageUrl, cardData.title)
+      .setImageDisplay('CROPPED')
+      )
+    );
+}
+
 module.exports = {
   returnVideosResponse: returnVideosResponse,
   returnVideoResponse: returnVideoResponse,
   responseIntentKeynoteVideo: responseIntentKeynoteVideo,
   returnBlogPostsResponse: returnBlogPostsResponse,
-  returnBlogPostResponse: returnBlogPostResponse
+  returnBlogPostResponse: returnBlogPostResponse,
+  responseYouTubeVideoAsBasicCard: responseYouTubeVideoAsBasicCard
 };

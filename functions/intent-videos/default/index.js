@@ -3,6 +3,9 @@
 const api = require('../../helpers/api');
 const responses = require('../../helpers/responses');
 
+const youtube = require('../../helpers/youtube-manager');
+const DialogflowOption = require('../../helpers/option-helper');
+
 // Context Parameters
 const EVENT_PARAM = 'summit';
 const TAGS_PARAM = 'tags';
@@ -32,30 +35,28 @@ function handleAction(assistant) {
 }
 
 function selectVideoByOption(assistant) {
-  const videoId = assistant.getSelectedOption();
+  const optionData = assistant.getSelectedOption();
+  console.log('optionData', optionData);
+  const dfo = DialogflowOption.fromString(optionData);
+  console.log('dfo', dfo);
 
-  if (videoId) {
-    const url = 'https://www.youtube.com/watch?v=' + videoId;
-    const displayText = 'Here\'s a video I found on YouTube';
-
-    assistant.ask( assistant.buildRichResponse()
-      .addSimpleResponse({
-        speech: displayText,
-        displayText: displayText
-      })
-      .addSuggestionLink('video on YouTube', url));
-  } else {
-    app.ask('Sorry, I couldn\'t find the video 😥');
-  }
+  if (dfo && dfo.value) {
+    return youtube.getVideoById(dfo.value)
+      .then( (card) => {
+        if (card) {
+          responses.responseYouTubeVideoAsBasicCard(assistant, card);
+          return;
+        }
+      });
+  };
+  assistant.ask('Sorry, I could not find the show on YouTube');
 }
+
 
 function parseParameters(assistant) {
   const eventParam = assistant.getArgument(EVENT_PARAM);
   const tagsParam = assistant.getArgument(TAGS_PARAM) || [];
   const speakersParam = assistant.getArgument(SPEAKERS_PARAM) || [];
-  // const speaker = assistant.getArgument(PERSON_PARAM);
-  // const datePeriod = assistant.getArgument(DATE_PERIOD_PARAM);
-  // const event = assistant.getArgument(EVENT_PARAM);
 
   console.log(eventParam, tagsParam, speakersParam);
 
