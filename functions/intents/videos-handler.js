@@ -1,10 +1,10 @@
 'use strict';
 
-const api = require('../../helpers/api');
-const responses = require('../../helpers/responses');
+const api = require('../helpers/api');
+const responses = require('../helpers/responses');
 
-const youtube = require('../../helpers/youtube-manager');
-const DialogflowOption = require('../../helpers/option-helper');
+const youtube = require('../helpers/youtube-manager');
+const DialogflowOption = require('../helpers/option-helper');
 
 // Context Parameters
 const EVENT_PARAM = 'summit';
@@ -78,6 +78,6 @@ function parseParameters(assistant) {
 }
 
 module.exports = {
-  handleAction: handleAction,
+  searchVideos: handleAction,
   selectVideoByOption: selectVideoByOption
 };
