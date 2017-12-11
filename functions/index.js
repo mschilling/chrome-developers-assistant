@@ -7,32 +7,18 @@ const functions = require('firebase-functions');
 const admin = require('firebase-admin');
 admin.initializeApp(functions.config().firebase);
 
-// EVENTS
+const Actions = require('./assistant-actions');
+
+// Conversation (intent) handlers
 const NextEventIntentHandler = require('./intent-next-event');
 const PreviousEventIntentHandler = require('./intent-prev-event');
-
-// SPEAKERS
 const SpeakerInfoIntentHandler = require('./intent-speaker-info');
 const SpeakerSelectionIntentHandler = require('./intent-speaker-selection');
 const SpeakersIntentHandler = require('./intent-speakers');
-
 const VideosIntentHandler = require('./intents/videos-handler');
 const BlogPostsIntentHandler = require('./intents/blogposts-handler');
 const GenericOptionsHandler = require('./intents/generic-options-handler');
-
-// Shows
 const ShowsIntentHandler = require('./intents/youtube-shows-handler');
-
-// API.AI Intent names
-const VIDEO_SEARCH_INTENT = 'video-search';
-const VIDEO_SEARCH_FALLBACK_INTENT = 'option.select';
-const NEXT_EVENT_INTENT = 'next-event';
-const PREV_EVENT_INTENT = 'prev-event';
-const SPEAKER_INFO_INTENT = 'speaker-info';
-const SPEAKER_INFO_KNOW_FOR_INTENT = 'speaker-info.known-for';
-const SPEAKER_SELECTION_INTENT = 'select-speaker';
-const SPEAKER_SELECT_FALLBACK_INTENT = 'option.select-speaker';
-const BLOGPOST_SEARCH_INTENT = 'blogpost-search';
 
 exports.assistant = functions.https.onRequest((request, response) => {
   console.log('headers: ' + JSON.stringify(request.headers));
@@ -41,17 +27,15 @@ exports.assistant = functions.https.onRequest((request, response) => {
   const assistant = new Assistant({ request: request, response: response });
 
   const actionMap = new Map();
-  actionMap.set(NEXT_EVENT_INTENT, NextEventIntentHandler.nextEvent);
-  actionMap.set(PREV_EVENT_INTENT, PreviousEventIntentHandler.previousEvent);
-  actionMap.set(SPEAKER_INFO_INTENT, SpeakerInfoIntentHandler.speakerInfo);
-  actionMap.set(SPEAKER_INFO_KNOW_FOR_INTENT, SpeakerInfoIntentHandler.knownFor);
-  actionMap.set(VIDEO_SEARCH_INTENT, VideosIntentHandler.searchVideos);
-  actionMap.set(VIDEO_SEARCH_FALLBACK_INTENT, VideosIntentHandler.selectVideoByOption);
-  actionMap.set(SPEAKER_INFO_INTENT, SpeakersIntentHandler.speakerInfo);
-  actionMap.set(SPEAKER_SELECTION_INTENT, SpeakerSelectionIntentHandler.speakerSelection);
-  actionMap.set(SPEAKER_SELECT_FALLBACK_INTENT, SpeakerInfoIntentHandler.selectSpeakerByOption);
-  actionMap.set(BLOGPOST_SEARCH_INTENT, BlogPostsIntentHandler.searchBlogPosts);
-  actionMap.set('find-show-episode', ShowsIntentHandler.findEpisode);
-  actionMap.set('option.select', GenericOptionsHandler.handleOption);
+  actionMap.set(Actions.ACTION_OPTION_SELECT, GenericOptionsHandler.handleOption);
+  actionMap.set(Actions.ACTION_NEXT_EVENT, NextEventIntentHandler.nextEvent);
+  actionMap.set(Actions.ACTION_PREV_EVENT, PreviousEventIntentHandler.previousEvent);
+  actionMap.set(Actions.ACTION_SPEAKER_INFO, SpeakerInfoIntentHandler.speakerInfo);
+  actionMap.set(Actions.ACTION_SPEAKER_INFO_KNOW_FOR, SpeakerInfoIntentHandler.knownFor);
+  actionMap.set(Actions.ACTION_VIDEO_SEARCH, VideosIntentHandler.searchVideos);
+  actionMap.set(Actions.ACTION_SPEAKER_INFO, SpeakersIntentHandler.speakerInfo);
+  actionMap.set(Actions.ACTION_SPEAKER_SELECTION, SpeakerSelectionIntentHandler.speakerSelection);
+  actionMap.set(Actions.ACTION_BLOGPOST_SEARCH, BlogPostsIntentHandler.searchBlogPosts);
+  actionMap.set(Actions.ACTION_FIND_SHOW_EPISODE, ShowsIntentHandler.findEpisode);
   assistant.handleRequest(actionMap);
 });
