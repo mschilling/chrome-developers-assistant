@@ -19,17 +19,13 @@ function handleAction(assistant) {
       console.log('Number of videos found: ' + (results || []).length);
       if (results && results.length > 0) {
         const result = results[0];
-        const videoParams = {
-          videoId: result.videoId,
-          videoTitle: result.name
-        };
         if (results.length > 1) {
-          responses.returnVideosResponse(assistant, true, results, videoParams);
+          responses.returnVideosResponse(assistant, true, results);
         } else {
-          responses.returnVideoResponse(assistant, true, videoParams);
+          responses.returnBasicCard(assistant, 'video', result);
         }
       } else {
-        responses.returnVideoResponse(assistant, false);
+        assistant.ask(Str.DEFAULT_NO_RESULT.TEXT);
       }
     });
 }

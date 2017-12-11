@@ -3,7 +3,7 @@
 const moment = require('moment');
 const DialogflowOption = require('../option-helper');
 
-function returnVideosResponse(assistant, success, videos, params) {
+function returnVideosResponse(assistant, success, videos) {
   let response;
   if (success && (videos || []).length > 0) {
     const displayText = 'I\'ve found some video\'s on YouTube. Here it is.';
@@ -16,7 +16,6 @@ function returnVideosResponse(assistant, success, videos, params) {
         speech: speech,
         displayText: displayText
       });
-    // .addSuggestionLink('video on YouTube', url);
     assistant.askWithCarousel(response, options);
   } else {
     response = assistant.buildRichResponse()
@@ -221,16 +220,28 @@ function responseYouTubeVideoAsBasicCard(assistant, cardData) {
       .addButton('Watch on YouTube', 'https://youtube.com/watch?v=' + cardData.videoId)
       .setImage(cardData.imageUrl, cardData.title)
       .setImageDisplay('CROPPED')
-      )
-    );
+    )
+  );
 }
 
 function returnBasicCard(assistant, cardType, data) {
+  console.log('returnBasicCard', cardType, data);
   const card = {};
   let displayText;
   let speech;
 
   switch (cardType) {
+    case 'video':
+      displayText = 'Here\'s a YouTube result';
+      speech = `Here's a matching video. It's called ${data.name}`;
+
+      const thumbId = String(Math.ceil(Math.random() * 3));
+      card.title = data.name;
+      card.description = data.description;
+      card.imageUrl = `https://img.youtube.com/vi/${data.videoId}/hq${thumbId}.jpg`;
+      card.buttonText = 'Watch on YouTube';
+      card.buttonUrl = 'https://youtube.com/watch?v=' + data.videoId;
+      break;
     case 'blogpost':
       displayText = 'Here\'s a blog post result';
       speech = `Here's a matching blog post by ${data.author}`;
@@ -250,15 +261,18 @@ function returnBasicCard(assistant, cardType, data) {
   let response = assistant.buildRichResponse();
 
   // Simple Response
-  response = response.addSimpleResponse({displayText: displayText, speech: speech});
+  response = response.addSimpleResponse({ displayText: displayText, speech: speech });
 
   // Basic Card
   let basicCard = assistant.buildBasicCard(card.description)
     .setTitle(card.title)
-    // .setSubtitle(`Published ${publishDate.fromNow()}`)
     .addButton(card.buttonText, card.buttonUrl)
     .setImage(card.imageUrl, card.title)
     .setImageDisplay('CROPPED');
+
+    if (card.subtitle) {
+      basicCard = basicCard.setSubtitle(card.subtitle);
+    }
 
   response = response.addBasicCard(basicCard);
 
