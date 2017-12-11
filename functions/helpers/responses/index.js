@@ -97,7 +97,7 @@ function buildCarouselForBlogPosts(assistant, items, maxLength = 10) {
     const cardPicture = item.postImageUrl;
     const cardPictureAltText = 'blog post';
 
-    const dfo = new DialogflowOption('blog#url', item.postUrl, 'open');
+    const dfo = new DialogflowOption('blogpost#id', item.id, 'open');
 
     const newOption = assistant.buildOptionItem(dfo.toString(), [uniqueId + '_alias'])
       .setTitle(cardTitle)
@@ -225,11 +225,52 @@ function responseYouTubeVideoAsBasicCard(assistant, cardData) {
     );
 }
 
+function returnBasicCard(assistant, cardType, data) {
+  const card = {};
+  let displayText;
+  let speech;
+
+  switch (cardType) {
+    case 'blogpost':
+      displayText = 'Here\'s a blog post result';
+      speech = `Here's a matching blog post by ${data.author}`;
+
+      card.title = `Blog post by ${data.author}`;
+      card.description = data.title;
+      card.imageUrl = data.postImageUrl;
+      card.buttonText = 'Read more';
+      card.buttonUrl = data.postUrl;
+
+      if (data.publishDate) {
+        card.subtitle = `Published ${moment(data.publishDate).fromNow()}`;
+      }
+      break;
+  }
+
+  let response = assistant.buildRichResponse();
+
+  // Simple Response
+  response = response.addSimpleResponse({displayText: displayText, speech: speech});
+
+  // Basic Card
+  let basicCard = assistant.buildBasicCard(card.description)
+    .setTitle(card.title)
+    // .setSubtitle(`Published ${publishDate.fromNow()}`)
+    .addButton(card.buttonText, card.buttonUrl)
+    .setImage(card.imageUrl, card.title)
+    .setImageDisplay('CROPPED');
+
+  response = response.addBasicCard(basicCard);
+
+  assistant.ask(response);
+}
+
 module.exports = {
   returnVideosResponse: returnVideosResponse,
   returnVideoResponse: returnVideoResponse,
   responseIntentKeynoteVideo: responseIntentKeynoteVideo,
   returnBlogPostsResponse: returnBlogPostsResponse,
   returnBlogPostResponse: returnBlogPostResponse,
-  responseYouTubeVideoAsBasicCard: responseYouTubeVideoAsBasicCard
+  responseYouTubeVideoAsBasicCard: responseYouTubeVideoAsBasicCard,
+  returnBasicCard: returnBasicCard
 };

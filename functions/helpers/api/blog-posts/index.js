@@ -48,7 +48,21 @@ function search(searchParams, limit = 10) {
     });
 }
 
+function getByKey(key) {
+  if (!key) {
+    debug('key is undefined');
+    return;
+  };
+
+  return blogPostsRef
+    .doc(key)
+    .get()
+    .then(snapshot => {
+      return snapshot.data();
+    });
+}
 
 module.exports = {
-  search: search
+  search: search,
+  getByKey: getByKey
 };
