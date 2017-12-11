@@ -16,11 +16,9 @@ const SpeakerInfoIntentHandler = require('./intent-speaker-info');
 const SpeakerSelectionIntentHandler = require('./intent-speaker-selection');
 const SpeakersIntentHandler = require('./intent-speakers');
 
-// VIDEOS
-const VideosIntentHandler = require('./intent-videos');
-
-// VIDEOS
+const VideosIntentHandler = require('./intents/videos-handler');
 const BlogPostsIntentHandler = require('./intents/blogposts-handler');
+const GenericOptionsHandler = require('./intents/generic-options-handler');
 
 // Shows
 const ShowsIntentHandler = require('./intents/youtube-shows-handler');
@@ -54,6 +52,6 @@ exports.assistant = functions.https.onRequest((request, response) => {
   actionMap.set(SPEAKER_SELECT_FALLBACK_INTENT, SpeakerInfoIntentHandler.selectSpeakerByOption);
   actionMap.set(BLOGPOST_SEARCH_INTENT, BlogPostsIntentHandler.searchBlogPosts);
   actionMap.set('find-show-episode', ShowsIntentHandler.findEpisode);
-  actionMap.set('generic.options.handler', BlogPostsIntentHandler.genericOptionsHandler);
+  actionMap.set('option.select', GenericOptionsHandler.handleOption);
   assistant.handleRequest(actionMap);
 });
