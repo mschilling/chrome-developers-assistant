@@ -4,6 +4,7 @@ const api = require('../helpers/api');
 const youtube = require('../helpers/youtube-manager');
 const responses = require('../helpers/responses');
 const DialogflowOption = require('../helpers/option-helper');
+const Str = require('../strings');
 
 function genericOptionsHandler(assistant) {
   const optionData = assistant.getSelectedOption();
@@ -12,20 +13,11 @@ function genericOptionsHandler(assistant) {
 
   switch (dfo.type) {
     case 'youtube#video':
-    handleVideo(assistant, dfo);
-    return;
+      return handleVideo(assistant, dfo);
+    case 'blogpost#id':
+      return handleBlogpost(assistant, dfo);
   }
-
-  if (dfo && dfo.value) {
-    assistant.ask( assistant.buildRichResponse()
-    .addSimpleResponse({
-      speech: 'Here you go',
-      displayText: 'Here you go'
-    })
-    .addSuggestionLink('blog on website', dfo.value));
-    return;
-  };
-  assistant.ask('Sorry, I could not find the show on YouTube');
+  assistant.ask(Str.OPTION_SELECT_NO_RESULT.TEXT);
 }
 
 function handleVideo(assistant, dfo) {
@@ -35,6 +27,18 @@ function handleVideo(assistant, dfo) {
         if (card) {
           responses.responseYouTubeVideoAsBasicCard(assistant, card);
           return;
+        }
+      });
+  };
+  assistant.ask('Sorry, I could not find the show on YouTube');
+}
+
+function handleBlogpost(assistant, dfo) {
+  if (dfo && dfo.value) {
+    return api.getBlogPostById(dfo.value)
+      .then( (data) => {
+        if (data) {
+          return responses.returnBasicCard(assistant, 'blogpost', data);
         }
       });
   };

@@ -15,28 +15,15 @@ function search(searchParams, limit = 10) {
 
   let query = blogPostsRef;
 
-  // if (searchParams.event) {
-  //   query = query.where('eventKey', '==', searchParams.event);
-  // }
+  if (searchParams.person) {
+    query = query.where(`authors.${searchParams.person}`, '==', true);
+  }
 
-  // if (searchParams.tags && searchParams.tags.length > 0) {
-  //   for (let i = 0; i < searchParams.tags.length; i++) {
-  //     const tag = searchParams.tags[i] || '';
-  //     query = query.where(`tags.${tag}`, '==', true);
-  //   }
-  // }
-
-  // if (searchParams.speakers && searchParams.speakers.length > 0) {
-  //   const speakersList = searchParams.speakers.map(p => p.trim());
-  //   for (let i = 0; i < speakersList.length; i++) {
-  //     const speaker = speakersList[i] || '';
-  //     query = query.where(`speakers.${speaker}`, '==', true);
-  //   }
-  // }
-
+  if (!searchParams.person) {
+    query = query.orderBy('publishDate', 'desc');
+  }
 
   return query
-    .orderBy('publishDate', 'desc')
     .limit(limit)
     .get()
     .then(snapshot => {
@@ -48,7 +35,21 @@ function search(searchParams, limit = 10) {
     });
 }
 
+function getByKey(key) {
+  if (!key) {
+    debug('key is undefined');
+    return;
+  };
+
+  return blogPostsRef
+    .doc(key)
+    .get()
+    .then(snapshot => {
+      return snapshot.data();
+    });
+}
 
 module.exports = {
-  search: search
+  search: search,
+  getByKey: getByKey
 };

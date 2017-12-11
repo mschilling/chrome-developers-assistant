@@ -75,6 +75,11 @@ class AssistantDataApi {
     debug('searchBlogPosts', searchParams, limit);
     return apiBlogPosts.search(searchParams, limit);
   }
+
+  static getBlogPostById(key) {
+    debug('getBlogPostById', key);
+    return apiBlogPosts.getByKey(key);
+  }
 }
 
 module.exports = AssistantDataApi;
