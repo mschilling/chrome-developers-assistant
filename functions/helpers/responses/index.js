@@ -28,7 +28,7 @@ function returnVideosResponse(assistant, success, videos, params) {
   }
 }
 
-function returnBlogPostsResponse(assistant, success, items, params) {
+function returnBlogPostsResponse(assistant, success, items) {
   let response;
   if (success && (items || []).length > 0) {
     const displayText = 'I\'ve found some online blogposts. Here it is.';
