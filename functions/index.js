@@ -16,10 +16,7 @@ const SpeakerInfoIntentHandler = require('./intent-speaker-info');
 const SpeakerSelectionIntentHandler = require('./intent-speaker-selection');
 const SpeakersIntentHandler = require('./intent-speakers');
 
-// VIDEOS
-const VideosIntentHandler = require('./intent-videos');
-
-// VIDEOS
+const VideosIntentHandler = require('./intents/videos-handler');
 const BlogPostsIntentHandler = require('./intents/blogposts-handler');
 
 // Shows
