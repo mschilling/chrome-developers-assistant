@@ -16,6 +16,8 @@ function genericOptionsHandler(assistant) {
       return handleVideo(assistant, dfo);
     case 'blogpost#id':
       return handleBlogpost(assistant, dfo);
+    case 'person#name':
+      return assistant.ask(`${dfo.value} is a member of the Chrome Team. More information coming soon.`);
   }
   assistant.ask(Str.OPTION_SELECT_NO_RESULT.TEXT);
 }

@@ -2,6 +2,7 @@
 
 const admin = require('firebase-admin');
 const peopleRef = admin.firestore().collection('people');
+const DialogflowOption = require('../helpers/option-helper');
 
 const api = require('../helpers/api');
 
@@ -45,7 +46,9 @@ function getCarouselOption( assistant, person ) {
   const cardPicture = person.pictureUrl || 'http://lorempixel.com/200/400';
   const cardPictureAltText = 'This is my Face';
 
-  return assistant.buildOptionItem(uniqueId, [cardTitle])
+  const dfo = new DialogflowOption('person#name', cardTitle, null);
+
+  return assistant.buildOptionItem(dfo.toString(), [cardTitle])
         .setTitle(cardTitle)
         .setDescription(cardDescription)
         .setImage(cardPicture, cardPictureAltText);
