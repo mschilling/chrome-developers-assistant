@@ -11,17 +11,23 @@ const EVENT_PARAM = 'event';
 function handleAction(assistant) {
   const paramEvent = assistant.getArgument(EVENT_PARAM);
 
-  api.getPeople(10)
+  api.getPeople(20)
     .then(people => {
       if (people && people.length > 0) {
+        console.log('Display speakers in carousel. n=' + people.length, people);
         let speechText = 'Here are some speakers';
         const speech = `<speak>${speechText}</speak>`;
 
         let options = assistant.buildCarousel();
-        for (var i = 0; i < people.length; i++) {
-          var doc = people[i];
+        let countOptions = 0;
+        for (let i = 0; i < people.length; i++) {
+          const doc = people[i];
           if (doc.pictureUrl) {
+            countOptions++;
             options = options.addItems(getCarouselOption(assistant, doc));
+            if (countOptions >=10) {
+              break;
+            }
           }
         }
         assistant.askWithCarousel(speech, options);

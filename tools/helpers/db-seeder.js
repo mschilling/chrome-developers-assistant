@@ -26,6 +26,7 @@ class DbLoader {
       const docId = asFbString(row.id);
       const obj = {
         id: docId,
+        rank: asFbNumber(row.rank || '0'),
         first_name: row.firstname,
         last_name: row.lastname,
         twitter: asFbString(row.twitterhandle),

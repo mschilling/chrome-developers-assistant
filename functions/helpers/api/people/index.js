@@ -7,8 +7,9 @@ const error = Debug('google-developer-assistant-api:error');
 const admin = require('firebase-admin');
 const peopleRef = admin.firestore().collection('people');
 
-function getPeople(limit = 5) {
+function getPeople(limit = 10) {
   return peopleRef
+    .orderBy('rank', 'desc')
     .limit(limit)
     .get()
     .then(snapshot => {

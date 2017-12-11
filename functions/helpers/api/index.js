@@ -20,7 +20,7 @@ class AssistantDataApi {
     return apiPeople.getPerson(id);
   }
 
-  static getPeople(limit = 5) {
+  static getPeople(limit = 10) {
     debug('getPeople', limit);
     return apiPeople.getPeople(limit);
   }
