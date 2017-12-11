@@ -2,6 +2,7 @@
 
 const api = require('../helpers/api');
 const responses = require('../helpers/responses');
+const Str = require('../strings');
 
 function handleAction(assistant) {
   const filters = {};
@@ -20,7 +21,7 @@ function handleAction(assistant) {
           responses.returnBasicCard(assistant, 'blogpost', result);
         }
       } else {
-        responses.returnBlogPostResponse(assistant, false);
+        assistant.ask(Str.DEFAULT_NO_RESULT.TEXT);
       }
     });
 }
