@@ -35,7 +35,13 @@ function previousEventHandler(assistant) {
             The last event was ${event.name} in ${event.location}.<break time="1"/>
             Anything else?
             </speak>`;
-        assistant.ask(speech);
+
+            event.imageUrl = `https://img.youtube.com/vi/${event.videoId}/hq1.jpg`;
+
+            const response = assistant.buildRichResponse().addSimpleResponse(speech);
+            const basicCard = buildBasicCard(assistant, event);
+            response.addBasicCard(basicCard);
+            assistant.ask(response);
     } else {
         assistant.ask(Str.EVENTS.NO_RESULT);
     }
@@ -56,12 +62,29 @@ function nextEventHandler(assistant) {
               The next event is ${event.name}.<break time="1"/>
               Anything else?
               </speak>`;
-        assistant.ask(speech);
+              event.imageUrl = `https://img.youtube.com/vi/${event.videoId}/hq1.jpg`;
+
+              const response = assistant.buildRichResponse().addSimpleResponse(speech);
+              const basicCard = buildBasicCard(assistant, event);
+              response.addBasicCard(basicCard);
+              assistant.ask(response);
       } else {
         assistant.ask(Str.EVENTS.NO_RESULT);
       }
     });
 }
+
+function buildBasicCard(assistant, cardData) {
+  console.log('buildBasicCard', cardData);
+  return assistant.buildBasicCard(cardData.description)
+    .setTitle(cardData.name)
+    .setSubtitle(`${cardData.venue}, ${cardData.location}`)
+    .addButton('Visite website', cardData.website)
+    .setImage(cardData.imageUrl, cardData.name)
+    .setImageDisplay('CROPPED')
+    ;
+}
+
 
 module.exports = {
   previousEvent: previousEventHandler,

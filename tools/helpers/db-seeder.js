@@ -64,6 +64,7 @@ class DbLoader {
         startDate: asFbDate(row.startdate),
         endDate: asFbDate(row.enddate),
         numberOfDays: asFbNumber(row.numberofdays),
+        videoId: asFbString(row.videoid),
       };
       actions.push(dbRef.doc(docId).set(obj, { merge: true }));
     };
