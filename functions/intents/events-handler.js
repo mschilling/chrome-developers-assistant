@@ -30,7 +30,7 @@ function previousEventHandler(assistant) {
   }
 
   getEventPromise.then( event => {
-    if (event) {
+    if (event && event.name) {
         const speech = `<speak>
             The last event was ${event.name} in ${event.location}.<break time="1"/>
             Anything else?
@@ -57,7 +57,7 @@ function nextEventHandler(assistant) {
 
   api.getNextEvent(inputDate)
     .then(event => {
-      if (event) {
+      if (event && event.name) {
         const speech = `<speak>
               The next event is ${event.name}.<break time="1"/>
               Anything else?
