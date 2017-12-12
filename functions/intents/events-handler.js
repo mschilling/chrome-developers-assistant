@@ -2,6 +2,9 @@
 
 const moment = require('moment');
 const api = require('../helpers/api');
+const Str = require('../strings');
+
+const SEARCH_DATE_FORMAT = 'YYYY-MM-DD';
 
 // Context Parameters
 const SEARCH_DATE_PARAM = 'search-date';
@@ -11,7 +14,7 @@ function previousEventHandler(assistant) {
   let inputDate = new Date();
   const searchDate = assistant.getArgument(SEARCH_DATE_PARAM);
   if (searchDate) {
-      inputDate = moment(searchDate, 'YYYY-MM-DD').toDate();
+      inputDate = moment(searchDate, SEARCH_DATE_FORMAT).toDate();
   }
 
   let filterCountry = assistant.getArgument(FILTER_COUNTRY_PARAM);
@@ -34,12 +37,33 @@ function previousEventHandler(assistant) {
             </speak>`;
         assistant.ask(speech);
     } else {
-        const speech = 'Sorry, I couldn\'t find any event right now';
-        assistant.ask(speech);
+        assistant.ask(Str.EVENTS.NO_RESULT);
     }
   });
 }
 
+function nextEventHandler(assistant) {
+  let inputDate = new Date();
+  const searchDate = assistant.getArgument(SEARCH_DATE_PARAM);
+  if (searchDate) {
+    inputDate = moment(searchDate, SEARCH_DATE_FORMAT).toDate();
+  }
+
+  api.getNextEvent(inputDate)
+    .then(event => {
+      if (event) {
+        const speech = `<speak>
+              The next event is ${event.name}.<break time="1"/>
+              Anything else?
+              </speak>`;
+        assistant.ask(speech);
+      } else {
+        assistant.ask(Str.EVENTS.NO_RESULT);
+      }
+    });
+}
+
 module.exports = {
-  previousEvent: previousEventHandler
+  previousEvent: previousEventHandler,
+  nextEvent: nextEventHandler
 };

@@ -5,6 +5,12 @@ module.exports = {
     TEXT: 'Sorry, there\'s no result right now. Please try something else.',
     SPEECH_TEXT: 'Sorry, there\'s no result right now. Please try something else.'
   },
+  EVENTS: {
+    NO_RESULT: {
+      TEXT: 'Sorry, I couldn\'t find any event right now',
+      SPEECH_TEXT: 'Sorry, I couldn\'t find any event right now'
+    }
+  },
   OPTION_SELECT_NO_RESULT: {
     TEXT: 'Sorry, I could not find it right now',
     SPEECH_TEXT: 'Sorry, I could not find it right now'
