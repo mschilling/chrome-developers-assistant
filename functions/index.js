@@ -10,8 +10,7 @@ admin.initializeApp(functions.config().firebase);
 const Actions = require('./assistant-actions');
 
 // Conversation (intent) handlers
-const NextEventIntentHandler = require('./intent-next-event');
-const PreviousEventIntentHandler = require('./intent-prev-event');
+const EventsIntentHandler = require('./intents/events-handler');
 const SpeakerInfoIntentHandler = require('./intent-speaker-info');
 const SpeakerSelectionIntentHandler = require('./intent-speaker-selection');
 const SpeakersIntentHandler = require('./intent-speakers');
@@ -28,8 +27,8 @@ exports.assistant = functions.https.onRequest((request, response) => {
 
   const actionMap = new Map();
   actionMap.set(Actions.ACTION_OPTION_SELECT, GenericOptionsHandler.handleOption);
-  actionMap.set(Actions.ACTION_NEXT_EVENT, NextEventIntentHandler.nextEvent);
-  actionMap.set(Actions.ACTION_PREV_EVENT, PreviousEventIntentHandler.previousEvent);
+  actionMap.set(Actions.ACTION_NEXT_EVENT, EventsIntentHandler.nextEvent);
+  actionMap.set(Actions.ACTION_PREV_EVENT, EventsIntentHandler.previousEvent);
   actionMap.set(Actions.ACTION_SPEAKER_INFO, SpeakerInfoIntentHandler.speakerInfo);
   actionMap.set(Actions.ACTION_SPEAKER_INFO_KNOW_FOR, SpeakerInfoIntentHandler.knownFor);
   actionMap.set(Actions.ACTION_VIDEO_SEARCH, VideosIntentHandler.searchVideos);
