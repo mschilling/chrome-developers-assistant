@@ -66,6 +66,32 @@ class YouTubeManager {
         return;
       });
   }
+
+  static getPlaylistVideos(playlistId) {
+    debug('getPlaylistVideos', playlistId);
+
+    return client.get('/playlistItems', {
+      params: {
+        'maxResults': '10',
+        'part': 'snippet,contentDetails',
+        'playlistId': playlistId,
+        'key': ACCESS_TOKEN
+      }
+    })
+      .then((response) => {
+        const items = response.data.items || [];
+        if (items.length > 0) {
+          // console.log(items[0]);
+          const docs = [];
+          for (let i = 0; i < items.length; i++) {
+            docs.push(OpenGraphObject.asYouTubeVideo(items[i]));
+          }
+          return docs;
+        }
+        return [];
+      });
+  }
+
 }
 
 class OpenGraphObject {

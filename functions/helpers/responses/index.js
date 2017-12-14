@@ -61,13 +61,11 @@ function buildCarouselForYouTubeVideos(assistant, items, maxLength = 10) {
   for (let i = 0; i < items.length; i++) {
     const item = items[i];
     const uniqueId = item.videoId;
-    const cardTitle = item.name;
+    const cardTitle = item.name || item.title;
     const cardDescription = item.description;
     const thumbId = String(Math.ceil(Math.random() * 3));
     const cardPicture = `https://img.youtube.com/vi/${item.videoId}/hq${thumbId}.jpg`;
     const cardPictureAltText = item.name;
-    // const cardUrl = 'https://www.youtube.com/watch?v=' + item.videoId;
-    // const cardUrlText = 'Visit homepage';
 
     const dfo = new DialogflowOption('youtube#video', uniqueId, null);
 

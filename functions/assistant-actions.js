@@ -4,6 +4,7 @@ module.exports = {
   ACTION_WELCOME: 'input.welcome',
   ACTION_OPTION_SELECT: 'option.select',
   ACTION_VIDEO_SEARCH: 'video-search',
+  ACTION_VIDEO_RECOMMEND: 'videos.recommend',
   ACTION_NEXT_EVENT: 'next-event',
   ACTION_PREV_EVENT: 'prev-event',
   ACTION_SPEAKER_INFO: 'speaker-info',
