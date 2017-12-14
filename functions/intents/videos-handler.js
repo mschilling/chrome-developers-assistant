@@ -30,6 +30,26 @@ function handleAction(assistant) {
     });
 }
 
+function videoRecommendationHandler(assistant) {
+
+  const defaultPlaylistId = 'PLJ3pNpJBSfWYehQ4URTAsauypK_QLowul';
+
+  youtube.getPlaylistVideos(defaultPlaylistId)
+    .then(results => {
+      console.log('Number of videos found: ' + (results || []).length);
+      if (results && results.length > 0) {
+        const result = results[0];
+        if (results.length > 1) {
+          responses.returnVideosResponse(assistant, true, results);
+        } else {
+          responses.returnBasicCard(assistant, 'video', result);
+        }
+      } else {
+        assistant.ask(Str.DEFAULT_NO_RESULT.TEXT);
+      }
+    });
+}
+
 function selectVideoByOption(assistant) {
   const optionData = assistant.getSelectedOption();
   console.log('optionData', optionData);
@@ -75,5 +95,6 @@ function parseParameters(assistant) {
 
 module.exports = {
   searchVideos: handleAction,
-  selectVideoByOption: selectVideoByOption
+  selectVideoByOption: selectVideoByOption,
+  videoRecommendationHandler: videoRecommendationHandler
 };

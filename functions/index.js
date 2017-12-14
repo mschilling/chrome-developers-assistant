@@ -32,6 +32,7 @@ exports.assistant = functions.https.onRequest((request, response) => {
   actionMap.set(Actions.ACTION_SPEAKER_INFO, SpeakerInfoIntentHandler.speakerInfo);
   actionMap.set(Actions.ACTION_SPEAKER_INFO_KNOW_FOR, SpeakerInfoIntentHandler.knownFor);
   actionMap.set(Actions.ACTION_VIDEO_SEARCH, VideosIntentHandler.searchVideos);
+  actionMap.set(Actions.ACTION_VIDEO_RECOMMEND, VideosIntentHandler.videoRecommendationHandler);
   actionMap.set(Actions.ACTION_SPEAKER_INFO, SpeakersIntentHandler.speakerInfo);
   actionMap.set(Actions.ACTION_SPEAKER_SELECTION, SpeakerSelectionIntentHandler.speakerSelection);
   actionMap.set(Actions.ACTION_BLOGPOST_SEARCH, BlogPostsIntentHandler.searchBlogPosts);
