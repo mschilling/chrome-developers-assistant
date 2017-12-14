@@ -4,6 +4,7 @@ const admin = require('firebase-admin');
 const peopleRef = admin.firestore().collection('people');
 
 const api = require('../helpers/api');
+const DialogflowOption = require('../helpers/option-helper');
 
 // Context Parameters
 const SPEAKER_PARAM = 'speaker';
@@ -12,7 +13,7 @@ const EVENT_PARAM = 'event';
 const PERSON_PARAM = 'person';
 
 function speakerInfoHandler(assistant) {
-  const key = assistant.getArgument(PERSON_PARAM);
+  const key = assistant.getArgument(SPEAKER_PARAM);
 
   api.getPerson(key)
     .then(person => {
@@ -134,6 +135,7 @@ function getCarouselOption( assistant, person ) {
 
 function handlePersonAttribute(assistant) {
   const params = parseParameters(assistant);
+  console.log('handlePersonAttribute', params);
 
   api.getPerson(params.speaker).then((person) => {
     if (person) {
