@@ -11,8 +11,8 @@ const Actions = require('./assistant-actions');
 
 // Conversation (intent) handlers
 const EventsIntentHandler = require('./intents/events-handler');
-const SpeakerInfoIntentHandler = require('./intent-speaker-info');
-const SpeakerSelectionIntentHandler = require('./intent-speaker-selection');
+const SpeakerInfoIntentHandler = require('./intents/speakers-handler');
+const SpeakerSelectionIntentHandler = require('./intents/speakers-handler');
 const SpeakersIntentHandler = require('./intent-speakers');
 const VideosIntentHandler = require('./intents/videos-handler');
 const BlogPostsIntentHandler = require('./intents/blogposts-handler');
@@ -29,8 +29,8 @@ exports.assistant = functions.https.onRequest((request, response) => {
   actionMap.set(Actions.ACTION_OPTION_SELECT, GenericOptionsHandler.handleOption);
   actionMap.set(Actions.ACTION_NEXT_EVENT, EventsIntentHandler.nextEvent);
   actionMap.set(Actions.ACTION_PREV_EVENT, EventsIntentHandler.previousEvent);
-  actionMap.set(Actions.ACTION_SPEAKER_INFO, SpeakerInfoIntentHandler.speakerInfo);
-  actionMap.set(Actions.ACTION_SPEAKER_INFO_KNOW_FOR, SpeakerInfoIntentHandler.knownFor);
+  actionMap.set(Actions.ACTION_SPEAKER_INFO, SpeakerInfoIntentHandler.speakerInfoHandler);
+  actionMap.set(Actions.ACTION_SPEAKER_INFO_KNOW_FOR, SpeakerInfoIntentHandler.knownForHandler);
   actionMap.set(Actions.ACTION_VIDEO_SEARCH, VideosIntentHandler.searchVideos);
   actionMap.set(Actions.ACTION_VIDEO_RECOMMEND, VideosIntentHandler.videoRecommendationHandler);
   actionMap.set(Actions.ACTION_SPEAKER_INFO, SpeakersIntentHandler.speakerInfo);
