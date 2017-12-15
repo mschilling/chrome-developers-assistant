@@ -9,6 +9,7 @@ const apiVideos = require('./videos');
 const apiEvents = require('./events');
 const apiPeople = require('./people');
 const apiBlogPosts = require('./blog-posts');
+const apiShows = require('./shows');
 
 // Configure logging for hosting platforms that only support console.log and console.error
 debug.log = console.log.bind(console);
@@ -79,6 +80,11 @@ class AssistantDataApi {
   static getBlogPostById(key) {
     debug('getBlogPostById', key);
     return apiBlogPosts.getByKey(key);
+  }
+
+  static getShows(filters) {
+    debug('getShows', filters);
+    return apiShows.getItems(filters);
   }
 }
 

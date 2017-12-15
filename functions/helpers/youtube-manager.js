@@ -9,6 +9,7 @@ const error = Debug('google-developer-assistant-api:error');
 const functions = require('firebase-functions');
 
 const axios = require('axios');
+const api = require('../helpers/api');
 
 const BASE_URL = 'https://www.googleapis.com/youtube/v3';
 const ACCESS_TOKEN = process.env.YOUTUBE_KEY || functions.config().youtube.key;
@@ -60,7 +61,7 @@ class YouTubeManager {
       .then((response) => {
         const items = response.data.items || [];
         if (items.length > 0) {
-          console.log(items[0]);
+          // console.log(items[0]);
           return OpenGraphObject.asYouTubeVideo(items[0]);
         }
         return;
@@ -92,6 +93,16 @@ class YouTubeManager {
       });
   }
 
+  static getLatestShowEpisodes(filters) {
+    return api.getShows(filters)
+    .then( (items) => {
+      const actions = items.map( p => YouTubeManager.getLastEpisode(p.playlistId));
+      return Promise.all(actions)
+      .then((videos) => {
+        return videos;
+      });
+    });
+  }
 }
 
 class OpenGraphObject {
