@@ -7,8 +7,18 @@ Chrome Developers Assistant can:
 - Find keynote video's of events
 - Provide speaker information
 
-# Example phrases
-(in progress..)
+# Dialogs - Things you can ask
+
+**Talk to the Agent**
+
+| Things you can ask the Assistant |
+| :--- |
+| When is the next summit? |
+| Tell me something about Monica Dinculescu? |
+| What is the Big Web Quiz? |
+| Show me talks of Jake Archibald |
+| What were the hightlights for Polymer Summit? |
+| Show me the keynote of Chrome Dev Summit |
 
 # Developer docs and resources
 
