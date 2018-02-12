@@ -8,10 +8,14 @@
   },
   "dependencies": {
     "async": "^2.5.0",
+    "axios": "^0.17.1",
     "dotenv": "^4.0.0",
     "firebase-admin": "^5.4.2",
     "google-spreadsheet": "^2.0.4",
-    "moment": "^2.19.1"
+    "moment": "^2.19.1",
+    "open-graph": "^0.2.3",
+    "open-graph-scraper": "^3.1.4",
+    "rss-parser": "^3.1.1"
   },
   "author": "mschilling",
   "license": "ISC"
