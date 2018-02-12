@@ -11,31 +11,30 @@ function findEpisode(assistant) {
   if (!playlistId) {
     // assistant.ask('Sorry, I could not find any show on YouTube');
 
-    return ym.getLatestShowEpisodes({ limit: 10 })
-    .then( (items) => {
-      console.log('items:', items);
-      if (items) {
-        const result = items[0];
-        if (items.length > 1) {
-          return responses.returnVideosResponse(assistant, true, items);
-        } else {
-          return responses.returnBasicCard(assistant, 'video', result);
+    return ym.getLatestShowEpisodes({limit: 10})
+      .then((items) => {
+        console.log('items:', items);
+        if (items) {
+          const result = items[0];
+          if (items.length > 1) {
+            return responses.returnVideosResponse(assistant, true, items);
+          } else {
+            return responses.returnBasicCard(assistant, 'video', result);
+          }
         }
-      }
-      return assistant.ask('Sorry, I could not find the show on YouTube');
-      // return;
-    });
+        return assistant.ask('Sorry, I could not find the show on YouTube');
+        // return;
+      });
   } else {
     ym.getLastEpisode(playlistId)
-    .then( (card) => {
-      if (card) {
-        responseBasicCard(assistant, card);
-        return;
-      }
-      assistant.ask('Sorry, I could not find the show on YouTube');
-    });
+      .then((card) => {
+        if (card) {
+          responseBasicCard(assistant, card);
+          return;
+        }
+        assistant.ask('Sorry, I could not find the show on YouTube');
+      });
   }
-
 }
 
 function responseBasicCard(assistant, data) {
@@ -51,8 +50,8 @@ function responseBasicCard(assistant, data) {
       .addButton('Watch on YouTube', 'https://youtube.com/v/' + data.videoId)
       .setImage(data.imageUrl, data.title)
       .setImageDisplay('CROPPED')
-      )
-    );
+    )
+  );
 }
 
 module.exports = {
