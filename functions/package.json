@@ -22,7 +22,7 @@
     "dotenv": "^4.0.0",
     "firebase-admin": "^5.5.0",
     "firebase-functions": "^0.8.1",
-    "moment": "^2.19.1"
+    "moment": "^2.19.3"
   },
   "private": true,
   "devDependencies": {
