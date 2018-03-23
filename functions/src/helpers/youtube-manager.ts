@@ -24,7 +24,22 @@ const client = axios.create({
 debug.log = console.log.bind(console);
 error.log = console.error.bind(console);
 
-class YouTubeManager {
+class OpenGraphObject {
+  static asYouTubeVideo(data) {
+    const obj = {
+      kind: 'youtube#video',
+      id: data.id,
+      title: data.snippet.title,
+      description: data.snippet.description,
+      imageUrl: data.snippet.thumbnails.high.url,
+      publishedAt: data.snippet.publishedAt,
+      videoId: data.contentDetails.videoId ||data.id
+    };
+    return obj;
+  }
+}
+
+export class YouTubeManager {
 
   static getVideoById(videoId) {
     debug('getVideoById', videoId);
@@ -43,7 +58,7 @@ class YouTubeManager {
           // console.log(items[0]);
           return OpenGraphObject.asYouTubeVideo(items[0]);
         }
-        return;
+        return null;
       });
   }
 
@@ -64,7 +79,7 @@ class YouTubeManager {
           // console.log(items[0]);
           return OpenGraphObject.asYouTubeVideo(items[0]);
         }
-        return;
+        return null;
       });
   }
 
@@ -104,20 +119,3 @@ class YouTubeManager {
     });
   }
 }
-
-class OpenGraphObject {
-  static asYouTubeVideo(data) {
-    const obj = {
-      kind: 'youtube#video',
-      id: data.id,
-      title: data.snippet.title,
-      description: data.snippet.description,
-      imageUrl: data.snippet.thumbnails.high.url,
-      publishedAt: data.snippet.publishedAt,
-      videoId: data.contentDetails.videoId ||data.id
-    };
-    return obj;
-  }
-}
-
-module.exports = YouTubeManager;
