@@ -1,14 +1,15 @@
 'use strict';
 
-const Debug = require('debug');
-const debug = Debug('google-developer-assistant-api:debug');
-const error = Debug('google-developer-assistant-api:error');
+import * as admin from 'firebase-admin';
 
-const admin = require('firebase-admin');
+// const Debug = require('debug');
+// const debug = Debug('google-developer-assistant-api:debug');
+// const error = Debug('google-developer-assistant-api:error');
+
 const showsRef = admin.firestore().collection('shows');
 
-function getItems(filters) {
-  filters = filters || {};
+function getItems(inputFilters) {
+  const filters = inputFilters || {};
 
   const limit = filters.limit || 3;
 

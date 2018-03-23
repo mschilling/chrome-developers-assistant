@@ -1,11 +1,12 @@
 'use strict';
 
-const Debug = require('debug');
-const debug = Debug('bite-api:debug');
-const error = Debug('bite-api:error');
+import * as admin from 'firebase-admin';
+
+// const Debug = require('debug');
+// const debug = Debug('bite-api:debug');
+// const error = Debug('bite-api:error');
 
 const moment = require('moment');
-const admin = require('firebase-admin');
 const eventsRef = admin.firestore().collection('events');
 
 function getNextEvent(minDateIsoString) {

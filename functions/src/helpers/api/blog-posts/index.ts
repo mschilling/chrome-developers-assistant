@@ -1,19 +1,20 @@
 'use strict';
 
-const Debug = require('debug');
-const debug = Debug('google-developer-assistant-api:debug');
-const error = Debug('google-developer-assistant-api:error');
+import * as admin from 'firebase-admin';
 
-const admin = require('firebase-admin');
+// const Debug = require('debug');
+// const debug = Debug('google-developer-assistant-api:debug');
+// const error = Debug('google-developer-assistant-api:error');
+
 const blogPostsRef = admin.firestore().collection('blogposts');
 
-function search(searchParams, limit = 10) {
+function searchHandler(searchParams, limit = 10) {
   if (!searchParams) {
     debug('searchParams is undefined');
     return undefined;
   };
 
-  let query = blogPostsRef;
+  let query: any = blogPostsRef;
 
   if (searchParams.person) {
     query = query.where(`authors.${searchParams.person}`, '==', true);
@@ -38,7 +39,7 @@ function search(searchParams, limit = 10) {
 function getByKey(key) {
   if (!key) {
     debug('key is undefined');
-    return;
+    return null;
   };
 
   return blogPostsRef
@@ -50,6 +51,6 @@ function getByKey(key) {
 }
 
 module.exports = {
-  search: search,
+  search: searchHandler,
   getByKey: getByKey
 };

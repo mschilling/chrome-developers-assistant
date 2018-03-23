@@ -18,21 +18,21 @@
     "@types/node": "^7.0.18",
     "actions-on-google": "^1.6.0",
     "axios": "^0.17.1",
+    "chalk": "^2.3.2",
     "debug": "^3.1.0",
     "dotenv": "^4.0.0",
-    "firebase-admin": "^5.5.0",
-    "firebase-functions": "^0.8.1",
+    "firebase-admin": "^5.11.0",
+    "firebase-functions": "^0.9.1",
     "moment": "^2.19.3"
   },
   "private": true,
   "devDependencies": {
     "@types/chalk": "^2.2.0",
     "@types/express": "^4.0.35",
-    "chalk": "^2.3.0",
     "express": "^4.16.1",
     "ts-loader": "^2.3.7",
-    "webpack-node-externals": "^1.6.0",
     "tslint": "^5.8.0",
-    "typescript": "^2.7.1"
+    "typescript": "^2.7.1",
+    "webpack-node-externals": "^1.6.0"
   }
 }
