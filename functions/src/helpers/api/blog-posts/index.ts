@@ -2,7 +2,7 @@
 
 import * as admin from 'firebase-admin';
 
-// const Debug = require('debug');
+// import * as Debug from 'debug';
 // const debug = Debug('google-developer-assistant-api:debug');
 // const error = Debug('google-developer-assistant-api:error');
 
