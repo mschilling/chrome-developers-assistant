@@ -50,8 +50,7 @@ export class VideosRepository {
       });
   }
 
-  /*
-  searchKeynoteVideos(eventName, year, limit = 3) {
+  static searchKeynoteVideos(eventName, year, limit = 3) {
     console.log(`searchKeynoteVideos(${eventName}, ${year}, ${limit}) `)
     return videosRef
       .where('isKeynote', '==', true)
@@ -66,7 +65,7 @@ export class VideosRepository {
       });
   }
 
-  searchEventHighlightsVideo(eventKey) {
+  static searchEventHighlightsVideo(eventKey) {
     if (!eventKey) {
       debug('eventKey is undefined');
       return undefined;
@@ -87,7 +86,7 @@ export class VideosRepository {
       });
   }
 
-  filterVideosBySpeakers(speakers, limit = 3) {
+  static filterVideosBySpeakers(speakers, limit = 3) {
     if ((speakers || []).length === 0) {
       debug('speakers is undefined');
       return undefined;
@@ -115,5 +114,5 @@ export class VideosRepository {
         return docs;
       });
   }
-*/
+
 }
