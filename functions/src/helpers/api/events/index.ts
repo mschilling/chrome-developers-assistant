@@ -2,10 +2,6 @@
 
 import * as admin from 'firebase-admin';
 
-// const Debug = require('debug');
-// const debug = Debug('bite-api:debug');
-// const error = Debug('bite-api:error');
-
 const moment = require('moment');
 const eventsRef = admin.firestore().collection('events');
 
