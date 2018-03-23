@@ -4,6 +4,7 @@ const error = Debug('google-developer-assistant-api:error');
 
 import { VideosRepository } from './videos';
 import { PeopleRepository } from './people';
+import { BlogPostsRepository } from './blog-posts';
 
 // Configure logging for hosting platforms that only support console.log and console.error
 debug.log = console.log.bind(console);
@@ -13,6 +14,8 @@ export class DTO {
 
   static Videos = VideosRepository;
 
-  static People = PeopleRepository
+  static People = PeopleRepository;
+
+  static BlogPosts = BlogPostsRepository
 
 }
