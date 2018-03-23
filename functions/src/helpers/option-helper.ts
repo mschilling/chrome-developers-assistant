@@ -1,6 +1,8 @@
-'use strict';
+export class DialogflowOptionHelper {
+  type;
+  value;
+  action;
 
-class DialogflowOptionHelper {
   constructor( objectType, objectValue, action) {
     this.type = objectType;
     this.value = objectValue;
@@ -16,5 +18,3 @@ class DialogflowOptionHelper {
     return JSON.stringify(this);
   }
 }
-
-module.exports = DialogflowOptionHelper;
