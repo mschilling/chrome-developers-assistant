@@ -41,8 +41,8 @@ function search(searchParams, limit = 10) {
     .get()
     .then(snapshot => {
       const docs = [];
-      for (let i = 0; i < snapshot.docs.length; i++) {
-        docs.push(snapshot.docs[i].data());
+      for (const doc of snapshot.docs) {
+        docs.push(doc.data());
       }
       return docs;
     });
@@ -55,8 +55,8 @@ function searchKeynoteVideos(eventName, year, limit = 3) {
     .get()
     .then(snapshot => {
       const docs = [];
-      for (let i = 0; i < snapshot.docs.length; i++) {
-        docs.push(snapshot.docs[i].data());
+      for (const doc of snapshot.docs) {
+        docs.push(doc.data());
       }
       return docs;
     });

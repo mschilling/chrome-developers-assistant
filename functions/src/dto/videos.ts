@@ -23,17 +23,15 @@ export class VideosRepository {
     }
 
     if (searchParams.tags && searchParams.tags.length > 0) {
-      for (let i = 0; i < searchParams.tags.length; i++) {
-        const tag = searchParams.tags[i] || '';
-        query = query.where(`tags.${tag}`, '==', true);
+      for (const tag of  searchParams.tags) {
+        query = query.where(`tags.${tag || ''}`, '==', true);
       }
     }
 
     if (searchParams.speakers && searchParams.speakers.length > 0) {
       const speakersList = searchParams.speakers.map(p => p.trim());
-      for (let i = 0; i < speakersList.length; i++) {
-        const speaker = speakersList[i] || '';
-        query = query.where(`speakers.${speaker}`, '==', true);
+      for (const speaker of speakersList) {
+        query = query.where(`speakers.${speaker || ''}`, '==', true);
       }
     }
 
@@ -43,8 +41,8 @@ export class VideosRepository {
       .get()
       .then(snapshot => {
         const docs = [];
-        for (let i = 0; i < snapshot.docs.length; i++) {
-          docs.push(snapshot.docs[i].data());
+        for (const doc of snapshot.docs) {
+          docs.push(doc.data());
         }
         return docs;
       });
@@ -58,8 +56,8 @@ export class VideosRepository {
       .get()
       .then(snapshot => {
         const docs = [];
-        for (let i = 0; i < snapshot.docs.length; i++) {
-          docs.push(snapshot.docs[i].data());
+        for (const doc of snapshot.docs) {
+          docs.push(doc.data());
         }
         return docs;
       });
@@ -98,8 +96,8 @@ export class VideosRepository {
 
     let promise: any = videosRef;
 
-    for (let i = 0; i < speakersList.length; i++) {
-      promise = promise.where(`speakers.${speakersList[i]}`, '==', true);
+    for (const speaker of speakersList) {
+      promise = promise.where(`speakers.${speaker}`, '==', true);
     }
 
     return promise
@@ -108,8 +106,8 @@ export class VideosRepository {
       .get()
       .then(snapshot => {
         const docs = [];
-        for (let i = 0; i < snapshot.docs.length; i++) {
-          docs.push(snapshot.docs[i].data());
+        for (const doc of snapshot.docs) {
+          docs.push(doc.data());
         }
         return docs;
       });

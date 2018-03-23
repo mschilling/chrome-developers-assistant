@@ -24,8 +24,8 @@ export class BlogPostsRepository {
       .get()
       .then(snapshot => {
         const docs = [];
-        for (let i = 0; i < snapshot.docs.length; i++) {
-          docs.push(snapshot.docs[i].data());
+        for (const doc of snapshot.docs) {
+          docs.push(doc.data());
         }
         return docs;
       });
