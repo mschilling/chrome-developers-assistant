@@ -33,14 +33,16 @@ function returnBlogPostsResponse(assistant, success, items) {
     const displayText = 'I\'ve found some online blogposts. Here it is.';
     const speech = `<speak>${displayText}</speak>`;
 
-    const options = buildCarouselForBlogPosts(assistant, items, 3);
+    // const options = buildCarouselForBlogPosts(assistant, items, 3);
+    const options = buildBrowsingCarouselForBlogPosts(assistant, items, 3);
 
     response = assistant.buildRichResponse()
       .addSimpleResponse({
         speech: speech,
         displayText: displayText
-      });
-    assistant.askWithCarousel(response, options);
+      })
+      .addBrowseCarousel(options);
+      assistant.ask(response);
   } else {
     response = assistant.buildRichResponse()
       .addSimpleResponse({
@@ -100,6 +102,32 @@ function buildCarouselForBlogPosts(assistant, items, maxLength = 10) {
       .setTitle(cardTitle)
       .setDescription(cardDescription)
       .setImage(cardPicture, cardPictureAltText)
+      ;
+
+    options = options.addItems(newOption);
+  }
+  return options;
+}
+
+function buildBrowsingCarouselForBlogPosts(assistant, items, maxLength = 10) {
+  if (maxLength > 10) maxLength = 10;
+  if (!(items && maxLength > 0)) return;
+
+  console.log('browse carousel items', items);
+
+  let options = assistant.buildBrowseCarousel();
+  for (let i = 0; i < items.length; i++) {
+    const item = items[i];
+    const cardTitle = item.title;
+    const cardUrl = item.postUrl;
+    const cardDescription = `Published ${moment(item.publishDate).fromNow()} by ${item.author}`;
+    const cardPicture = item.postImageUrl;
+    const cardPictureAltText = item.title;
+
+    const newOption = assistant.buildBrowseItem(cardTitle, cardUrl)
+      .setDescription(cardDescription)
+      .setImage(cardPicture, cardPictureAltText)
+      // .setFooter('Item 1 footer')
       ;
 
     options = options.addItems(newOption);
