@@ -1,10 +1,11 @@
 'use strict';
 
-const Debug = require('debug');
-const debug = Debug('google-developer-assistant-api:debug');
-const error = Debug('google-developer-assistant-api:error');
+import * as admin from 'firebase-admin';
 
-const admin = require('firebase-admin');
+// const Debug = require('debug');
+// const debug = Debug('google-developer-assistant-api:debug');
+// const error = Debug('google-developer-assistant-api:error');
+
 const peopleRef = admin.firestore().collection('people');
 
 function getPeople(limit = 10) {
@@ -14,8 +15,8 @@ function getPeople(limit = 10) {
     .get()
     .then(snapshot => {
       const docs = [];
-      for (let i = 0; i < snapshot.docs.length; i++) {
-        docs.push(snapshot.docs[i].data());
+      for (const doc of snapshot.docs) {
+        docs.push(doc.data());
       }
       return docs;
     });

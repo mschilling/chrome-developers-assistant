@@ -1,10 +1,11 @@
 'use strict';
 
-const Debug = require('debug');
-const debug = Debug('google-developer-assistant-api:debug');
-const error = Debug('google-developer-assistant-api:error');
+import * as admin from 'firebase-admin';
 
-const admin = require('firebase-admin');
+// const Debug = require('debug');
+// const debug = Debug('google-developer-assistant-api:debug');
+// const error = Debug('google-developer-assistant-api:error');
+
 const videosRef = admin.firestore().collection('videos');
 
 function search(searchParams, limit = 10) {
@@ -13,7 +14,7 @@ function search(searchParams, limit = 10) {
     return undefined;
   };
 
-  let query = videosRef;
+  let query: any = videosRef;
 
   if (searchParams.event) {
     query = query.where('eventKey', '==', searchParams.event);
@@ -40,8 +41,8 @@ function search(searchParams, limit = 10) {
     .get()
     .then(snapshot => {
       const docs = [];
-      for (let i = 0; i < snapshot.docs.length; i++) {
-        docs.push(snapshot.docs[i].data());
+      for (const doc of snapshot.docs) {
+        docs.push(doc.data());
       }
       return docs;
     });
@@ -54,8 +55,8 @@ function searchKeynoteVideos(eventName, year, limit = 3) {
     .get()
     .then(snapshot => {
       const docs = [];
-      for (let i = 0; i < snapshot.docs.length; i++) {
-        docs.push(snapshot.docs[i].data());
+      for (const doc of snapshot.docs) {
+        docs.push(doc.data());
       }
       return docs;
     });
@@ -92,7 +93,7 @@ function filterVideosBySpeakers(speakers, limit = 3) {
 
   const speakersList = speakers.map(p => p.trim());
 
-  let promise = videosRef;
+  let promise: any = videosRef;
 
   for (let i = 0; i < speakersList.length; i++) {
     promise = promise.where(`speakers.${speakersList[i]}`, '==', true);

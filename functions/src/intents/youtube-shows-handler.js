@@ -1,7 +1,7 @@
 'use strict';
 
 const moment = require('moment');
-const ym = require('../helpers/youtube-manager');
+const ym = require('../helpers/youtube-manager').YouTubeManager;
 const responses = require('../helpers/responses');
 
 function findEpisode(assistant) {

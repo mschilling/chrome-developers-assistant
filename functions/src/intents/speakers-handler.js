@@ -4,7 +4,7 @@ const admin = require('firebase-admin');
 const peopleRef = admin.firestore().collection('people');
 
 const api = require('../helpers/api');
-const DialogflowOption = require('../helpers/option-helper');
+const DialogflowOption = require('../helpers/option-helper').DialogflowOptionHelper;
 
 // Context Parameters
 const SPEAKER_PARAM = 'speaker';

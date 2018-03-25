@@ -4,7 +4,6 @@ const Debug = require('debug');
 const debug = Debug('google-developer-assistant-api:debug');
 const error = Debug('google-developer-assistant-api:error');
 
-// const moment = require('moment');
 const apiVideos = require('./videos');
 const apiEvents = require('./events');
 const apiPeople = require('./people');
