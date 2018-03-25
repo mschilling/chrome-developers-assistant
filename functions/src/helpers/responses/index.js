@@ -1,7 +1,7 @@
 'use strict';
 
 const moment = require('moment');
-const DialogflowOption = require('../option-helper');
+const DialogflowOption = require('../option-helper').DialogflowOptionHelper;
 
 function returnVideosResponse(assistant, success, videos) {
   let response;

@@ -3,8 +3,8 @@
 const api = require('../helpers/api');
 const responses = require('../helpers/responses');
 
-const youtube = require('../helpers/youtube-manager');
-const DialogflowOption = require('../helpers/option-helper');
+const youtube = require('../helpers/youtube-manager').YouTubeManager;
+const DialogflowOption = require('../helpers/option-helper').DialogflowOptionHelper;
 
 // Context Parameters
 const EVENT_PARAM = 'summit';

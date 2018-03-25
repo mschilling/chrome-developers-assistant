@@ -1,9 +1,9 @@
 'use strict';
 
 const api = require('../helpers/api');
-const youtube = require('../helpers/youtube-manager');
+const youtube = require('../helpers/youtube-manager').YouTubeManager;
 const responses = require('../helpers/responses');
-const DialogflowOption = require('../helpers/option-helper');
+const DialogflowOption = require('../helpers/option-helper').DialogflowOptionHelper;
 const Str = require('../strings');
 
 function genericOptionsHandler(assistant) {
