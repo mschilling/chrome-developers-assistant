@@ -2,15 +2,16 @@
 //https://developers.google.com/actions/reference/nodejs/lib-v1-migration
 
 import * as functions from 'firebase-functions';
+import * as admin from 'firebase-admin';
+
+admin.initializeApp(functions.config().firebase);
+
 import { dialogflow } from 'actions-on-google';
 import { searchBlogPosts } from './intents/blogposts-handler';
 
 const app = dialogflow();
 
 process.env.DEBUG = 'actions-on-google:*';
-
-const admin = require('firebase-admin');
-admin.initializeApp(functions.config().firebase);
 
 const Actions = require('./assistant-intents');
 
@@ -22,8 +23,6 @@ const VideosIntentHandler = require('./intents/videos-handler');
 const GenericOptionsHandler = require('./intents/generic-options-handler');
 const ShowsIntentHandler = require('./intents/youtube-shows-handler');
 
-// console.log('headers: ' + JSON.stringify(request.headers));
-// console.log('body: ' + JSON.stringify(request.body));
 app.intent(Actions.INTENT_OPTION_SELECT, GenericOptionsHandler.handleOption);
 app.intent(Actions.INTENT_NEXT_EVENT, EventsIntentHandler.nextEvent);
 app.intent(Actions.INTENT_PREV_EVENT, EventsIntentHandler.previousEvent);

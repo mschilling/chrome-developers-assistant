@@ -2,13 +2,15 @@ const api = require('../helpers/api');
 const responses = require('../helpers/responses');
 const Str = require('../strings');
 
-export async function searchBlogPosts(conv, { person }) {
+export async function searchBlogPosts(conv, params) {
 
   const filters = <any>{};
+  const { person } = params;
 
   if (person) {
     filters.person = person;
   }
+  console.log('searchBlogPosts', person);
 
   const results = await api.searchBlogPosts(filters, 10);
   if (results && results.length > 0) {
