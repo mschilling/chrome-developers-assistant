@@ -10,27 +10,25 @@ export async function findEpisode(conv, params) {
 
   if (!playlistId) {
 
-    return ym.getLatestShowEpisodes({ limit: 10 })
-      .then((items) => {
-        console.log('items:', items);
-        if (items) {
-          const result = items[0];
-          if (items.length > 1) {
-            responses.returnVideosResponse(conv, true, items);
-          } else {
-            responses.returnBasicCard(conv, 'video', result);
-          }
-        }
-        conv.ask('Sorry, I could not find the show on YouTube');
-      });
+    const items = await ym.getLatestShowEpisodes({ limit: 10 });
+    console.log('items:', items);
+    if (items) {
+      const result = items[0];
+      if (items.length > 1) {
+        responses.returnVideosResponse(conv, true, items);
+      } else {
+        responses.returnBasicCard(conv, 'video', result);
+      }
+    } else {
+      conv.ask('Sorry, I could not find the show on YouTube');
+    }
   } else {
-    return ym.getLastEpisode(playlistId)
-      .then((card) => {
-        if (card) {
-          responseBasicCard(conv, card);
-        }
-        conv.ask('Sorry, I could not find the show on YouTube');
-      });
+    const card = await ym.getLastEpisode(playlistId);
+    if (card) {
+      responseBasicCard(conv, card);
+    } else {
+      conv.ask('Sorry, I could not find the show on YouTube');
+    }
   }
 }
 
@@ -40,7 +38,6 @@ function responseBasicCard(conv, data) {
     text: 'Here\'s the latest and greatest ✌🏼',
     speech: 'Sure, here\'s the latest and greatest'
   }));
-
 
   conv.ask(new BasicCard({
     text: data.description,
