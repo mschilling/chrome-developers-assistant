@@ -1,65 +1,67 @@
-'use strict';
+// const moment = require('moment');
+import * as moment from 'moment';
+import { SimpleResponse, BrowseCarouselItem, Image, BrowseCarousel } from 'actions-on-google';
 
-const moment = require('moment');
 const DialogflowOption = require('../option-helper').DialogflowOptionHelper;
 
-function returnVideosResponse(assistant, success, videos) {
+function returnVideosResponse(conv, success, videos) {
   let response;
   if (success && (videos || []).length > 0) {
     const displayText = 'I\'ve found some video\'s on YouTube. Here it is.';
     const speech = `<speak>${displayText}</speak>`;
 
-    const options = buildCarouselForYouTubeVideos(assistant, videos, 3);
+    const options = buildCarouselForYouTubeVideos(conv, videos, 3);
 
-    response = assistant.buildRichResponse()
+    response = conv.buildRichResponse()
       .addSimpleResponse({
         speech: speech,
         displayText: displayText
       });
-    assistant.askWithCarousel(response, options);
+    conv.askWithCarousel(response, options);
   } else {
-    response = assistant.buildRichResponse()
+    response = conv.buildRichResponse()
       .addSimpleResponse({
         speech: 'Sorry, I could not find the video on YouTube right now.',
         displayText: 'Sorry, I could not find the video on YouTube right now'
       });
-    assistant.ask(response);
+    conv.ask(response);
   }
 }
 
-function returnBlogPostsResponse(assistant, success, items) {
+function returnBlogPostsResponse(conv, success, items) {
   let response;
   if (success && (items || []).length > 0) {
     const displayText = 'I\'ve found some online blogposts. Here it is.';
     const speech = `<speak>${displayText}</speak>`;
 
-    // const options = buildCarouselForBlogPosts(assistant, items, 3);
-    const options = buildBrowsingCarouselForBlogPosts(assistant, items, 3);
+    conv.ask(new SimpleResponse({
+      speech: speech,
+      text: displayText
+    }))
 
-    response = assistant.buildRichResponse()
-      .addSimpleResponse({
-        speech: speech,
-        displayText: displayText
-      })
-      .addBrowseCarousel(options);
-      assistant.ask(response);
+    const options = buildBrowsingCarouselForBlogPosts(conv, items, 3);
+
+    conv.ask(new BrowseCarousel({
+      items: options
+    }));
   } else {
-    response = assistant.buildRichResponse()
+    response = conv.buildRichResponse()
       .addSimpleResponse({
         speech: 'Sorry, I could not find any blogposts right now.',
         displayText: 'Sorry, I could not find any blogposts right now.'
       });
-    assistant.ask(response);
+    conv.ask(response);
   }
 }
 
-function buildCarouselForYouTubeVideos(assistant, items, maxLength = 10) {
+function buildCarouselForYouTubeVideos(conv, items, inputMaxLength = 10) {
+  let maxLength = inputMaxLength;
   if (maxLength > 10) maxLength = 10;
   if (!(items && maxLength > 0)) return;
 
   console.log('carousel items', items);
 
-  let options = assistant.buildCarousel();
+  let options = conv.buildCarousel();
   for (let i = 0; i < items.length; i++) {
     const item = items[i];
     const uniqueId = item.videoId;
@@ -71,7 +73,7 @@ function buildCarouselForYouTubeVideos(assistant, items, maxLength = 10) {
 
     const dfo = new DialogflowOption('youtube#video', uniqueId, null);
 
-    const newOption = assistant.buildOptionItem(dfo.toString(), [uniqueId + '_alias'])
+    const newOption = conv.buildOptionItem(dfo.toString(), [uniqueId + '_alias'])
       .setTitle(cardTitle)
       .setDescription(cardDescription)
       .setImage(cardPicture, cardPictureAltText);
@@ -81,13 +83,14 @@ function buildCarouselForYouTubeVideos(assistant, items, maxLength = 10) {
   return options;
 }
 
-function buildCarouselForBlogPosts(assistant, items, maxLength = 10) {
+function buildCarouselForBlogPosts(conv, items, inputMaxLength = 10) {
+  let maxLength = inputMaxLength;
   if (maxLength > 10) maxLength = 10;
   if (!(items && maxLength > 0)) return;
 
   console.log('carousel items', items);
 
-  let options = assistant.buildCarousel();
+  let options = conv.buildCarousel();
   for (let i = 0; i < items.length; i++) {
     const item = items[i];
     const uniqueId = item.id;
@@ -98,7 +101,7 @@ function buildCarouselForBlogPosts(assistant, items, maxLength = 10) {
 
     const dfo = new DialogflowOption('blogpost#id', item.id, 'open');
 
-    const newOption = assistant.buildOptionItem(dfo.toString(), [uniqueId + '_alias'])
+    const newOption = conv.buildOptionItem(dfo.toString(), [uniqueId + '_alias'])
       .setTitle(cardTitle)
       .setDescription(cardDescription)
       .setImage(cardPicture, cardPictureAltText)
@@ -109,13 +112,15 @@ function buildCarouselForBlogPosts(assistant, items, maxLength = 10) {
   return options;
 }
 
-function buildBrowsingCarouselForBlogPosts(assistant, items, maxLength = 10) {
+function buildBrowsingCarouselForBlogPosts(conv, items, inputMaxLength = 10) {
+  let maxLength = inputMaxLength;
   if (maxLength > 10) maxLength = 10;
-  if (!(items && maxLength > 0)) return;
+  if (!(items && maxLength > 0)) return null;
 
   console.log('browse carousel items', items);
 
-  let options = assistant.buildBrowseCarousel();
+  const browseCarouselItems: BrowseCarouselItem[] = [];
+
   for (let i = 0; i < items.length; i++) {
     const item = items[i];
     const cardTitle = item.title;
@@ -124,18 +129,24 @@ function buildBrowsingCarouselForBlogPosts(assistant, items, maxLength = 10) {
     const cardPicture = item.postImageUrl;
     const cardPictureAltText = item.title;
 
-    const newOption = assistant.buildBrowseItem(cardTitle, cardUrl)
-      .setDescription(cardDescription)
-      .setImage(cardPicture, cardPictureAltText)
-      // .setFooter('Item 1 footer')
-      ;
+    const newOption = new BrowseCarouselItem({
+      title: cardTitle,
+      url: cardUrl,
+      description: cardDescription,
+      image: new Image({
+        url: cardPicture,
+        alt: cardPictureAltText
+      })
+    });
 
-    options = options.addItems(newOption);
+
+    browseCarouselItems.push(newOption)
   }
-  return options;
+
+  return browseCarouselItems;
 }
 
-function returnVideoResponse(assistant, success, params) {
+function returnVideoResponse(conv, success, params) {
   let response;
   if (success) {
     const videoId = params.videoId;
@@ -152,24 +163,24 @@ function returnVideoResponse(assistant, success, params) {
 
     const displayText = 'Here\'s a video I found on YouTube';
 
-    response = assistant.buildRichResponse()
+    response = conv.buildRichResponse()
       .addSimpleResponse({
         speech: speech,
         displayText: displayText
       })
       .addSuggestionLink('video on YouTube', url);
   } else {
-    response = assistant.buildRichResponse()
+    response = conv.buildRichResponse()
       .addSimpleResponse({
         speech: 'Sorry, I could not find the video on YouTube right now.',
         displayText: 'Sorry, I could not find the video on YouTube right now'
       });
   }
 
-  assistant.ask(response);
+  conv.ask(response);
 }
 
-function returnBlogPostResponse(assistant, success, params) {
+function returnBlogPostResponse(conv, success, params) {
   let response;
   if (success) {
     const id = params.id;
@@ -186,24 +197,24 @@ function returnBlogPostResponse(assistant, success, params) {
 
     const displayText = 'Here\'s a blog I found online';
 
-    response = assistant.buildRichResponse()
+    response = conv.buildRichResponse()
       .addSimpleResponse({
         speech: speech,
         displayText: displayText
       })
       .addSuggestionLink('blog', url);
   } else {
-    response = assistant.buildRichResponse()
+    response = conv.buildRichResponse()
       .addSimpleResponse({
         speech: 'Sorry, I could not find the blogpost online right now.',
         displayText: 'Sorry, I could not find the blogpost online right now.'
       });
   }
 
-  assistant.ask(response);
+  conv.ask(response);
 }
 
-function responseIntentKeynoteVideo(assistant, success, params) {
+function responseIntentKeynoteVideo(conv, success, params) {
   let response;
   if (success) {
     const videoId = params.videoId;
@@ -216,31 +227,31 @@ function responseIntentKeynoteVideo(assistant, success, params) {
 
     const displayText = `I've found "${videoTitle}" on YouTube, here it is.`;
 
-    response = assistant.buildRichResponse()
+    response = conv.buildRichResponse()
       .addSimpleResponse({
         speech: speech,
         displayText: displayText
       })
       .addSuggestionLink('video on YouTube', url);
   } else {
-    response = assistant.buildRichResponse()
+    response = conv.buildRichResponse()
       .addSimpleResponse({
         speech: 'Sorry, I could not find the keynote on YouTube just now.',
         displayText: 'Sorry, I couldn\'t find anything on YouTube right now'
       });
   }
 
-  assistant.ask(response);
+  conv.ask(response);
 }
 
-function responseYouTubeVideoAsBasicCard(assistant, cardData) {
+function responseYouTubeVideoAsBasicCard(conv, cardData) {
   const publishDate = moment(cardData.publishedAt);
-  assistant.ask(assistant.buildRichResponse()
+  conv.ask(conv.buildRichResponse()
     .addSimpleResponse({
       displayText: 'Here\'s a YouTube result',
       speech: `Here's a matching video. It's called ${cardData.title}`
     })
-    .addBasicCard(assistant.buildBasicCard(cardData.description)
+    .addBasicCard(conv.buildBasicCard(cardData.description)
       .setTitle(cardData.title)
       .setSubtitle(`Published ${publishDate.fromNow()}`)
       .addButton('Watch on YouTube', 'https://youtube.com/watch?v=' + cardData.videoId)
@@ -250,9 +261,9 @@ function responseYouTubeVideoAsBasicCard(assistant, cardData) {
   );
 }
 
-function returnBasicCard(assistant, cardType, data) {
+function returnBasicCard(conv, cardType, data) {
   console.log('returnBasicCard', cardType, data);
-  const card = {};
+  const card = <any>{};
   let displayText;
   let speech;
 
@@ -284,25 +295,25 @@ function returnBasicCard(assistant, cardType, data) {
       break;
   }
 
-  let response = assistant.buildRichResponse();
+  let response = conv.buildRichResponse();
 
   // Simple Response
   response = response.addSimpleResponse({ displayText: displayText, speech: speech });
 
   // Basic Card
-  let basicCard = assistant.buildBasicCard(card.description)
+  let basicCard = conv.buildBasicCard(card.description)
     .setTitle(card.title)
     .addButton(card.buttonText, card.buttonUrl)
     .setImage(card.imageUrl, card.title)
     .setImageDisplay('CROPPED');
 
-    if (card.subtitle) {
-      basicCard = basicCard.setSubtitle(card.subtitle);
-    }
+  if (card.subtitle) {
+    basicCard = basicCard.setSubtitle(card.subtitle);
+  }
 
   response = response.addBasicCard(basicCard);
 
-  assistant.ask(response);
+  conv.ask(response);
 }
 
 module.exports = {
