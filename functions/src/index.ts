@@ -8,6 +8,7 @@ admin.initializeApp(functions.config().firebase);
 
 import { dialogflow } from 'actions-on-google';
 import { searchBlogPosts } from './intents/blogposts-handler';
+import { nextEvent, previousEvent } from './intents/events-handler';
 
 const app = dialogflow();
 
@@ -24,8 +25,8 @@ const GenericOptionsHandler = require('./intents/generic-options-handler');
 const ShowsIntentHandler = require('./intents/youtube-shows-handler');
 
 app.intent(Actions.INTENT_OPTION_SELECT, GenericOptionsHandler.handleOption);
-app.intent(Actions.INTENT_NEXT_EVENT, EventsIntentHandler.nextEvent);
-app.intent(Actions.INTENT_PREV_EVENT, EventsIntentHandler.previousEvent);
+app.intent(Actions.INTENT_NEXT_EVENT, nextEvent);
+app.intent(Actions.INTENT_PREV_EVENT, previousEvent);
 app.intent(Actions.INTENT_VIDEO_SEARCH, VideosIntentHandler.searchVideos);
 app.intent(Actions.INTENT_VIDEO_RECOMMEND, VideosIntentHandler.videoRecommendationHandler);
 app.intent(Actions.INTENT_FIND_SHOW_EPISODE, ShowsIntentHandler.findEpisode);
