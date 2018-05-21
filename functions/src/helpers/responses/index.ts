@@ -1,6 +1,6 @@
 // const moment = require('moment');
 import * as moment from 'moment';
-import { SimpleResponse, BrowseCarouselItem, Image, BrowseCarousel } from 'actions-on-google';
+import { SimpleResponse, BrowseCarouselItem, Image, BrowseCarousel, Carousel } from 'actions-on-google';
 
 const DialogflowOption = require('../option-helper').DialogflowOptionHelper;
 
@@ -12,12 +12,13 @@ function returnVideosResponse(conv, success, videos) {
 
     const options = buildCarouselForYouTubeVideos(conv, videos, 3);
 
-    response = conv.buildRichResponse()
-      .addSimpleResponse({
-        speech: speech,
-        displayText: displayText
-      });
-    conv.askWithCarousel(response, options);
+    conv.ask(new SimpleResponse({
+      speech: speech,
+      text: displayText
+    }));
+
+    conv.ask(new Carousel({ items: options }));
+
   } else {
     response = conv.buildRichResponse()
       .addSimpleResponse({
@@ -57,11 +58,11 @@ function returnBlogPostsResponse(conv, success, items) {
 function buildCarouselForYouTubeVideos(conv, items, inputMaxLength = 10) {
   let maxLength = inputMaxLength;
   if (maxLength > 10) maxLength = 10;
-  if (!(items && maxLength > 0)) return;
+  if (!(items && maxLength > 0)) return null;
 
   console.log('carousel items', items);
+  const carouselItems = [];
 
-  let options = conv.buildCarousel();
   for (let i = 0; i < items.length; i++) {
     const item = items[i];
     const uniqueId = item.videoId;
@@ -73,14 +74,25 @@ function buildCarouselForYouTubeVideos(conv, items, inputMaxLength = 10) {
 
     const dfo = new DialogflowOption('youtube#video', uniqueId, null);
 
-    const newOption = conv.buildOptionItem(dfo.toString(), [uniqueId + '_alias'])
-      .setTitle(cardTitle)
-      .setDescription(cardDescription)
-      .setImage(cardPicture, cardPictureAltText);
+    const newOption = {
+      // Add the first item to the carousel
+      [dfo.toString()]: {
+        synonyms: [
+          uniqueId + '_alias'
+        ],
+        title: cardTitle,
+        description: cardDescription,
+        image: new Image({
+          url: cardPicture,
+          alt: cardPictureAltText,
+        }),
+      }
 
-    options = options.addItems(newOption);
+    }
+    carouselItems.push(newOption);
   }
-  return options;
+
+  return carouselItems;
 }
 
 function buildCarouselForBlogPosts(conv, items, inputMaxLength = 10) {
