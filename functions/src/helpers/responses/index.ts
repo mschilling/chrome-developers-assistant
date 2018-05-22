@@ -1,6 +1,6 @@
 // const moment = require('moment');
 import * as moment from 'moment';
-import { SimpleResponse, BrowseCarouselItem, Image, BrowseCarousel, Carousel } from 'actions-on-google';
+import { SimpleResponse, BrowseCarouselItem, Image, BrowseCarousel, Carousel, LinkOutSuggestion, BasicCard, Button } from 'actions-on-google';
 
 const DialogflowOption = require('../option-helper').DialogflowOptionHelper;
 
@@ -10,7 +10,7 @@ function returnVideosResponse(conv, success, videos) {
     const displayText = 'I\'ve found some video\'s on YouTube. Here it is.';
     const speech = `<speak>${displayText}</speak>`;
 
-    const options = buildCarouselForYouTubeVideos(conv, videos, 3);
+    const options = buildCarouselForYouTubeVideos(videos, 3);
 
     conv.ask(new SimpleResponse({
       speech: speech,
@@ -40,7 +40,7 @@ function returnBlogPostsResponse(conv, success, items) {
       text: displayText
     }))
 
-    const options = buildBrowsingCarouselForBlogPosts(conv, items, 3);
+    const options = buildBrowsingCarouselForBlogPosts(items, 3);
 
     conv.ask(new BrowseCarousel({
       items: options
@@ -55,7 +55,7 @@ function returnBlogPostsResponse(conv, success, items) {
   }
 }
 
-function buildCarouselForYouTubeVideos(conv, items, inputMaxLength = 10) {
+function buildCarouselForYouTubeVideos(items, inputMaxLength = 10) {
   let maxLength = inputMaxLength;
   if (maxLength > 10) maxLength = 10;
   if (!(items && maxLength > 0)) return null;
@@ -95,6 +95,9 @@ function buildCarouselForYouTubeVideos(conv, items, inputMaxLength = 10) {
   return carouselItems;
 }
 
+/*
+** unused function
+
 function buildCarouselForBlogPosts(conv, items, inputMaxLength = 10) {
   let maxLength = inputMaxLength;
   if (maxLength > 10) maxLength = 10;
@@ -123,8 +126,9 @@ function buildCarouselForBlogPosts(conv, items, inputMaxLength = 10) {
   }
   return options;
 }
+*/
 
-function buildBrowsingCarouselForBlogPosts(conv, items, inputMaxLength = 10) {
+function buildBrowsingCarouselForBlogPosts(items, inputMaxLength = 10) {
   let maxLength = inputMaxLength;
   if (maxLength > 10) maxLength = 10;
   if (!(items && maxLength > 0)) return null;
@@ -175,18 +179,21 @@ function returnVideoResponse(conv, success, params) {
 
     const displayText = 'Here\'s a video I found on YouTube';
 
-    response = conv.buildRichResponse()
-      .addSimpleResponse({
-        speech: speech,
-        displayText: displayText
-      })
-      .addSuggestionLink('video on YouTube', url);
+    conv.ask(new SimpleResponse({
+      speech: speech,
+      text: displayText
+    }))
+
+    // .addSuggestionLink('video on YouTube', url);
+    conv.add(new LinkOutSuggestion({
+      name: 'video on YouTube',
+      url: url
+    }));
   } else {
-    response = conv.buildRichResponse()
-      .addSimpleResponse({
-        speech: 'Sorry, I could not find the video on YouTube right now.',
-        displayText: 'Sorry, I could not find the video on YouTube right now'
-      });
+    response = conv.ask(new SimpleResponse({
+      speech: 'Sorry, I could not find the video on YouTube right now.',
+      text: 'Sorry, I could not find the video on YouTube right now'
+    }));
   }
 
   conv.ask(response);
@@ -209,18 +216,22 @@ function returnBlogPostResponse(conv, success, params) {
 
     const displayText = 'Here\'s a blog I found online';
 
-    response = conv.buildRichResponse()
-      .addSimpleResponse({
-        speech: speech,
-        displayText: displayText
-      })
-      .addSuggestionLink('blog', url);
+    conv.ask(new SimpleResponse({
+      speech: speech,
+      text: displayText
+    }));
+
+    // .addSuggestionLink('blog', url);
+    conv.add(new LinkOutSuggestion({
+      name: 'blog',
+      url: url
+    }));
+
   } else {
-    response = conv.buildRichResponse()
-      .addSimpleResponse({
-        speech: 'Sorry, I could not find the blogpost online right now.',
-        displayText: 'Sorry, I could not find the blogpost online right now.'
-      });
+    conv.ask(new SimpleResponse({
+      speech: 'Sorry, I could not find the blogpost online right now.',
+      text: 'Sorry, I could not find the blogpost online right now.'
+    }));
   }
 
   conv.ask(response);
@@ -239,18 +250,22 @@ function responseIntentKeynoteVideo(conv, success, params) {
 
     const displayText = `I've found "${videoTitle}" on YouTube, here it is.`;
 
-    response = conv.buildRichResponse()
-      .addSimpleResponse({
-        speech: speech,
-        displayText: displayText
-      })
-      .addSuggestionLink('video on YouTube', url);
+    conv.ask(new SimpleResponse({
+      speech: speech,
+      text: displayText
+    }));
+
+    // .addSuggestionLink('video on YouTube', url);
+    conv.add(new LinkOutSuggestion({
+      name: 'video on YouTube',
+      url: url
+    }));
+
   } else {
-    response = conv.buildRichResponse()
-      .addSimpleResponse({
-        speech: 'Sorry, I could not find the keynote on YouTube just now.',
-        displayText: 'Sorry, I couldn\'t find anything on YouTube right now'
-      });
+    conv.ask(new SimpleResponse({
+      speech: 'Sorry, I could not find the keynote on YouTube just now.',
+      text: 'Sorry, I couldn\'t find anything on YouTube right now'
+    }));
   }
 
   conv.ask(response);
@@ -258,19 +273,25 @@ function responseIntentKeynoteVideo(conv, success, params) {
 
 function responseYouTubeVideoAsBasicCard(conv, cardData) {
   const publishDate = moment(cardData.publishedAt);
-  conv.ask(conv.buildRichResponse()
-    .addSimpleResponse({
-      displayText: 'Here\'s a YouTube result',
-      speech: `Here's a matching video. It's called ${cardData.title}`
-    })
-    .addBasicCard(conv.buildBasicCard(cardData.description)
-      .setTitle(cardData.title)
-      .setSubtitle(`Published ${publishDate.fromNow()}`)
-      .addButton('Watch on YouTube', 'https://youtube.com/watch?v=' + cardData.videoId)
-      .setImage(cardData.imageUrl, cardData.title)
-      .setImageDisplay('CROPPED')
-    )
-  );
+  conv.ask(new SimpleResponse({
+    text: 'Here\'s a YouTube result',
+    speech: `Here's a matching video. It's called ${cardData.title}`
+  }));
+
+  conv.ask(new BasicCard({
+    text: cardData.description,
+    title: cardData.title,
+    subtitle: `Published ${publishDate.fromNow()}`,
+    buttons: new Button({
+      title: 'Watch on YouTube',
+      url: 'https://youtube.com/watch?v=' + cardData.videoId
+    }),
+    image: new Image({
+      url: cardData.imageUrl,
+      alt: cardData.title
+    }),
+    display: 'CROPPED'
+  }))
 }
 
 function returnBasicCard(conv, cardType, data) {
@@ -307,25 +328,30 @@ function returnBasicCard(conv, cardType, data) {
       break;
   }
 
-  let response = conv.buildRichResponse();
 
   // Simple Response
-  response = response.addSimpleResponse({ displayText: displayText, speech: speech });
+  conv.ask(new SimpleResponse({ text: displayText, speech: speech }));
 
   // Basic Card
-  let basicCard = conv.buildBasicCard(card.description)
-    .setTitle(card.title)
-    .addButton(card.buttonText, card.buttonUrl)
-    .setImage(card.imageUrl, card.title)
-    .setImageDisplay('CROPPED');
+  let basicCard = new BasicCard({
+    text: card.description,
+    title: card.title,
+    buttons: new Button({
+      title: card.buttonText,
+      url: card.buttonUrl
+    }),
+    image: new Image({
+      url: card.imageUrl,
+      alt: card.title
+    }),
+    display: 'CROPPED'
+  });
 
   if (card.subtitle) {
-    basicCard = basicCard.setSubtitle(card.subtitle);
+    basicCard.subtitle = card.subtitle;
   }
 
-  response = response.addBasicCard(basicCard);
-
-  conv.ask(response);
+  conv.ask(basicCard);
 }
 
 module.exports = {
