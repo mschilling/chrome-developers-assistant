@@ -6,7 +6,7 @@ export class DialogflowOptionHelper {
   constructor( objectType, objectValue, action) {
     this.type = objectType;
     this.value = objectValue;
-    this.action = action;
+    this.action = action || 'default';
   }
 
   static fromString( stringValue ) {

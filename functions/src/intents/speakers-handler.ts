@@ -1,4 +1,4 @@
-import { SimpleResponse, BasicCard, Button, Image } from "actions-on-google";
+import { SimpleResponse, BasicCard, Button, Image, Carousel } from "actions-on-google";
 
 const admin = require('firebase-admin');
 const peopleRef = admin.firestore().collection('people');
@@ -69,7 +69,9 @@ export async function selectSpeakerByOption(conv, params) {
 }
 
 export async function speakerSelection(conv, params) {
-  const paramEvent = conv.getArgument(EVENT_PARAM);
+  console.log(`Handle intent :: speakerSelection`, conv.actions, params);
+
+  const paramEvent = params[EVENT_PARAM];
 
   const people = await api.getPeople(20);
 
@@ -78,19 +80,19 @@ export async function speakerSelection(conv, params) {
     let speechText = 'Here are some speakers';
     const speech = `<speak>${speechText}</speak>`;
 
-    let options = conv.buildCarousel();
     let countOptions = 0;
-    for (let i = 0; i < people.length; i++) {
-      const doc = people[i];
-      if (doc.pictureUrl) {
+    const options = [];
+    for (const person of people) {
+      if (person.pictureUrl) {
         countOptions++;
-        options = options.addItems(getCarouselOption(doc));
+        options.push(getCarouselOption(person));
         if (countOptions >= 10) {
           break;
         }
       }
     }
-    conv.askWithCarousel(speech, options);
+    conv.ask(speech)
+    conv.ask(new Carousel({ items: options}))
   } else {
     const speech = 'Sorry, I coudn\'t find any speakers right now. Anything else?';
     conv.ask(speech);
@@ -160,6 +162,7 @@ function getCarouselOption(person) {
   const cardPictureAltText = 'This is my Face';
 
   const dfo = new DialogflowOption('person#name', cardTitle, null);
+  console.log(dfo);
 
   return {
     [dfo.toString()]: {
