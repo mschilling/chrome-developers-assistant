@@ -81,18 +81,22 @@ export async function speakerSelection(conv, params) {
     const speech = `<speak>${speechText}</speak>`;
 
     let countOptions = 0;
-    const options = [];
+    let options = {};
     for (const person of people) {
       if (person.pictureUrl) {
         countOptions++;
-        options.push(getCarouselOption(person));
+        const option = getCarouselOption(person);
+        options = { ...options, ...option }
+
         if (countOptions >= 10) {
           break;
         }
       }
     }
+    console.log('speakers options', options);
+
     conv.ask(speech)
-    conv.ask(new Carousel({ items: options}))
+    conv.ask(new Carousel({ items: options }))
   } else {
     const speech = 'Sorry, I coudn\'t find any speakers right now. Anything else?';
     conv.ask(speech);
@@ -159,12 +163,12 @@ function getCarouselOption(person) {
   const cardTitle = `${person.first_name} ${person.last_name}`;
   const cardDescription = person.short_bio || person.bio || 'n.a.';
   const cardPicture = person.pictureUrl || 'http://lorempixel.com/200/400';
-  const cardPictureAltText = 'This is my Face';
+  const cardPictureAltText = cardTitle;
 
   const dfo = new DialogflowOption('person#name', cardTitle, null);
-  console.log(dfo);
+  console.log('dfo', dfo);
 
-  return {
+  const option = {
     [dfo.toString()]: {
       synonyms: [
         cardTitle
@@ -177,6 +181,9 @@ function getCarouselOption(person) {
       }),
     }
   }
+  console.log('option', option);
+
+  return option;
 }
 
 function parseParameters(params) {
