@@ -61,7 +61,7 @@ function buildCarouselForYouTubeVideos(items, inputMaxLength = 10) {
   if (!(items && maxLength > 0)) return null;
 
   console.log('carousel items', items);
-  const carouselItems = [];
+  let carouselItems = {};
 
   for (let i = 0; i < items.length; i++) {
     const item = items[i];
@@ -89,7 +89,7 @@ function buildCarouselForYouTubeVideos(items, inputMaxLength = 10) {
       }
 
     }
-    carouselItems.push(newOption);
+    carouselItems = { ...carouselItems, ...newOption }
   }
 
   return carouselItems;
