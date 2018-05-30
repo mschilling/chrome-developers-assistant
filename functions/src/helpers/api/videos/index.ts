@@ -21,16 +21,16 @@ function search(searchParams, limit = 10) {
   }
 
   if (searchParams.tags && searchParams.tags.length > 0) {
-    for (let i = 0; i < searchParams.tags.length; i++) {
-      const tag = searchParams.tags[i] || '';
+    for (const tagItem of searchParams.tags) {
+      const tag = tagItem || '';
       query = query.where(`tags.${tag}`, '==', true);
     }
   }
 
   if (searchParams.speakers && searchParams.speakers.length > 0) {
     const speakersList = searchParams.speakers.map(p => p.trim());
-    for (let i = 0; i < speakersList.length; i++) {
-      const speaker = speakersList[i] || '';
+    for (const speakerItem of speakersList) {
+      const speaker = speakerItem || '';
       query = query.where(`speakers.${speaker}`, '==', true);
     }
   }
@@ -95,8 +95,8 @@ function filterVideosBySpeakers(speakers, limit = 3) {
 
   let promise: any = videosRef;
 
-  for (let i = 0; i < speakersList.length; i++) {
-    promise = promise.where(`speakers.${speakersList[i]}`, '==', true);
+  for (const speaker of speakersList) {
+    promise = promise.where(`speakers.${speaker}`, '==', true);
   }
 
   return promise
@@ -105,8 +105,8 @@ function filterVideosBySpeakers(speakers, limit = 3) {
     .get()
     .then(snapshot => {
       const docs = [];
-      for (let i = 0; i < snapshot.docs.length; i++) {
-        docs.push(snapshot.docs[i].data());
+      for (const doc of snapshot.docs) {
+        docs.push(doc.data());
       }
       return docs;
     });
