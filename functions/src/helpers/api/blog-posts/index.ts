@@ -1,10 +1,4 @@
-'use strict';
-
 import * as admin from 'firebase-admin';
-
-// import * as Debug from 'debug';
-// const debug = Debug('google-developer-assistant-api:debug');
-// const error = Debug('google-developer-assistant-api:error');
 
 const blogPostsRef = admin.firestore().collection('blogposts');
 

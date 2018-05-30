@@ -1,16 +1,9 @@
-'use strict';
-
 import * as admin from 'firebase-admin';
-
-// const Debug = require('debug');
-// const debug = Debug('google-developer-assistant-api:debug');
-// const error = Debug('google-developer-assistant-api:error');
 
 const videosRef = admin.firestore().collection('videos');
 
 function search(searchParams, limit = 10) {
   if (!searchParams) {
-    debug('searchParams is undefined');
     return undefined;
   };
 
@@ -34,7 +27,6 @@ function search(searchParams, limit = 10) {
       query = query.where(`speakers.${speaker}`, '==', true);
     }
   }
-
 
   return query
     .limit(limit)
