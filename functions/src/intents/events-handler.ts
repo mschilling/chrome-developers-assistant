@@ -1,4 +1,4 @@
-import { BasicCard, Button, Image, SimpleResponse } from "actions-on-google";
+import { BasicCard, Button, Image } from "actions-on-google";
 
 const moment = require('moment');
 const api = require('../helpers/api');
