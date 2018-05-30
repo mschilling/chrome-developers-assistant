@@ -99,8 +99,8 @@ export class YouTubeManager {
         if (items.length > 0) {
           // console.log(items[0]);
           const docs = [];
-          for (let i = 0; i < items.length; i++) {
-            docs.push(OpenGraphObject.asYouTubeVideo(items[i]));
+          for (const item of items) {
+            docs.push(OpenGraphObject.asYouTubeVideo(item));
           }
           return docs;
         }

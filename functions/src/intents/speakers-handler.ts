@@ -9,7 +9,6 @@ const DialogflowOption = require('../helpers/option-helper').DialogflowOptionHel
 // Context Parameters
 const SPEAKER_PARAM = 'speaker';
 const SPEAKER_ATTR_PARAM = 'speakerAttribute';
-const EVENT_PARAM = 'event';
 const PERSON_PARAM = 'person';
 
 export async function speakerInfoHandler(conv, params) {
@@ -71,13 +70,11 @@ export async function selectSpeakerByOption(conv, params) {
 export async function speakerSelection(conv, params) {
   console.log(`Handle intent :: speakerSelection`, conv.actions, params);
 
-  const paramEvent = params[EVENT_PARAM];
-
   const people = await api.getPeople(20);
 
   if (people && people.length > 0) {
     console.log('Display speakers in carousel. n=' + people.length, people);
-    let speechText = 'Here are some speakers';
+    const speechText = 'Here are some speakers';
     const speech = `<speak>${speechText}</speak>`;
 
     let countOptions = 0;
@@ -159,7 +156,6 @@ function getPerson(key) {
 }
 
 function getCarouselOption(person) {
-  const uniqueId = person.id;
   const cardTitle = `${person.first_name} ${person.last_name}`;
   const cardDescription = person.short_bio || person.bio || 'n.a.';
   const cardPicture = person.pictureUrl || 'http://lorempixel.com/200/400';
