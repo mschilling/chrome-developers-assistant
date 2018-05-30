@@ -63,8 +63,7 @@ function buildCarouselForYouTubeVideos(items, inputMaxLength = 10) {
   console.log('carousel items', items);
   let carouselItems = {};
 
-  for (let i = 0; i < items.length; i++) {
-    const item = items[i];
+  for (const item of items) {
     const uniqueId = item.videoId;
     const cardTitle = item.name || item.title;
     const cardDescription = item.description;
@@ -137,8 +136,7 @@ function buildBrowsingCarouselForBlogPosts(items, inputMaxLength = 10) {
 
   const browseCarouselItems: BrowseCarouselItem[] = [];
 
-  for (let i = 0; i < items.length; i++) {
-    const item = items[i];
+  for (const item of items) {
     const cardTitle = item.title;
     const cardUrl = item.postUrl;
     const cardDescription = `Published ${moment(item.publishDate).fromNow()} by ${item.author}`;
@@ -200,9 +198,7 @@ function returnVideoResponse(conv, success, params) {
 }
 
 function returnBlogPostResponse(conv, success, params) {
-  let response;
   if (success) {
-    const id = params.id;
     const title = params.title || '';
     const url = params.url;
 
@@ -234,11 +230,10 @@ function returnBlogPostResponse(conv, success, params) {
     }));
   }
 
-  conv.ask(response);
+  conv.ask("Sorry, I could not find any blogposts right now");
 }
 
 function responseIntentKeynoteVideo(conv, success, params) {
-  let response;
   if (success) {
     const videoId = params.videoId;
     const videoTitle = params.videoTitle || '';
@@ -268,7 +263,7 @@ function responseIntentKeynoteVideo(conv, success, params) {
     }));
   }
 
-  conv.ask(response);
+  conv.ask("Sorry, I could not find any right now");
 }
 
 function responseYouTubeVideoAsBasicCard(conv, cardData) {
@@ -333,7 +328,7 @@ function returnBasicCard(conv, cardType, data) {
   conv.ask(new SimpleResponse({ text: displayText, speech: speech }));
 
   // Basic Card
-  let basicCard = new BasicCard({
+  const basicCard = new BasicCard({
     text: card.description,
     title: card.title,
     buttons: new Button({

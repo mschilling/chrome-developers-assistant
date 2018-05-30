@@ -1,10 +1,4 @@
-'use strict';
-
 import * as admin from 'firebase-admin';
-
-// const Debug = require('debug');
-// const debug = Debug('google-developer-assistant-api:debug');
-// const error = Debug('google-developer-assistant-api:error');
 
 const showsRef = admin.firestore().collection('shows');
 
