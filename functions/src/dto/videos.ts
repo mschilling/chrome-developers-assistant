@@ -1,12 +1,8 @@
-'use strict';
-
 import * as admin from 'firebase-admin';
+import { FirestoreCollections } from '../enums/firestore-collections';
 
-// const Debug = require('debug');
-// const debug = Debug('google-developer-assistant-api:debug');
-// const error = Debug('google-developer-assistant-api:error');
-
-const videosRef = admin.firestore().collection('videos');
+const db = admin.firestore();
+const videosRef = db.collection(FirestoreCollections.Videos);
 
 export class VideosRepository {
 
