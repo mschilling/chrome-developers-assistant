@@ -13,8 +13,8 @@ export class VideoService extends CoreService implements IVideoService {
     super(db);
   }
 
-  async Search(searchParams: any, limit: number): Promise<Video[]> {
-    debug('Search', searchParams);
+  async search(searchParams: any, limit: number): Promise<Video[]> {
+    debug('Search input params', searchParams, limit);
     if (!searchParams) {
       debug('searchParams is undefined');
       return undefined;
@@ -42,25 +42,53 @@ export class VideoService extends CoreService implements IVideoService {
     return query
       .limit(limit)
       .get()
-      .then(snapshot => {
-        const docs = [];
-        for (const doc of snapshot.docs) {
-          docs.push(doc.data());
-        }
-        return docs;
-      });
+      .then(snapshot => this.wrapAll<Video>(snapshot));
   }
 
-  searchKeynoteVideos(eventName: string, year: number, limit: number): Promise<Video[]> {
-    throw new Error("Method not implemented.");
+  async searchKeynoteVideos(eventName: string, year: number, limit: number): Promise<Video[]> {
+    debug(`searchKeynoteVideos(${eventName}, ${year}, ${limit}) `)
+    return this.db.collection(FirestoreCollections.Videos)
+      .where('tags.keynote', '==', true)
+      .limit(limit)
+      .get()
+      .then(snapshot => this.wrapAll<Video>(snapshot));
   }
 
-  searchEventHighlightsVideo(eventKey: string): Promise<Video[]> {
-    throw new Error("Method not implemented.");
+  async searchEventHighlightsVideo(eventKey: string): Promise<Video[]> {
+    if (!eventKey) {
+      debug('eventKey is undefined');
+      return undefined;
+    };
+
+    return this.db.collection(FirestoreCollections.Videos)
+      .where('eventKey', '==', eventKey)
+      .where('tags.highlights', '==', true)
+      .limit(1)
+      .get()
+      .then(snapshot => this.wrapAll<Video>(snapshot));
   }
 
-  filterVideosBySpeakers(speakers: any, limit: number): Promise<Video[]> {
-    throw new Error("Method not implemented.");
+  async filterVideosBySpeakers(speakers: any, limit: number): Promise<Video[]> {
+    if ((speakers || []).length === 0) {
+      debug('speakers is undefined');
+      return undefined;
+    };
+
+    debug(speakers);
+
+    const speakersList = speakers.map(p => p.trim());
+
+    let promise: any = this.db.collection(FirestoreCollections.Videos);
+
+    for (const speaker of speakersList) {
+      promise = promise.where(`speakers.${speaker}`, '==', true);
+    }
+
+    return promise
+      .limit(limit)
+      .get()
+      .then(snapshot => this.wrapAll<Video>(snapshot));
+
   }
 
 }
