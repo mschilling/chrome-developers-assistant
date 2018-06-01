@@ -2,7 +2,6 @@ const Debug = require('debug');
 const debug = Debug('google-developer-assistant-api:debug');
 const error = Debug('google-developer-assistant-api:error');
 
-import { VideosRepository } from './videos';
 import { PeopleRepository } from './people';
 import { BlogPostsRepository } from './blog-posts';
 
@@ -11,8 +10,6 @@ debug.log = console.log.bind(console);
 error.log = console.error.bind(console);
 
 export class DTO {
-
-  static Videos = VideosRepository;
 
   static People = PeopleRepository;
 

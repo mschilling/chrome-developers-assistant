@@ -4,7 +4,10 @@ const Debug = require('debug');
 const debug = Debug('google-developer-assistant-api:debug');
 const error = Debug('google-developer-assistant-api:error');
 
-const apiVideos = require('./videos');
+import * as admin from 'firebase-admin'
+import { VideoService } from '../../services/impl/video-service';
+
+// const apiVideos = require('./videos');
 const apiEvents = require('./events');
 const apiPeople = require('./people');
 const apiBlogPosts = require('./blog-posts');
@@ -38,7 +41,8 @@ class AssistantDataApi {
 
   static getKeynoteVideos(event, year, limit = 3) {
     debug('getKeynoteVideos', event, year, limit);
-    return apiVideos.searchKeynoteVideos(event, year, limit);
+    const videoService = new VideoService(admin.firestore());
+    return videoService.searchKeynoteVideos(event, year, limit);
   }
 
   static getNextEvent(timestamp) {
@@ -58,17 +62,20 @@ class AssistantDataApi {
 
   static searchVideos(searchParams, limit) {
     debug('searchVideos', searchParams, limit);
-    return apiVideos.search(searchParams, limit);
+    const videoService = new VideoService(admin.firestore());
+    return videoService.search(searchParams, limit);
   }
 
   static searchEventHighlightsVideo(eventKey) {
     debug('searchEventHighlightsVideo', eventKey);
-    return apiVideos.searchEventHighlightsVideo(eventKey);
+    const videoService = new VideoService(admin.firestore());
+    return videoService.searchEventHighlightsVideo(eventKey);
   }
 
   static filterVideosBySpeakers(speakers, limit) {
     debug('filterVideosBySpeakers', speakers, limit);
-    return apiVideos.filterVideosBySpeakers(speakers, limit);
+    const videoService = new VideoService(admin.firestore());
+    return videoService.filterVideosBySpeakers(speakers, limit);
   }
 
   static searchBlogPosts(searchParams, limit) {

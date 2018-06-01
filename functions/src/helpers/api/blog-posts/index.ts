@@ -4,7 +4,7 @@ const blogPostsRef = admin.firestore().collection('blogposts');
 
 function searchHandler(searchParams, limit = 10) {
   if (!searchParams) {
-    debug('searchParams is undefined');
+    // debug('searchParams is undefined');
     return undefined;
   };
 
@@ -32,7 +32,7 @@ function searchHandler(searchParams, limit = 10) {
 
 function getByKey(key) {
   if (!key) {
-    debug('key is undefined');
+    // debug('key is undefined');
     return null;
   };
 
