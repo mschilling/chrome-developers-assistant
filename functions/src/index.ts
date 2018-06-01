@@ -3,8 +3,11 @@
 
 import * as functions from 'firebase-functions';
 import * as admin from 'firebase-admin';
-
 admin.initializeApp(functions.config().firebase);
+
+const Debug = require('debug');
+const debug = Debug('google-developer-assistant-api:debug');
+const error = Debug('google-developer-assistant-api:error');
 
 import { dialogflow } from 'actions-on-google';
 import { searchBlogPosts } from './intents/blogposts-handler';
