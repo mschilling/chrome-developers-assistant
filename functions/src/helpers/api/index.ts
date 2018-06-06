@@ -5,12 +5,12 @@ const debug = Debug('google-developer-assistant-api:debug');
 const error = Debug('google-developer-assistant-api:error');
 
 import * as admin from 'firebase-admin'
+
 import { VideoService } from '../../services/impl/video-service';
 import { PeopleService } from '../../services/impl/people-service';
+import { BlogPostService } from '../../services/impl/blog-post-service';
 
-// const apiVideos = require('./videos');
 const apiEvents = require('./events');
-const apiBlogPosts = require('./blog-posts');
 const apiShows = require('./shows');
 
 // Configure logging for hosting platforms that only support console.log and console.error
@@ -82,12 +82,14 @@ class AssistantDataApi {
 
   static searchBlogPosts(searchParams, limit) {
     debug('searchBlogPosts', searchParams, limit);
-    return apiBlogPosts.search(searchParams, limit);
+    const blogPostService = new BlogPostService(admin.firestore());
+    return blogPostService.search(searchParams, limit);
   }
 
   static getBlogPostById(key) {
     debug('getBlogPostById', key);
-    return apiBlogPosts.getByKey(key);
+    const blogPostService = new BlogPostService(admin.firestore());
+    return blogPostService.getByKey(key);
   }
 
   static getShows(filters) {

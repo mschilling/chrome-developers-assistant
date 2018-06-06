@@ -3,23 +3,23 @@ const debug = Debug('google-developer-assistant-api:debug');
 const error = Debug('google-developer-assistant-api:error');
 
 import { BlogPost } from "../../models/blog-post";
-import { IPeopleService } from "../blog-post-service-interface";
 import { CoreService } from "../abstract-service";
 import { FirestoreCollections } from "../../enums/firestore-collections";
+import { IBlogPostService } from "../blog-post-service-interface";
 
-export class PeopleService extends CoreService implements IPeopleService {
+export class BlogPostService extends CoreService implements IBlogPostService {
 
   constructor(db: any) {
     super(db);
   }
 
-  async search(searchParams: any, limit?: number): Promise<BlogPost[]> {
+  async search(searchParams: any, limit: number = 10): Promise<BlogPost[]> {
     if (!searchParams) {
       debug('searchParams is undefined');
       return undefined;
     };
 
-    let query: any = this.db.collection(FirestoreCollections.People);
+    let query: any = this.db.collection(FirestoreCollections.BlogPosts);
 
     if (searchParams.person) {
       query = query.where(`authors.${searchParams.person}`, '==', true);
@@ -46,7 +46,7 @@ export class PeopleService extends CoreService implements IPeopleService {
       return null;
     };
 
-    const query: any = this.db.collection(FirestoreCollections.People);
+    const query: any = this.db.collection(FirestoreCollections.BlogPosts);
     return query
       .doc(key)
       .get()
