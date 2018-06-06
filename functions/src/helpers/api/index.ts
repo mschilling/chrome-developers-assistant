@@ -6,10 +6,10 @@ const error = Debug('google-developer-assistant-api:error');
 
 import * as admin from 'firebase-admin'
 import { VideoService } from '../../services/impl/video-service';
+import { PeopleService } from '../../services/impl/people-service';
 
 // const apiVideos = require('./videos');
 const apiEvents = require('./events');
-const apiPeople = require('./people');
 const apiBlogPosts = require('./blog-posts');
 const apiShows = require('./shows');
 
@@ -20,12 +20,14 @@ error.log = console.error.bind(console);
 class AssistantDataApi {
   static getPerson(id) {
     debug('getPerson', id);
-    return apiPeople.getPerson(id);
+    const peopleService = new PeopleService(admin.firestore());
+    return peopleService.getPerson(id);
   }
 
   static getPeople(limit = 10) {
     debug('getPeople', limit);
-    return apiPeople.getPeople(limit);
+    const peopleService = new PeopleService(admin.firestore());
+    return peopleService.getPeople(limit);
   }
 
   static getKeynoteVideo(event, year) {
