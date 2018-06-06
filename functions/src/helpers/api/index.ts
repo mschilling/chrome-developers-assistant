@@ -9,9 +9,9 @@ import * as admin from 'firebase-admin'
 import { VideoService } from '../../services/impl/video-service';
 import { PeopleService } from '../../services/impl/people-service';
 import { BlogPostService } from '../../services/impl/blog-post-service';
+import { ShowService } from '../../services/impl/shows-service';
 
 const apiEvents = require('./events');
-const apiShows = require('./shows');
 
 // Configure logging for hosting platforms that only support console.log and console.error
 debug.log = console.log.bind(console);
@@ -94,7 +94,8 @@ class AssistantDataApi {
 
   static getShows(filters) {
     debug('getShows', filters);
-    return apiShows.getItems(filters);
+    const showService = new ShowService(admin.firestore());
+    return showService.getItems(filters);
   }
 }
 
