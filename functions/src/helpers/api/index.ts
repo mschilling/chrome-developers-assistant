@@ -10,8 +10,7 @@ import { VideoService } from '../../services/impl/video-service';
 import { PeopleService } from '../../services/impl/people-service';
 import { BlogPostService } from '../../services/impl/blog-post-service';
 import { ShowService } from '../../services/impl/shows-service';
-
-const apiEvents = require('./events');
+import { EventService } from '../../services/impl/events-service';
 
 // Configure logging for hosting platforms that only support console.log and console.error
 debug.log = console.log.bind(console);
@@ -49,17 +48,20 @@ class AssistantDataApi {
 
   static getNextEvent(timestamp) {
     debug('getNextEvent', timestamp);
-    return apiEvents.getNextEvent(timestamp);
+    const eventService = new EventService(admin.firestore());
+    return eventService.getNextEvent(timestamp);
   }
 
   static getPreviousEvent(timestamp) {
     debug('getPreviousEvent', timestamp);
-    return apiEvents.getPreviousEvent(timestamp);
+    const eventService = new EventService(admin.firestore());
+    return eventService.getPreviousEvent(timestamp);
   }
 
   static getPreviousEventByCountry(timestamp, country) {
     debug('getPreviousEventByCountry', timestamp, country);
-    return apiEvents.getPreviousEventByCountry(timestamp, country);
+    const eventService = new EventService(admin.firestore());
+    return eventService.getPreviousEventByCountry(timestamp, country);
   }
 
   static searchVideos(searchParams, limit) {

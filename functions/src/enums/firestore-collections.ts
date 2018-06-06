@@ -2,5 +2,6 @@ export enum FirestoreCollections {
   Videos = "videos",
   People = "people",
   Shows = "shows",
-  BlogPosts = "blogposts"
+  BlogPosts = "blogposts",
+  Events = "events"
 }
