@@ -32,13 +32,7 @@ export class BlogPostService extends CoreService implements IBlogPostService {
     return query
       .limit(limit)
       .get()
-      .then(snapshot => {
-        const docs = [];
-        for (const doc of snapshot.docs) {
-          docs.push(doc.data());
-        }
-        return docs;
-      });
+      .then(snapshot => this.wrapAll<BlogPost>(snapshot));
   }
   async getByKey(key: string): Promise<BlogPost> {
     if (!key) {

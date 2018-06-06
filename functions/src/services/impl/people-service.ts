@@ -20,13 +20,8 @@ export class PeopleService extends CoreService implements IPeopleService {
       .orderBy('rank', 'desc')
       .limit(limit)
       .get()
-      .then(snapshot => {
-        const docs = [];
-        for (const doc of snapshot.docs) {
-          docs.push(doc.data());
-        }
-        return docs;
-      });  }
+      .then(snapshot => this.wrapAll<Person>(snapshot));
+  }
 
   async getPerson(id: string): Promise<Person> {
     const query: any = this.db.collection(FirestoreCollections.People);
