@@ -4,8 +4,12 @@ const error = Debug('google-developer-assistant-api:error');
 
 import { Person } from "../../models/person";
 import { CoreService } from "../abstract-service";
-import { IPeopleService } from "../people-service-interface";
 import { FirestoreCollections } from "../../enums/firestore-collections";
+
+export interface IPeopleService {
+  getPeople(limit?: number): Promise<Person[]>;
+  getPerson(id: string): Promise<Person>;
+}
 
 export class PeopleService extends CoreService implements IPeopleService {
 

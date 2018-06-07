@@ -5,7 +5,11 @@ const error = Debug('google-developer-assistant-api:error');
 import { BlogPost } from "../../models/blog-post";
 import { CoreService } from "../abstract-service";
 import { FirestoreCollections } from "../../enums/firestore-collections";
-import { IBlogPostService } from "../blog-post-service-interface";
+
+interface IBlogPostService {
+  search(searchParams: any, limit?: number): Promise<BlogPost[]>;
+  getByKey(key: string): Promise<BlogPost>;
+}
 
 export class BlogPostService extends CoreService implements IBlogPostService {
 

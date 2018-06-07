@@ -1,9 +1,14 @@
 import { Event } from "../../models/event";
 import { CoreService } from "../abstract-service";
 import { FirestoreCollections } from "../../enums/firestore-collections";
-import { IEventService } from "../events-service-interface";
 
 import * as moment from 'moment';
+
+interface IEventService {
+  getNextEvent(minDateIsoString?: string): Promise<Event>;
+  getPreviousEvent(maxDateIsoString?: string): Promise<Event>;
+  getPreviousEventByCountry(maxDateIsoString: string, country: string): Promise<Event>;
+}
 
 export class EventService extends CoreService implements IEventService {
 

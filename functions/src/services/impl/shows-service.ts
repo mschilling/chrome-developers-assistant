@@ -2,7 +2,10 @@ import { Show } from "../../models/show";
 
 import { CoreService } from "../abstract-service";
 import { FirestoreCollections } from "../../enums/firestore-collections";
-import { IShowService } from "../shows-service-interface";
+
+interface IShowService {
+  getItems(inputFilters?: any): Promise<Show[]>;
+}
 
 export class ShowService extends CoreService implements IShowService {
 
