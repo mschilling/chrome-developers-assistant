@@ -1,6 +1,6 @@
-import { Event } from "../../models/event";
-import { CoreService } from "../abstract-service";
-import { FirestoreCollections } from "../../enums/firestore-collections";
+import { Event } from "../models/event";
+import { CoreService } from "./abstract-service";
+import { FirestoreCollections } from "../enums/firestore-collections";
 
 import * as moment from 'moment';
 

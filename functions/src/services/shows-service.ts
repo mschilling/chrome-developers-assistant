@@ -1,7 +1,7 @@
-import { Show } from "../../models/show";
+import { Show } from "../models/show";
 
-import { CoreService } from "../abstract-service";
-import { FirestoreCollections } from "../../enums/firestore-collections";
+import { CoreService } from "./abstract-service";
+import { FirestoreCollections } from "../enums/firestore-collections";
 
 interface IShowService {
   getItems(inputFilters?: any): Promise<Show[]>;

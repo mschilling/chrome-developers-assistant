@@ -6,11 +6,11 @@ const error = Debug('google-developer-assistant-api:error');
 
 import * as admin from 'firebase-admin'
 
-import { VideoService } from '../../services/impl/video-service';
-import { PeopleService } from '../../services/impl/people-service';
-import { BlogPostService } from '../../services/impl/blog-post-service';
-import { ShowService } from '../../services/impl/shows-service';
-import { EventService } from '../../services/impl/events-service';
+import { VideoService } from '../../services/video-service';
+import { PeopleService } from '../../services/people-service';
+import { BlogPostService } from '../../services/blog-post-service';
+import { ShowService } from '../../services/shows-service';
+import { EventService } from '../../services/events-service';
 
 // Configure logging for hosting platforms that only support console.log and console.error
 debug.log = console.log.bind(console);
