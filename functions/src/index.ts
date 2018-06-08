@@ -5,6 +5,9 @@ import * as functions from 'firebase-functions';
 import * as admin from 'firebase-admin';
 admin.initializeApp(functions.config().firebase);
 
+import { Firestore } from './shared/firestore';
+Firestore.initialize(admin.firestore());
+
 const Debug = require('debug');
 const debug = Debug('google-developer-assistant-api:debug');
 const error = Debug('google-developer-assistant-api:error');

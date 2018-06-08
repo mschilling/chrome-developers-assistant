@@ -3,14 +3,11 @@ import * as admin from 'firebase-admin';
 import { VideoService } from './../../services/video-service';
 import { Video } from '../../models/video';
 
-interface IResponse {
+export abstract class IResponse {
 
 }
 
-class Response implements IResponse {
-  constructor() {
-    //
-  };
+class Response extends IResponse {
 }
 
 export async function video(conv, inputParams) {
@@ -35,10 +32,10 @@ function asBasicCard(data: Video): Response {
   return null;
 }
 
-function asCarousel(): Response {
+function asCarousel(data: Video[]): Response {
   return null;
 }
 
-function asBrowseCarousel(): Response {
+function asBrowseCarousel(data: Video[]): Response {
   return null;
 }
