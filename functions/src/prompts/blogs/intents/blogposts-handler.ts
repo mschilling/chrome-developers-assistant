@@ -1,4 +1,3 @@
-import { DataApi as api } from "../../../shared/data-api";
 import { returnBlogPostsResponse, returnBasicCard } from "../../shared/responses";
 import { Firestore } from "../../../shared/firestore";
 import { BlogPostService } from "../../../services/blog-post-service";

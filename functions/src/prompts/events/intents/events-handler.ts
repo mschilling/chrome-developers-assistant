@@ -1,6 +1,9 @@
 import * as moment from 'moment';
 import { BasicCard, Button, Image } from "actions-on-google";
-import { DataApi as api } from "../../../shared/data-api";
+import { Firestore } from '../../../shared/firestore';
+import { EventService } from '../../../services/events-service';
+
+const eventService = new EventService(Firestore.db);
 
 const SEARCH_DATE_FORMAT = 'YYYY-MM-DD';
 const SEARCH_DATE_PARAM = 'search-date';
@@ -24,9 +27,9 @@ export async function previousEvent(conv, params) {
 
   let event;
   if (filterCountry) {
-    event = await api.getPreviousEventByCountry(inputDate, filterCountry);
+    event = await eventService.getPreviousEventByCountry(inputDate, filterCountry);
   } else {
-    event = await api.getPreviousEvent(inputDate);
+    event = await eventService.getPreviousEvent(inputDate);
   }
 
   if (event && event.name) {
@@ -53,7 +56,7 @@ export async function nextEvent(conv, params) {
     inputDate = moment(searchDate, SEARCH_DATE_FORMAT).toDate();
   }
 
-  const event: any = await api.getNextEvent(inputDate);
+  const event: any = await eventService.getNextEvent(inputDate);
 
   if (event && event.name) {
     const speech = `<speak>

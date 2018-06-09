@@ -5,9 +5,9 @@ import { FirestoreCollections } from "../enums/firestore-collections";
 import * as moment from 'moment';
 
 interface IEventService {
-  getNextEvent(minDateIsoString?: string): Promise<Event>;
-  getPreviousEvent(maxDateIsoString?: string): Promise<Event>;
-  getPreviousEventByCountry(maxDateIsoString: string, country: string): Promise<Event>;
+  getNextEvent(minDateIsoString?: any): Promise<Event>;
+  getPreviousEvent(maxDateIsoString?: any): Promise<Event>;
+  getPreviousEventByCountry(maxDateIsoString: any, country: string): Promise<Event>;
 }
 
 export class EventService extends CoreService implements IEventService {
@@ -16,7 +16,7 @@ export class EventService extends CoreService implements IEventService {
     super(db);
   }
 
-  async getNextEvent(minDateIsoString?: string): Promise<Event> {
+  async getNextEvent(minDateIsoString?: any): Promise<Event> {
     let date = moment().toDate();
     if (minDateIsoString) {
       date = moment(minDateIsoString).toDate();
@@ -35,7 +35,7 @@ export class EventService extends CoreService implements IEventService {
       });
 
   }
-  async getPreviousEvent(maxDateIsoString: string): Promise<Event> {
+  async getPreviousEvent(maxDateIsoString: any): Promise<Event> {
     let date = moment().toDate();
     if (maxDateIsoString) {
       date = moment(maxDateIsoString).toDate();
@@ -53,7 +53,7 @@ export class EventService extends CoreService implements IEventService {
         return {};
       });
   }
-  async getPreviousEventByCountry(maxDateIsoString: string, country: string): Promise<Event> {
+  async getPreviousEventByCountry(maxDateIsoString: any, country: string): Promise<Event> {
     let date = moment().toDate();
     if (maxDateIsoString) {
       date = moment(maxDateIsoString).toDate();
