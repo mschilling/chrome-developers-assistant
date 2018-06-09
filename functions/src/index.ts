@@ -24,6 +24,9 @@ import { handleOption } from './intents/generic-options-handler';
 import { searchVideos, videoRecommendationHandler } from './intents/videos-handler';
 import { speakerInfoHandler, knownForHandler, speakerSelection } from './intents/speakers-handler';
 
+// Import modules
+import { VideosModule } from './videos/module';
+
 const Actions = require('./assistant-intents');
 
 process.env.DEBUG = 'actions-on-google:*';
@@ -41,5 +44,7 @@ app.intent(Actions.INTENT_SPEAKER_INFO_KNOW_FOR, knownForHandler);
 app.intent(Actions.INTENT_SPEAKER_INFO, speakerInfoHandler);
 app.intent(Actions.INTENT_SPEAKER_SELECTION, speakerSelection);
 app.intent(Actions.INTENT_BLOGPOST_SEARCH, searchBlogPosts);
+
+// VideosModule.mapIntents(app);
 
 exports.assistant = functions.https.onRequest(app);

@@ -1,7 +1,10 @@
+// app.intent(Actions.INTENT_VIDEO_SEARCH, searchVideos);
+// app.intent(Actions.INTENT_VIDEO_RECOMMEND, videoRecommendationHandler);
 
-
-// const app = dialogflow();
-
-// app.intent(Actions.INTENT_OPTION_SELECT, handleOption);
-// app.intent(Actions.INTENT_NEXT_EVENT, nextEvent);
-// app.intent(Actions.INTENT_PREV_EVENT, previousEvent);
+export class VideosModule {
+  static mapIntents(app) {
+    app.intent('INTENT NAME', (conv, params) => {
+      //
+    });
+  }
+}
