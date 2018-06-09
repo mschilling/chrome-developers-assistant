@@ -45,9 +45,7 @@ export class BlogPostService extends CoreService implements IBlogPostService {
     return query
       .doc(key)
       .get()
-      .then(snapshot => {
-        return snapshot.data();
-      });
+      .then(snapshot => snapshot.data());
   }
 
 }

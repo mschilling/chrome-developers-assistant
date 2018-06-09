@@ -1,35 +1,35 @@
 import { dialogflow } from 'actions-on-google';
-import { module as sharedModule } from './prompts/shared/module';
-import { module as videoModule } from './prompts/videos/module';
-import { module as blogsModule } from './prompts/blogs/module';
-import { module as eventsModule } from './prompts/events/module';
-import { module as speakersModule } from './prompts/speakers/module';
+import { module as shared } from './prompts/shared/module';
+import { module as video } from './prompts/videos/module';
+import { module as blog } from './prompts/blogs/module';
+import { module as event } from './prompts/events/module';
+import { module as speaker } from './prompts/speakers/module';
 
 const app = dialogflow();
 
 app.intent([
   'Options Handler Fallback',
-], sharedModule);
+], shared);
 
 app.intent([
   'Video Search',
   'Recommend Videos',
   'Watch Show Episodes',
-], videoModule);
+], video);
 
 app.intent([
   'Events - Next Event',
   'Events - Previous Event',
-], eventsModule);
+], event);
 
 app.intent([
   'Speaker Information',
   'Speakers - Speaker info - known for',
   'Speaker Selection',
-], speakersModule);
+], speaker);
 
 app.intent([
   'Read Blogpost',
-], blogsModule);
+], blog);
 
 export { app };
