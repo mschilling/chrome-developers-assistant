@@ -1,5 +1,7 @@
 import { DataApi as api } from "../../../shared/data-api";
 import { returnBlogPostsResponse, returnBasicCard } from "../../shared/responses";
+import { Firestore } from "../../../shared/firestore";
+import { BlogPostService } from "../../../services/blog-post-service";
 
 export async function searchBlogPosts(conv, params) {
 
@@ -10,7 +12,8 @@ export async function searchBlogPosts(conv, params) {
     filters.person = person;
   }
 
-  const results = await api.searchBlogPosts(filters, 10);
+  const blogPostService = new BlogPostService(Firestore.db);
+  const results = await blogPostService.search(filters, 10);
   if (results && results.length > 0) {
     const result = results[0];
     if (results.length > 1) {

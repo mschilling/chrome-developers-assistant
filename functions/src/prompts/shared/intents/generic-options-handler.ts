@@ -1,4 +1,5 @@
-import { DataApi as api } from './../../../shared/data-api';
+import { Firestore } from './../../../shared/firestore';
+import { BlogPostService } from './../../../services/blog-post-service';
 import { YouTubeManager } from './../../../shared/youtube-manager';
 import { DialogflowOption } from "../option-helper";
 import { responseYouTubeVideoAsBasicCard, returnBasicCard } from '../responses';
@@ -32,7 +33,8 @@ async function handleVideo(conv, dfo) {
 
 async function handleBlogpost(conv, dfo) {
   if (dfo && dfo.value) {
-    const data = await api.getBlogPostById(dfo.value);
+    const blogPostService = new BlogPostService(Firestore.db);
+    const data = await blogPostService.getByKey(dfo.value);
     if (data) {
       returnBasicCard(conv, 'blogpost', data);
       return;

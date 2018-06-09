@@ -4,7 +4,6 @@ import * as admin from 'firebase-admin'
 
 import { VideoService } from './../services/video-service';
 import { PeopleService } from './../services/people-service';
-import { BlogPostService } from './../services/blog-post-service';
 import { ShowService } from './../services/shows-service';
 import { EventService } from './../services/events-service';
 
@@ -74,17 +73,17 @@ export class DataApi {
     return videoService.filterVideosBySpeakers(speakers, limit);
   }
 
-  static searchBlogPosts(searchParams, limit) {
-    debug('searchBlogPosts', searchParams, limit);
-    const blogPostService = new BlogPostService(admin.firestore());
-    return blogPostService.search(searchParams, limit);
-  }
+  // static searchBlogPosts(searchParams, limit) {
+  //   debug('searchBlogPosts', searchParams, limit);
+  //   const blogPostService = new BlogPostService(admin.firestore());
+  //   return blogPostService.search(searchParams, limit);
+  // }
 
-  static getBlogPostById(key) {
-    debug('getBlogPostById', key);
-    const blogPostService = new BlogPostService(admin.firestore());
-    return blogPostService.getByKey(key);
-  }
+  // static getBlogPostById(key) {
+  //   debug('getBlogPostById', key);
+  //   const blogPostService = new BlogPostService(admin.firestore());
+  //   return blogPostService.getByKey(key);
+  // }
 
   static getShows(filters) {
     debug('getShows', filters);
