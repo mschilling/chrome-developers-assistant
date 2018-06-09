@@ -1,7 +1,7 @@
 import * as admin from 'firebase-admin';
 
-import { VideoService } from './../../services/video-service';
-import { Video } from '../../models/video';
+import { VideoService } from './../../../services/video-service';
+import { Video } from '../../../models/video';
 
 export abstract class IResponse {
 

@@ -8,6 +8,5 @@ module.exports = {
   INTENT_SPEAKER_INFO_KNOW_FOR: 'Speakers - Speaker info - known for',
   INTENT_SPEAKER_SELECTION: 'Speaker Selection',
   // INTENT_SPEAKER_SELECT_FALLBACK: 'option.select-speaker',
-  INTENT_BLOGPOST_SEARCH: 'Read Blogpost',
   INTENT_FIND_SHOW_EPISODE: 'Watch Show Episodes'
 };

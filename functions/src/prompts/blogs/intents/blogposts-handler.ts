@@ -1,6 +1,5 @@
-const api = require('../helpers/api');
-const responses = require('../helpers/responses');
-const Str = require('../strings');
+const api = require('../../../helpers/api');
+const responses = require('../../../helpers/responses');
 
 export async function searchBlogPosts(conv, params) {
 
@@ -20,6 +19,6 @@ export async function searchBlogPosts(conv, params) {
       responses.returnBasicCard(conv, 'blogpost', result);
     }
   } else {
-    conv.ask(Str.DEFAULT_NO_RESULT.TEXT);
+    conv.ask('Sorry, there\'s no result right now. Please try something else.');
   }
 }
