@@ -2,8 +2,6 @@
 
 module.exports = {
   INTENT_OPTION_SELECT: 'Options Handler Fallback',
-  INTENT_VIDEO_SEARCH: 'Video Search',
-  INTENT_VIDEO_RECOMMEND: 'Recommend Videos',
   INTENT_NEXT_EVENT: 'Events - Next Event',
   INTENT_PREV_EVENT: 'Events - Previous Event',
   INTENT_SPEAKER_INFO: 'Speaker Information', // Speakers - Speaker info

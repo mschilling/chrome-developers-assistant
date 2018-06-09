@@ -1,10 +1,11 @@
-// app.intent(Actions.INTENT_VIDEO_SEARCH, searchVideos);
-// app.intent(Actions.INTENT_VIDEO_RECOMMEND, videoRecommendationHandler);
+import { searchVideos, videoRecommendationHandler } from '../intents/videos-handler';
 
-export class VideosModule {
-  static mapIntents(app) {
-    app.intent('INTENT NAME', (conv, params) => {
-      //
-    });
-  }
-}
+const intents = {
+  'Video Search': searchVideos,
+  'Recommend Videos': videoRecommendationHandler
+};
+
+export const module = (conv, ...args): any => {
+  console.log('conv.intent', conv.intent, new Date() );
+  return intents[conv.intent](conv, ...args);
+};
