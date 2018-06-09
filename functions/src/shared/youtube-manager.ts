@@ -1,12 +1,8 @@
-'use strict';
-
 require('dotenv').config({silent: true});
 
-const Debug = require('debug');
-const debug = Debug('google-developer-assistant-api:debug');
-const error = Debug('google-developer-assistant-api:error');
+import { debug, error } from './debug';
 
-const functions = require('firebase-functions');
+import * as functions from 'firebase-functions';
 
 const axios = require('axios');
 const api = require('../helpers/api');

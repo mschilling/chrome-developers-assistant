@@ -1,6 +1,4 @@
-const Debug = require('debug');
-const debug = Debug('google-developer-assistant-api:debug');
-const error = Debug('google-developer-assistant-api:error');
+import { debug } from '../shared/debug';
 
 import { Video } from "../models/video";
 import { CoreService } from "./abstract-service";

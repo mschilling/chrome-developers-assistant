@@ -1,10 +1,7 @@
-const Debug = require('debug');
-const debug = Debug('google-developer-assistant-api:debug');
-const error = Debug('google-developer-assistant-api:error');
-
 import { BlogPost } from "../models/blog-post";
 import { CoreService } from "./abstract-service";
 import { FirestoreCollections } from "../enums/firestore-collections";
+import { debug } from '../shared/debug';
 
 interface IBlogPostService {
   search(searchParams: any, limit?: number): Promise<BlogPost[]>;

@@ -1,5 +1,4 @@
 import { Show } from "../models/show";
-
 import { CoreService } from "./abstract-service";
 import { FirestoreCollections } from "../enums/firestore-collections";
 

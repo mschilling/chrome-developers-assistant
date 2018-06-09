@@ -1,5 +1,5 @@
-const api = require('../../../helpers/api');
-const responses = require('../../../helpers/responses');
+import { DataApi as api } from "../../../shared/data-api";
+import { returnBlogPostsResponse, returnBasicCard } from "../../shared/responses";
 
 export async function searchBlogPosts(conv, params) {
 
@@ -14,9 +14,9 @@ export async function searchBlogPosts(conv, params) {
   if (results && results.length > 0) {
     const result = results[0];
     if (results.length > 1) {
-      responses.returnBlogPostsResponse(conv, true, results);
+      returnBlogPostsResponse(conv, true, results);
     } else {
-      responses.returnBasicCard(conv, 'blogpost', result);
+      returnBasicCard(conv, 'blogpost', result);
     }
   } else {
     conv.ask('Sorry, there\'s no result right now. Please try something else.');

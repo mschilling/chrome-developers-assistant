@@ -1,6 +1,4 @@
-const Debug = require('debug');
-const debug = Debug('google-developer-assistant-api:debug');
-const error = Debug('google-developer-assistant-api:error');
+import { debug } from '../shared/debug';
 
 export abstract class CoreService {
   db: FirebaseFirestore.Firestore;

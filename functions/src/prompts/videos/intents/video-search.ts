@@ -28,14 +28,14 @@ export async function video(conv, inputParams) {
 }
 
 function asBasicCard(data: Video): Response {
-  const response = new Response();
+  // const response = new Response();
   return null;
 }
 
-function asCarousel(data: Video[]): Response {
-  return null;
-}
+// function asCarousel(data: Video[]): Response {
+//   return null;
+// }
 
-function asBrowseCarousel(data: Video[]): Response {
-  return null;
-}
+// function asBrowseCarousel(data: Video[]): Response {
+//   return null;
+// }

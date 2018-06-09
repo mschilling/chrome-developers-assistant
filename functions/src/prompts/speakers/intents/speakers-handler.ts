@@ -1,10 +1,7 @@
 import { SimpleResponse, BasicCard, Button, Image, Carousel } from "actions-on-google";
 
-const admin = require('firebase-admin');
-const peopleRef = admin.firestore().collection('people');
-
-const api = require('../helpers/api');
-const DialogflowOption = require('../helpers/option-helper').DialogflowOptionHelper;
+import { DataApi as api } from "../../../shared/data-api";
+import { DialogflowOption } from "../../shared/option-helper";
 
 // Context Parameters
 const SPEAKER_PARAM = 'speaker';
@@ -14,7 +11,7 @@ const PERSON_PARAM = 'person';
 export async function speakerInfoHandler(conv, params) {
   const key = params[SPEAKER_PARAM];
 
-  const person = await api.getPerson(key);
+  const person: any = await api.getPerson(key);
   if (person) {
     let speechText = `${person.first_name} ${person.last_name} is a developer from the Chrome Team`;
     if (person.shortbio) {
@@ -56,7 +53,7 @@ export async function speakerInfoHandler(conv, params) {
 export async function selectSpeakerByOption(conv, params) {
   console.log('getSelectedOption', conv.getSelectedOption());
   const speakerId = conv.getSelectedOption();
-  const person = await api.getPerson(speakerId);
+  const person: any = await api.getPerson(speakerId);
 
   if (person && person.bio) {
     const speech = `<speak>${person.bio}</speak>`;
@@ -79,7 +76,8 @@ export async function speakerSelection(conv, params) {
 
     let countOptions = 0;
     let options = {};
-    for (const person of people) {
+    for (const p of people) {
+      const person = <any>p;
       if (person.pictureUrl) {
         countOptions++;
         const option = getCarouselOption(person);
@@ -102,7 +100,7 @@ export async function speakerSelection(conv, params) {
 
 export async function knownForHandler(conv, params) {
   const key = params[PERSON_PARAM];
-  const person = await getPerson(key);
+  const person: any = await api.getPerson(key);
 
   if (person && person.bio) {
     const speech = `<speak>${person.bio}</speak>`;
@@ -117,7 +115,7 @@ export async function handlePersonAttribute(conv, inputParams) {
   const params = parseParameters(inputParams);
   console.log('handlePersonAttribute', params);
 
-  const person = await api.getPerson(params.speaker);
+  const person: any = await api.getPerson(params.speaker);
   if (person) {
     let displayText = 'Sorry, I couldn\'t find it right now.';
     let speech = `<speak>${displayText}</speak>`;
@@ -147,13 +145,13 @@ export async function handlePersonAttribute(conv, inputParams) {
   }
 }
 
-function getPerson(key) {
-  if (!key) Promise.resolve();
+// function getPerson(key) {
+//   if (!key) Promise.resolve();
 
-  return peopleRef.doc(key).get().then(function (doc) {
-    return doc.data();
-  });
-}
+//   return peopleRef.doc(key).get().then(function (doc) {
+//     return doc.data();
+//   });
+// }
 
 function getCarouselOption(person) {
   const cardTitle = `${person.first_name} ${person.last_name}`;

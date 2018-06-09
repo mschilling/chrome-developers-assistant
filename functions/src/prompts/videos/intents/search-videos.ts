@@ -1,8 +1,7 @@
-const api = require('../../../helpers/api');
-const responses = require('../../../helpers/responses');
-
-const youtube = require('../../../helpers/youtube-manager').YouTubeManager;
-const DialogflowOption = require('../../../helpers/option-helper').DialogflowOptionHelper;
+import { YouTubeManager } from './../../../shared/youtube-manager';
+import { DataApi as api } from "../../../shared/data-api";
+import { returnVideosResponse, returnBasicCard, responseYouTubeVideoAsBasicCard } from "../../shared/responses";
+import { DialogflowOption } from "../../shared/option-helper";
 
 // Context Parameters
 const EVENT_PARAM = 'summit';
@@ -18,9 +17,9 @@ export async function searchVideos(conv, inputParams) {
   if (results && results.length > 0) {
     const result = results[0];
     if (results.length > 1) {
-      responses.returnVideosResponse(conv, true, results); // Verify implementation
+      returnVideosResponse(conv, true, results); // Verify implementation
     } else {
-      responses.returnBasicCard(conv, 'video', result); // Verify implementation
+      returnBasicCard(conv, 'video', result); // Verify implementation
     }
   } else {
     conv.ask('Sorry, there\'s no result right now. Please try something else.');
@@ -34,9 +33,9 @@ export async function selectVideoByOption(conv, params) {
   console.log('dfo', dfo);
 
   if (dfo && dfo.value) {
-    const card = await youtube.getVideoById(dfo.value);
+    const card = await YouTubeManager.getVideoById(dfo.value);
     if (card) {
-      responses.responseYouTubeVideoAsBasicCard(conv, card); // Verify implementation
+      responseYouTubeVideoAsBasicCard(conv, card); // Verify implementation
       return;
     }
   };

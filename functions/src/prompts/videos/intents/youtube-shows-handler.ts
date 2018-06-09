@@ -1,8 +1,8 @@
 import { BasicCard, SimpleResponse, Image, Button } from "actions-on-google";
 
-const moment = require('moment');
-const ym = require('../helpers/youtube-manager').YouTubeManager;
-const responses = require('../helpers/responses');
+import * as moment from 'moment';
+import { returnVideosResponse, returnBasicCard } from "../../shared/responses";
+import { YouTubeManager } from './../../../shared/youtube-manager';
 
 export async function findEpisode(conv, params) {
   console.log('params', params);
@@ -10,20 +10,20 @@ export async function findEpisode(conv, params) {
 
   if (!playlistId) {
 
-    const items = await ym.getLatestShowEpisodes({ limit: 10 });
+    const items = await YouTubeManager.getLatestShowEpisodes({ limit: 10 });
     console.log('items:', items);
     if (items) {
       const result = items[0];
       if (items.length > 1) {
-        responses.returnVideosResponse(conv, true, items);
+        returnVideosResponse(conv, true, items);
       } else {
-        responses.returnBasicCard(conv, 'video', result);
+        returnBasicCard(conv, 'video', result);
       }
     } else {
       conv.ask('Sorry, I could not find the show on YouTube');
     }
   } else {
-    const card = await ym.getLastEpisode(playlistId);
+    const card = await YouTubeManager.getLastEpisode(playlistId);
     if (card) {
       responseBasicCard(conv, card);
     } else {

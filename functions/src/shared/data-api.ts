@@ -1,22 +1,14 @@
-'use strict';
-
-const Debug = require('debug');
-const debug = Debug('google-developer-assistant-api:debug');
-const error = Debug('google-developer-assistant-api:error');
+import { debug } from '../shared/debug';
 
 import * as admin from 'firebase-admin'
 
-import { VideoService } from '../../services/video-service';
-import { PeopleService } from '../../services/people-service';
-import { BlogPostService } from '../../services/blog-post-service';
-import { ShowService } from '../../services/shows-service';
-import { EventService } from '../../services/events-service';
+import { VideoService } from './../services/video-service';
+import { PeopleService } from './../services/people-service';
+import { BlogPostService } from './../services/blog-post-service';
+import { ShowService } from './../services/shows-service';
+import { EventService } from './../services/events-service';
 
-// Configure logging for hosting platforms that only support console.log and console.error
-debug.log = console.log.bind(console);
-error.log = console.error.bind(console);
-
-class AssistantDataApi {
+export class DataApi {
   static getPerson(id) {
     debug('getPerson', id);
     const peopleService = new PeopleService(admin.firestore());
@@ -100,5 +92,3 @@ class AssistantDataApi {
     return showService.getItems(filters);
   }
 }
-
-module.exports = AssistantDataApi;

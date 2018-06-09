@@ -1,8 +1,6 @@
+import * as moment from 'moment';
 import { BasicCard, Button, Image } from "actions-on-google";
-
-const moment = require('moment');
-const api = require('../helpers/api');
-const Str = require('../strings');
+import { DataApi as api } from "../../../shared/data-api";
 
 const SEARCH_DATE_FORMAT = 'YYYY-MM-DD';
 const SEARCH_DATE_PARAM = 'search-date';
@@ -43,7 +41,7 @@ export async function previousEvent(conv, params) {
     conv.ask(buildBasicCard(event));
 
   } else {
-    conv.ask(Str.EVENTS.NO_RESULT);
+    conv.ask('Sorry, I couldn\'t find any event right now');
   }
 }
 
@@ -55,7 +53,7 @@ export async function nextEvent(conv, params) {
     inputDate = moment(searchDate, SEARCH_DATE_FORMAT).toDate();
   }
 
-  const event = await api.getNextEvent(inputDate);
+  const event: any = await api.getNextEvent(inputDate);
 
   if (event && event.name) {
     const speech = `<speak>
@@ -67,7 +65,7 @@ export async function nextEvent(conv, params) {
     conv.ask(speech);
     conv.ask(buildBasicCard(event));
   } else {
-    conv.ask(Str.EVENTS.NO_RESULT);
+    conv.ask('Sorry, I couldn\'t find any event right now');
   }
 }
 

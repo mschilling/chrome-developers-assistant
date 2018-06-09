@@ -1,10 +1,9 @@
 // const moment = require('moment');
 import * as moment from 'moment';
 import { SimpleResponse, BrowseCarouselItem, Image, BrowseCarousel, Carousel, LinkOutSuggestion, BasicCard, Button } from 'actions-on-google';
+import { DialogflowOption } from './option-helper';
 
-const DialogflowOption = require('../option-helper').DialogflowOptionHelper;
-
-function returnVideosResponse(conv, success, videos) {
+export function returnVideosResponse(conv, success, videos) {
   let response;
   if (success && (videos || []).length > 0) {
     const displayText = 'I\'ve found some video\'s on YouTube. Here it is.';
@@ -29,7 +28,7 @@ function returnVideosResponse(conv, success, videos) {
   }
 }
 
-function returnBlogPostsResponse(conv, success, items) {
+export function returnBlogPostsResponse(conv, success, items) {
   let response;
   if (success && (items || []).length > 0) {
     const displayText = 'I\'ve found some online blogposts. Here it is.';
@@ -55,7 +54,7 @@ function returnBlogPostsResponse(conv, success, items) {
   }
 }
 
-function buildCarouselForYouTubeVideos(items, inputMaxLength = 10) {
+export function buildCarouselForYouTubeVideos(items, inputMaxLength = 10) {
   let maxLength = inputMaxLength;
   if (maxLength > 10) maxLength = 10;
   if (!(items && maxLength > 0)) return null;
@@ -94,40 +93,7 @@ function buildCarouselForYouTubeVideos(items, inputMaxLength = 10) {
   return carouselItems;
 }
 
-/*
-** unused function
-
-function buildCarouselForBlogPosts(conv, items, inputMaxLength = 10) {
-  let maxLength = inputMaxLength;
-  if (maxLength > 10) maxLength = 10;
-  if (!(items && maxLength > 0)) return;
-
-  console.log('carousel items', items);
-
-  let options = conv.buildCarousel();
-  for (let i = 0; i < items.length; i++) {
-    const item = items[i];
-    const uniqueId = item.id;
-    const cardTitle = item.title;
-    const cardDescription = `Published ${moment(item.publishDate).fromNow()} by ${item.author}`;
-    const cardPicture = item.postImageUrl;
-    const cardPictureAltText = 'blog post';
-
-    const dfo = new DialogflowOption('blogpost#id', item.id, 'open');
-
-    const newOption = conv.buildOptionItem(dfo.toString(), [uniqueId + '_alias'])
-      .setTitle(cardTitle)
-      .setDescription(cardDescription)
-      .setImage(cardPicture, cardPictureAltText)
-      ;
-
-    options = options.addItems(newOption);
-  }
-  return options;
-}
-*/
-
-function buildBrowsingCarouselForBlogPosts(items, inputMaxLength = 10) {
+export function buildBrowsingCarouselForBlogPosts(items, inputMaxLength = 10) {
   let maxLength = inputMaxLength;
   if (maxLength > 10) maxLength = 10;
   if (!(items && maxLength > 0)) return null;
@@ -160,7 +126,7 @@ function buildBrowsingCarouselForBlogPosts(items, inputMaxLength = 10) {
   return browseCarouselItems;
 }
 
-function returnVideoResponse(conv, success, params) {
+export function returnVideoResponse(conv, success, params) {
   let response;
   if (success) {
     const videoId = params.videoId;
@@ -197,7 +163,7 @@ function returnVideoResponse(conv, success, params) {
   conv.ask(response);
 }
 
-function returnBlogPostResponse(conv, success, params) {
+export function returnBlogPostResponse(conv, success, params) {
   if (success) {
     const title = params.title || '';
     const url = params.url;
@@ -233,7 +199,7 @@ function returnBlogPostResponse(conv, success, params) {
   conv.ask("Sorry, I could not find any blogposts right now");
 }
 
-function responseIntentKeynoteVideo(conv, success, params) {
+export function responseIntentKeynoteVideo(conv, success, params) {
   if (success) {
     const videoId = params.videoId;
     const videoTitle = params.videoTitle || '';
@@ -266,7 +232,7 @@ function responseIntentKeynoteVideo(conv, success, params) {
   conv.ask("Sorry, I could not find any right now");
 }
 
-function responseYouTubeVideoAsBasicCard(conv, cardData) {
+export function responseYouTubeVideoAsBasicCard(conv, cardData) {
   const publishDate = moment(cardData.publishedAt);
   conv.ask(new SimpleResponse({
     text: 'Here\'s a YouTube result',
@@ -289,7 +255,7 @@ function responseYouTubeVideoAsBasicCard(conv, cardData) {
   }))
 }
 
-function returnBasicCard(conv, cardType, data) {
+export function returnBasicCard(conv, cardType, data) {
   console.log('returnBasicCard', cardType, data);
   const card = <any>{};
   let displayText;
@@ -348,13 +314,3 @@ function returnBasicCard(conv, cardType, data) {
 
   conv.ask(basicCard);
 }
-
-module.exports = {
-  returnVideosResponse: returnVideosResponse,
-  returnVideoResponse: returnVideoResponse,
-  responseIntentKeynoteVideo: responseIntentKeynoteVideo,
-  returnBlogPostsResponse: returnBlogPostsResponse,
-  returnBlogPostResponse: returnBlogPostResponse,
-  responseYouTubeVideoAsBasicCard: responseYouTubeVideoAsBasicCard,
-  returnBasicCard: returnBasicCard
-};

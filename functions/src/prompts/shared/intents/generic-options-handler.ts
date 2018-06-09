@@ -1,11 +1,9 @@
-const api = require('../helpers/api');
-const youtube = require('../helpers/youtube-manager').YouTubeManager;
-const responses = require('../helpers/responses');
-const DialogflowOption = require('../helpers/option-helper').DialogflowOptionHelper;
-const Str = require('../strings');
+import { DataApi as api } from './../../../shared/data-api';
+import { YouTubeManager } from './../../../shared/youtube-manager';
+import { DialogflowOption } from "../option-helper";
+import { responseYouTubeVideoAsBasicCard, returnBasicCard } from '../responses';
 
 export async function handleOption(conv, params, option) {
-  // const optionData = assistant.getSelectedOption();
   const optionData = option;
   console.log('genericOptionData', optionData);
   const dfo = DialogflowOption.fromString(optionData);
@@ -18,14 +16,14 @@ export async function handleOption(conv, params, option) {
     case 'person#name':
       return conv.ask(`${dfo.value} is a member of the Chrome Team. More information coming soon.`);
   }
-  conv.ask(Str.OPTION_SELECT_NO_RESULT.TEXT);
+  conv.ask('Sorry, I could not find it right now');
 }
 
 async function handleVideo(conv, dfo) {
   if (dfo && dfo.value) {
-    const card = await youtube.getVideoById(dfo.value);
+    const card = await YouTubeManager.getVideoById(dfo.value);
     if (card) {
-      responses.responseYouTubeVideoAsBasicCard(conv, card); // TODO: check/verify
+      responseYouTubeVideoAsBasicCard(conv, card); // TODO: check/verify
       return;
     }
   };
@@ -36,7 +34,7 @@ async function handleBlogpost(conv, dfo) {
   if (dfo && dfo.value) {
     const data = await api.getBlogPostById(dfo.value);
     if (data) {
-      responses.returnBasicCard(conv, 'blogpost', data);
+      returnBasicCard(conv, 'blogpost', data);
       return;
     }
   };
