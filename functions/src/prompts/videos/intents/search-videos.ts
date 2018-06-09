@@ -1,7 +1,11 @@
 import { YouTubeManager } from './../../../shared/youtube-manager';
-import { DataApi as api } from "../../../shared/data-api";
+// import { DataApi as api } from "../../../shared/data-api";
 import { returnVideosResponse, returnBasicCard, responseYouTubeVideoAsBasicCard } from "../../shared/responses";
 import { DialogflowOption } from "../../shared/option-helper";
+import { VideoService } from '../../../services/video-service';
+import { Firestore } from '../../../shared/firestore';
+
+const videoService = new VideoService(Firestore.db);
 
 // Context Parameters
 const EVENT_PARAM = 'summit';
@@ -11,7 +15,7 @@ const SPEAKERS_PARAM = 'speakers';
 export async function searchVideos(conv, inputParams) {
   const params = parseParameters(inputParams);
 
-  const results = await api.searchVideos(params, 10);
+  const results = await videoService.search(params, 10);
 
   console.log('Number of videos found: ' + (results || []).length);
   if (results && results.length > 0) {
