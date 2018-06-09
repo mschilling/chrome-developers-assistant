@@ -1,4 +1,5 @@
-import { searchVideos, videoRecommendationHandler } from '../../intents/videos-handler';
+import { searchVideos } from "./intents/search-videos";
+import { videoRecommendationHandler } from "./intents/recommend-videos";
 
 const intents = {
   'Video Search': searchVideos,

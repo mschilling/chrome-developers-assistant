@@ -1,9 +1,8 @@
-const api = require('../helpers/api');
-const responses = require('../helpers/responses');
+const api = require('../../../helpers/api');
+const responses = require('../../../helpers/responses');
 
-const youtube = require('../helpers/youtube-manager').YouTubeManager;
-const DialogflowOption = require('../helpers/option-helper').DialogflowOptionHelper;
-const Str = require('../strings');
+const youtube = require('../../../helpers/youtube-manager').YouTubeManager;
+const DialogflowOption = require('../../../helpers/option-helper').DialogflowOptionHelper;
 
 // Context Parameters
 const EVENT_PARAM = 'summit';
@@ -24,25 +23,7 @@ export async function searchVideos(conv, inputParams) {
       responses.returnBasicCard(conv, 'video', result); // Verify implementation
     }
   } else {
-    conv.ask(Str.DEFAULT_NO_RESULT.TEXT);
-  }
-}
-
-export async function videoRecommendationHandler(conv, params) {
-
-  const defaultPlaylistId = 'PLJ3pNpJBSfWYehQ4URTAsauypK_QLowul';
-
-  const results = await youtube.getPlaylistVideos(defaultPlaylistId);
-  console.log('Number of videos found: ' + (results || []).length);
-  if (results && results.length > 0) {
-    const result = results[0];
-    if (results.length > 1) {
-      responses.returnVideosResponse(conv, true, results); // Verify implementation
-    } else {
-      responses.returnBasicCard(conv, 'video', result); // Verify implementation
-    }
-  } else {
-    conv.ask(Str.DEFAULT_NO_RESULT.TEXT);
+    conv.ask('Sorry, there\'s no result right now. Please try something else.');
   }
 }
 
