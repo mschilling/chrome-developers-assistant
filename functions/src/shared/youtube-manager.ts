@@ -1,11 +1,13 @@
+import { ShowService } from './../services/shows-service';
 require('dotenv').config({silent: true});
 
-import { debug, error } from './debug';
+import { debug } from './debug';
 
 import * as functions from 'firebase-functions';
+import { Firestore } from './firestore';
 
 const axios = require('axios');
-const api = require('../helpers/api');
+// const api = require('../helpers/api');
 
 const BASE_URL = 'https://www.googleapis.com/youtube/v3';
 const ACCESS_TOKEN = process.env.YOUTUBE_KEY || functions.config().youtube.key;
@@ -15,10 +17,6 @@ const client = axios.create({
   timeout: 1000,
   // headers: {'Authorization': 'Bearer ' + ACCESS_TOKEN}
 });
-
-// Configure logging for hosting platforms that only support console.log and console.error
-debug.log = console.log.bind(console);
-error.log = console.error.bind(console);
 
 class OpenGraphObject {
   static asYouTubeVideo(data) {
@@ -105,9 +103,10 @@ export class YouTubeManager {
   }
 
   static getLatestShowEpisodes(filters) {
-    return api.getShows(filters)
+    const showService = new ShowService(Firestore.db);
+    return showService.getItems(filters)
     .then( (items) => {
-      const actions = items.map( p => YouTubeManager.getLastEpisode(p.playlistId));
+      const actions = items.map( (p: any) => YouTubeManager.getLastEpisode(p.playlistId));
       return Promise.all(actions)
       .then((videos) => {
         return videos;
