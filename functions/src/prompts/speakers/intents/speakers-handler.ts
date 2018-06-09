@@ -1,7 +1,10 @@
 import { SimpleResponse, BasicCard, Button, Image, Carousel } from "actions-on-google";
 
-import { DataApi as api } from "../../../shared/data-api";
 import { DialogflowOption } from "../../shared/option-helper";
+import { Firestore } from "../../../shared/firestore";
+import { PeopleService } from "../../../services/people-service";
+
+const peopleService = new PeopleService(Firestore.db);
 
 // Context Parameters
 const SPEAKER_PARAM = 'speaker';
@@ -11,7 +14,7 @@ const PERSON_PARAM = 'person';
 export async function speakerInfoHandler(conv, params) {
   const key = params[SPEAKER_PARAM];
 
-  const person: any = await api.getPerson(key);
+  const person: any = await peopleService.getPerson(key);
   if (person) {
     let speechText = `${person.first_name} ${person.last_name} is a developer from the Chrome Team`;
     if (person.shortbio) {
@@ -53,7 +56,7 @@ export async function speakerInfoHandler(conv, params) {
 export async function selectSpeakerByOption(conv, params) {
   console.log('getSelectedOption', conv.getSelectedOption());
   const speakerId = conv.getSelectedOption();
-  const person: any = await api.getPerson(speakerId);
+  const person: any = await peopleService.getPerson(speakerId);
 
   if (person && person.bio) {
     const speech = `<speak>${person.bio}</speak>`;
@@ -67,7 +70,7 @@ export async function selectSpeakerByOption(conv, params) {
 export async function speakerSelection(conv, params) {
   console.log(`Handle intent :: speakerSelection`, conv.actions, params);
 
-  const people = await api.getPeople(20);
+  const people = await peopleService.getPeople(20);
 
   if (people && people.length > 0) {
     console.log('Display speakers in carousel. n=' + people.length, people);
@@ -100,7 +103,7 @@ export async function speakerSelection(conv, params) {
 
 export async function knownForHandler(conv, params) {
   const key = params[PERSON_PARAM];
-  const person: any = await api.getPerson(key);
+  const person: any = await peopleService.getPerson(key);
 
   if (person && person.bio) {
     const speech = `<speak>${person.bio}</speak>`;
@@ -115,7 +118,7 @@ export async function handlePersonAttribute(conv, inputParams) {
   const params = parseParameters(inputParams);
   console.log('handlePersonAttribute', params);
 
-  const person: any = await api.getPerson(params.speaker);
+  const person: any = await peopleService.getPerson(params.speaker);
   if (person) {
     let displayText = 'Sorry, I couldn\'t find it right now.';
     let speech = `<speak>${displayText}</speak>`;
@@ -144,14 +147,6 @@ export async function handlePersonAttribute(conv, inputParams) {
     conv.ask(speech);
   }
 }
-
-// function getPerson(key) {
-//   if (!key) Promise.resolve();
-
-//   return peopleRef.doc(key).get().then(function (doc) {
-//     return doc.data();
-//   });
-// }
 
 function getCarouselOption(person) {
   const cardTitle = `${person.first_name} ${person.last_name}`;

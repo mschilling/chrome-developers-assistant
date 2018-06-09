@@ -3,22 +3,9 @@ import { debug } from '../shared/debug';
 import * as admin from 'firebase-admin'
 
 import { VideoService } from './../services/video-service';
-import { PeopleService } from './../services/people-service';
 import { ShowService } from './../services/shows-service';
-// import { EventService } from './../services/events-service';
 
 export class DataApi {
-  static getPerson(id) {
-    debug('getPerson', id);
-    const peopleService = new PeopleService(admin.firestore());
-    return peopleService.getPerson(id);
-  }
-
-  static getPeople(limit = 10) {
-    debug('getPeople', limit);
-    const peopleService = new PeopleService(admin.firestore());
-    return peopleService.getPeople(limit);
-  }
 
   static getKeynoteVideo(event, year) {
     debug('getKeynoteVideo', event, year);
