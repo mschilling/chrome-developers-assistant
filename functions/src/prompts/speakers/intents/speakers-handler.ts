@@ -1,60 +1,57 @@
-import { SimpleResponse, BasicCard, Button, Image, Carousel } from "actions-on-google";
+import {
+  SimpleResponse,
+  BasicCard,
+  Button,
+  Image,
+  Carousel
+} from "actions-on-google";
+
+import * as util from "util";
 
 import { DialogflowOption } from "../../shared/option-helper";
 import { Firestore } from "../../../shared/firestore";
 import { PeopleService } from "../../../services/people-service";
 
+import { Translations as Strings } from "./../translations";
+import { Person } from "../../../models/person";
+
 const peopleService = new PeopleService(Firestore.db);
 
 // Context Parameters
-const SPEAKER_PARAM = 'speaker';
-const SPEAKER_ATTR_PARAM = 'speakerAttribute';
-const PERSON_PARAM = 'person';
+const SPEAKER_PARAM = "speaker";
+const SPEAKER_ATTR_PARAM = "speakerAttribute";
+const PERSON_PARAM = "person";
 
 export async function speakerInfoHandler(conv, params) {
-  const key = params[SPEAKER_PARAM];
+  let key = params[SPEAKER_PARAM];
+  if(params[PERSON_PARAM]) {
+    key = params[PERSON_PARAM];
+  }
 
-  const person: any = await peopleService.getPerson(key);
+  const person = await peopleService.getPerson(key);
   if (person) {
-    let speechText = `${person.first_name} ${person.last_name} is a developer from the Chrome Team`;
-    if (person.shortbio) {
-      speechText = person.shortbio;
+    let speechText = util.format(Strings.PersonDefaultWhoIs, `${person.first_name} ${ person.last_name }`);
+    if (person.short_bio) {
+      speechText = person.short_bio;
     }
+
     const speech = `<speak>${speechText}</speak>`;
 
-    const cardTitle = `${person.first_name} ${person.last_name}`;
-    const cardDescription = person.short_bio || person.bio || 'n.a.';
-    const cardPicture = person.pictureUrl || 'http://lorempixel.com/200/400';
-    const cardPictureAltText = 'This is my Face';
-    const cardUrl = person.homepage;
-    const cardUrlText = 'Visit homepage';
-
-    conv.ask(new SimpleResponse({
-      speech: speech,
-      text: speechText
-    }));
-
-    conv.ask(new BasicCard({
-      title: cardTitle,
-      text: cardDescription,
-      buttons: new Button({
-        url: cardUrl,
-        title: cardUrlText
-      }),
-      image: new Image({
-        url: cardPicture,
-        alt: cardPictureAltText
+    conv.ask(
+      new SimpleResponse({
+        speech: speech,
+        text: speechText
       })
-    }));
+    );
 
+    conv.ask(personAsSimpleCard(person));
   } else {
-    const speech = 'There isn\'t much I can tell you about ' + person + ' right know..';
-    conv.ask(speech);
+    conv.ask(util.format(Strings.PersonNoInfo, person));
   }
 }
 
 export async function selectSpeakerByOption(conv, params) {
-  console.log('getSelectedOption', conv.getSelectedOption());
+  console.log("getSelectedOption", conv.getSelectedOption());
   const speakerId = conv.getSelectedOption();
   const person: any = await peopleService.getPerson(speakerId);
 
@@ -62,8 +59,7 @@ export async function selectSpeakerByOption(conv, params) {
     const speech = `<speak>${person.bio}</speak>`;
     conv.ask(speech);
   } else {
-    const speech = 'There isn\'t much I can tell you about ' + person + ' right know..';
-    conv.ask(speech);
+    conv.ask(util.format(Strings.PersonNoInfo, person));
   }
 }
 
@@ -73,9 +69,7 @@ export async function speakerSelection(conv, params) {
   const people = await peopleService.getPeople(20);
 
   if (people && people.length > 0) {
-    console.log('Display speakers in carousel. n=' + people.length, people);
-    const speechText = 'Here are some speakers';
-    const speech = `<speak>${speechText}</speak>`;
+    console.log("Display speakers in carousel. n=" + people.length, people);
 
     let countOptions = 0;
     let options = {};
@@ -84,20 +78,19 @@ export async function speakerSelection(conv, params) {
       if (person.pictureUrl) {
         countOptions++;
         const option = getCarouselOption(person);
-        options = { ...options, ...option }
+        options = { ...options, ...option };
 
         if (countOptions >= 10) {
           break;
         }
       }
     }
-    console.log('speakers options', options);
+    console.log("speakers options", options);
 
-    conv.ask(speech)
-    conv.ask(new Carousel({ items: options }))
+    conv.ask(Strings.GeneralListResultText);
+    conv.ask(new Carousel({ items: options }));
   } else {
-    const speech = 'Sorry, I coudn\'t find any speakers right now. Anything else?';
-    conv.ask(speech);
+    conv.ask(Strings.GeneralListNoResultsText);
   }
 }
 
@@ -109,68 +102,71 @@ export async function knownForHandler(conv, params) {
     const speech = `<speak>${person.bio}</speak>`;
     conv.ask(speech);
   } else {
-    const speech = 'There isn\'t much I can tell you about ' + person + ' right know..';
-    conv.ask(speech);
+    conv.ask(util.format(Strings.PersonNoInfo, person));
   }
 }
 
 export async function handlePersonAttribute(conv, inputParams) {
   const params = parseParameters(inputParams);
-  console.log('handlePersonAttribute', params);
+  console.log("handlePersonAttribute", params);
 
   const person: any = await peopleService.getPerson(params.speaker);
   if (person) {
-    let displayText = 'Sorry, I couldn\'t find it right now.';
+    let displayText = "Sorry, I couldn't find it right now.";
     let speech = `<speak>${displayText}</speak>`;
 
     switch (params.speakerAttribute) {
-      case 'twitter':
-        displayText = `${person.first_name}'s Twitter handle is @${person.twitter}`;
+      case "twitter":
+        displayText = `${person.first_name}'s Twitter handle is @${
+          person.twitter
+        }`;
         speech = `<speak>${displayText}<break time="1"/>Anything else?</speak>`;
         break;
-      case 'github':
+      case "github":
         if (person.github) {
-          displayText = `${person.first_name}'s Github handle is ${person.github}`;
+          displayText = `${person.first_name}'s Github handle is ${
+            person.github
+          }`;
           speech = `<speak>${displayText}<break time="1"/>Anything else?</speak>`;
         }
         break;
-      case 'homepage':
+      case "homepage":
         if (person.homepage) {
-          displayText = `${person.first_name}'s personal website is ${person.homepage}`;
+          displayText = `${person.first_name}'s personal website is ${
+            person.homepage
+          }`;
           speech = `<speak>${displayText}<break time="1"/>Anything else?</speak>`;
         }
         break;
     }
     conv.ask(new SimpleResponse({ speech: speech, text: displayText }));
   } else {
-    const speech = 'Sorry, I couldn\'t find any';
+    const speech = Strings.PersonAttributeNotFoundText;
     conv.ask(speech);
   }
 }
 
 function getCarouselOption(person) {
   const cardTitle = `${person.first_name} ${person.last_name}`;
-  const cardDescription = person.short_bio || person.bio || 'n.a.';
-  const cardPicture = person.pictureUrl || 'http://lorempixel.com/200/400';
+  const cardDescription = person.short_bio || person.bio || "n.a.";
+  const cardPicture = person.pictureUrl || "http://lorempixel.com/200/400";
   const cardPictureAltText = cardTitle;
 
-  const dfo = new DialogflowOption('person#name', cardTitle, null);
-  console.log('dfo', dfo);
+  const dfo = new DialogflowOption("person#name", cardTitle, null);
+  console.log("dfo", dfo);
 
   const option = {
     [dfo.toString()]: {
-      synonyms: [
-        cardTitle
-      ],
+      synonyms: [cardTitle],
       title: cardTitle,
       description: cardDescription,
       image: new Image({
         url: cardPicture,
-        alt: cardPictureAltText,
-      }),
+        alt: cardPictureAltText
+      })
     }
-  }
-  console.log('option', option);
+  };
+  console.log("option", option);
 
   return option;
 }
@@ -185,4 +181,26 @@ function parseParameters(params) {
     outputParams.speakerAttribute = params[SPEAKER_ATTR_PARAM];
   }
   return params;
+}
+
+function personAsSimpleCard(person: Person) {
+  const cardTitle = `${person.first_name} ${person.last_name}`;
+  const cardDescription = person.short_bio || person.bio || "n.a.";
+  const cardPicture = person.pictureUrl || "http://lorempixel.com/200/400";
+  const cardPictureAltText = "This is my Face";
+  const cardUrl = person.homepage;
+  const cardUrlText = "Visit homepage";
+
+  return new BasicCard({
+    title: cardTitle,
+    text: cardDescription,
+    buttons: new Button({
+      url: cardUrl,
+      title: cardUrlText
+    }),
+    image: new Image({
+      url: cardPicture,
+      alt: cardPictureAltText
+    })
+  });
 }

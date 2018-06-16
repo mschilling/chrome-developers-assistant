@@ -3,7 +3,7 @@ import { speakerInfoHandler, knownForHandler, speakerSelection } from "./intents
 const intents = {
   'Speaker Information': speakerInfoHandler,
   'Speakers - Speaker info - known for': knownForHandler,
-  // 'Video Search': speakerInfoHandler,
+  'Speakers - Speaker info': speakerInfoHandler,
   'Speaker Selection': speakerSelection,
 };
 
