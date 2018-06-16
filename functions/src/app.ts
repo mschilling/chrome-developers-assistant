@@ -24,6 +24,7 @@ app.intent([
 
 app.intent([
   'Speaker Information',
+  'Speakers - Speaker info',
   'Speakers - Speaker info - known for',
   'Speaker Selection',
 ], speaker);

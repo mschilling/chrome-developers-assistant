@@ -24,6 +24,7 @@ export class PeopleService extends CoreService implements IPeopleService {
   }
 
   async getPerson(id: string): Promise<Person> {
+    console.log('getPerson ' + id);
     const query: any = this.db.collection(FirestoreCollections.People);
     return query
       .doc(id)
