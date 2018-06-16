@@ -1,3 +1,9 @@
 export class BlogPost {
-  // uid: string;
+  id: string;
+  title: string;
+  author: string;
+  postImageUrl: string;
+  postUrl: string;
+  publishDate: Date;
+  // tags;
 }
