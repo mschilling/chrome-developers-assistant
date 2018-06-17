@@ -1,6 +1,7 @@
 import { Person } from "../models/person";
 import { CoreService } from "./abstract-service";
 import { FirestoreCollections } from "../enums/firestore-collections";
+import { GenericCard } from "../models/card";
 
 export interface IPeopleService {
   getPeople(limit?: number): Promise<Person[]>;
@@ -34,4 +35,24 @@ export class PeopleService extends CoreService implements IPeopleService {
       });
   }
 
+}
+
+export class PeopleServiceExt {
+  static asCards(items: Person[]): GenericCard[] {
+    if (items === null) {
+      console.log("items is null");
+      return [];
+    }
+    return items.map(p => PeopleServiceExt.asCard(p));
+  }
+
+  static asCard(item: Person): GenericCard {
+    const card = new GenericCard();
+    card._id = item.id;
+    card.title = `${item.first_name} ${item.last_name}`;
+    card.description = item.short_bio || item.bio || "n.a.";
+    card.imageUrl = item.pictureUrl || "http://lorempixel.com/200/400";
+    card.imageAlt = card.title;
+    return card;
+  }
 }
