@@ -53,6 +53,9 @@ export class PeopleServiceExt {
     card.description = item.short_bio || item.bio || "n.a.";
     card.imageUrl = item.pictureUrl || "http://lorempixel.com/200/400";
     card.imageAlt = card.title;
+    card.buttonUrl = item.homepage;
+    card.buttonTitle = "Visit homepage";
+
     return card;
   }
 }

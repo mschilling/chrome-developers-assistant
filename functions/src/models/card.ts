@@ -4,4 +4,6 @@ export class GenericCard {
   description: string;
   imageUrl: string;
   imageAlt: string;
+  buttonUrl: string;
+  buttonTitle: string;
 }

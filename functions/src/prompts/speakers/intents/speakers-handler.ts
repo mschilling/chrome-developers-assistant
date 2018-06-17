@@ -10,7 +10,7 @@ import * as util from "util";
 
 import { DialogflowOption } from "../../shared/option-helper";
 import { Firestore } from "../../../shared/firestore";
-import { PeopleService } from "../../../services/people-service";
+import { PeopleService, PeopleServiceExt } from "../../../services/people-service";
 
 import { Translations as Strings } from "./../translations";
 import { Person } from "../../../models/person";
@@ -53,7 +53,7 @@ export async function speakerInfoHandler(conv, params) {
 export async function selectSpeakerByOption(conv, params) {
   console.log("getSelectedOption", conv.getSelectedOption());
   const speakerId = conv.getSelectedOption();
-  const person: any = await peopleService.getPerson(speakerId);
+  const person = await peopleService.getPerson(speakerId);
 
   if (person && person.bio) {
     const speech = `<speak>${person.bio}</speak>`;
@@ -96,7 +96,7 @@ export async function speakerSelection(conv, params) {
 
 export async function knownForHandler(conv, params) {
   const key = params[PERSON_PARAM];
-  const person: any = await peopleService.getPerson(key);
+  const person = await peopleService.getPerson(key);
 
   if (person && person.bio) {
     const speech = `<speak>${person.bio}</speak>`;
@@ -110,7 +110,7 @@ export async function handlePersonAttribute(conv, inputParams) {
   const params = parseParameters(inputParams);
   console.log("handlePersonAttribute", params);
 
-  const person: any = await peopleService.getPerson(params.speaker);
+  const person = await peopleService.getPerson(params.speaker);
   if (person) {
     let displayText = "Sorry, I couldn't find it right now.";
     let speech = `<speak>${displayText}</speak>`;
@@ -147,28 +147,22 @@ export async function handlePersonAttribute(conv, inputParams) {
 }
 
 function getCarouselOption(person) {
-  const cardTitle = `${person.first_name} ${person.last_name}`;
-  const cardDescription = person.short_bio || person.bio || "n.a.";
-  const cardPicture = person.pictureUrl || "http://lorempixel.com/200/400";
-  const cardPictureAltText = cardTitle;
 
-  const dfo = new DialogflowOption("person#name", cardTitle, null);
+  const cardData = PeopleServiceExt.asCard(person);
+  const dfo = new DialogflowOption("person#name", cardData.title, null);
   console.log("dfo", dfo);
 
-  const option = {
+  return {
     [dfo.toString()]: {
-      synonyms: [cardTitle],
-      title: cardTitle,
-      description: cardDescription,
+      synonyms: [cardData.title],
+      title: cardData.title,
+      description: cardData.description,
       image: new Image({
-        url: cardPicture,
-        alt: cardPictureAltText
+        url: cardData.imageUrl,
+        alt: cardData.imageAlt
       })
     }
   };
-  console.log("option", option);
-
-  return option;
 }
 
 function parseParameters(params) {
@@ -184,23 +178,18 @@ function parseParameters(params) {
 }
 
 function personAsSimpleCard(person: Person) {
-  const cardTitle = `${person.first_name} ${person.last_name}`;
-  const cardDescription = person.short_bio || person.bio || "n.a.";
-  const cardPicture = person.pictureUrl || "http://lorempixel.com/200/400";
-  const cardPictureAltText = "This is my Face";
-  const cardUrl = person.homepage;
-  const cardUrlText = "Visit homepage";
+  const cardData = PeopleServiceExt.asCard(person);
 
   return new BasicCard({
-    title: cardTitle,
-    text: cardDescription,
+    title: cardData.title,
+    text: cardData.description,
     buttons: new Button({
-      url: cardUrl,
-      title: cardUrlText
+      url: cardData.buttonUrl,
+      title: cardData.buttonTitle
     }),
     image: new Image({
-      url: cardPicture,
-      alt: cardPictureAltText
+      url: cardData.imageUrl,
+      alt: cardData.imageAlt
     })
   });
 }
