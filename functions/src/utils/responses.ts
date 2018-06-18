@@ -41,7 +41,7 @@ export function buildCarousel(items: GenericCard[]) {
 }
 
 function buildCarouselOption(card: GenericCard) {
-  const dfo = new DialogflowOption("person#name", card.title, null);
+  const dfo = new DialogflowOption(card._optionType, card._optionValue, null);
   return {
     [dfo.toString()]: {
       synonyms: [card.title],

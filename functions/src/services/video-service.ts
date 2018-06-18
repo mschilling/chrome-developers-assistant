@@ -112,7 +112,7 @@ export class VideoServiceExt {
 
     const card = new GenericCard();
     card._id = item.id;
-    card.title = '>' + item.name;
+    card.title = item.name;
     card.description = item.description;
     card.imageUrl = `https://img.youtube.com/vi/${item.videoId}/hq${thumbId}.jpg`;
     card.imageAlt = card.title;

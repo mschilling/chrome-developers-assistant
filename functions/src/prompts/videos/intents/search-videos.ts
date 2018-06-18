@@ -1,40 +1,51 @@
-import { YouTubeManager } from './../../../shared/youtube-manager';
-// import { DataApi as api } from "../../../shared/data-api";
-import { returnVideosResponse, returnBasicCard, responseYouTubeVideoAsBasicCard } from "../../shared/responses";
+import { YouTubeManager } from "./../../../shared/youtube-manager";
+import { responseYouTubeVideoAsBasicCard } from "../../shared/responses";
 import { DialogflowOption } from "../../shared/option-helper";
-import { VideoService } from '../../../services/video-service';
-import { Firestore } from '../../../shared/firestore';
+import { VideoService, VideoServiceExt } from "../../../services/video-service";
+import { Firestore } from "../../../shared/firestore";
+import { buildSimpleCard, buildCarousel } from "../../../utils/responses";
+import { Translations as Strings } from "../translations";
 
 const videoService = new VideoService(Firestore.db);
 
 // Context Parameters
-const EVENT_PARAM = 'summit';
-const TAGS_PARAM = 'tags';
-const SPEAKERS_PARAM = 'speakers';
+const EVENT_PARAM = "summit";
+const TAGS_PARAM = "tags";
+const SPEAKERS_PARAM = "speakers";
 
 export async function searchVideos(conv, inputParams) {
   const params = parseParameters(inputParams);
+  console.log('params', params);
 
-  const results = await videoService.search(params, 10);
+  const videos = await videoService.search(params, 10);
+  if (videos === null) {
+    console.log("videos is null");
+    conv.ask(Strings.GeneralListNoResultsText);
+    return;
+  }
 
-  console.log('Number of videos found: ' + (results || []).length);
-  if (results && results.length > 0) {
-    const result = results[0];
-    if (results.length > 1) {
-      returnVideosResponse(conv, true, results); // Verify implementation
-    } else {
-      returnBasicCard(conv, 'video', result); // Verify implementation
-    }
+  console.log("Number of videos found: " + (videos || []).length);
+  if (videos.length > 1) {
+    conv.ask(Strings.GeneralListResultText);
+
+    const carouselResponse = buildCarousel(VideoServiceExt.asCards(videos));
+    conv.ask(carouselResponse);
+
+    return;
   } else {
-    conv.ask('Sorry, there\'s no result right now. Please try something else.');
+    const simpleCardResponse = buildSimpleCard(
+      VideoServiceExt.asCard(videos[0])
+    );
+    conv.ask(simpleCardResponse);
+    return;
   }
 }
 
 export async function selectVideoByOption(conv, params) {
   const optionData = conv.getSelectedOption(); // TODO: verify/check
-  console.log('optionData', optionData);
+  console.log("optionData", optionData);
   const dfo = DialogflowOption.fromString(optionData);
-  console.log('dfo', dfo);
+  console.log("dfo", dfo);
 
   if (dfo && dfo.value) {
     const card = await YouTubeManager.getVideoById(dfo.value);
@@ -42,10 +53,9 @@ export async function selectVideoByOption(conv, params) {
       responseYouTubeVideoAsBasicCard(conv, card); // Verify implementation
       return;
     }
-  };
-  conv.ask('Sorry, I could not find the show on YouTube');
+  }
+  conv.ask("Sorry, I could not find the show on YouTube");
 }
-
 
 function parseParameters(inputParams) {
   const eventParam = inputParams[EVENT_PARAM];
