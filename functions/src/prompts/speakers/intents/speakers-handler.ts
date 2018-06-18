@@ -10,10 +10,14 @@ import * as util from "util";
 
 import { DialogflowOption } from "../../shared/option-helper";
 import { Firestore } from "../../../shared/firestore";
-import { PeopleService, PeopleServiceExt } from "../../../services/people-service";
+import {
+  PeopleService,
+  PeopleServiceExt
+} from "../../../services/people-service";
 
 import { Translations as Strings } from "./../translations";
 import { Person } from "../../../models/person";
+import { GenericCard } from "./../../../models/card";
 
 const peopleService = new PeopleService(Firestore.db);
 
@@ -24,13 +28,16 @@ const PERSON_PARAM = "person";
 
 export async function speakerInfoHandler(conv, params) {
   let key = params[SPEAKER_PARAM];
-  if(params[PERSON_PARAM]) {
+  if (params[PERSON_PARAM]) {
     key = params[PERSON_PARAM];
   }
 
   const person = await peopleService.getPerson(key);
   if (person) {
-    let speechText = util.format(Strings.PersonDefaultWhoIs, `${person.first_name} ${ person.last_name }`);
+    let speechText = util.format(
+      Strings.PersonDefaultWhoIs,
+      `${person.first_name} ${person.last_name}`
+    );
     if (person.short_bio) {
       speechText = person.short_bio;
     }
@@ -67,31 +74,19 @@ export async function speakerSelection(conv, params) {
   console.log(`Handle intent :: speakerSelection`, conv.actions, params);
 
   const people = await peopleService.getPeople(20);
-
-  if (people && people.length > 0) {
-    console.log("Display speakers in carousel. n=" + people.length, people);
-
-    let countOptions = 0;
-    let options = {};
-    for (const p of people) {
-      const person = <any>p;
-      if (person.pictureUrl) {
-        countOptions++;
-        const option = getCarouselOption(person);
-        options = { ...options, ...option };
-
-        if (countOptions >= 10) {
-          break;
-        }
-      }
-    }
-    console.log("speakers options", options);
-
-    conv.ask(Strings.GeneralListResultText);
-    conv.ask(new Carousel({ items: options }));
-  } else {
+  if (people === null) {
+    console.log("people is null");
     conv.ask(Strings.GeneralListNoResultsText);
+    return;
   }
+
+  console.log("Display speakers in carousel. n=" + people.length, people);
+
+  const carouselResponse = buildCarousel(PeopleServiceExt.asCards(people));
+  console.log("Carousel data", carouselResponse);
+
+  conv.ask(Strings.GeneralListResultText);
+  conv.ask(carouselResponse);
 }
 
 export async function knownForHandler(conv, params) {
@@ -146,25 +141,6 @@ export async function handlePersonAttribute(conv, inputParams) {
   }
 }
 
-function getCarouselOption(person) {
-
-  const cardData = PeopleServiceExt.asCard(person);
-  const dfo = new DialogflowOption("person#name", cardData.title, null);
-  console.log("dfo", dfo);
-
-  return {
-    [dfo.toString()]: {
-      synonyms: [cardData.title],
-      title: cardData.title,
-      description: cardData.description,
-      image: new Image({
-        url: cardData.imageUrl,
-        alt: cardData.imageAlt
-      })
-    }
-  };
-}
-
 function parseParameters(params) {
   const outputParams = <any>{};
   if (params[SPEAKER_PARAM]) {
@@ -192,4 +168,42 @@ function personAsSimpleCard(person: Person) {
       alt: cardData.imageAlt
     })
   });
+}
+
+function buildCarousel(items: GenericCard[]) {
+  if (items === null) {
+    console.log("items is null");
+    return null;
+  }
+
+  let countOptions = 0;
+  let options = {};
+  for (const item of items) {
+    if (item.imageUrl) {
+      countOptions++;
+      const option = buildCarouselOption(item);
+      options = { ...options, ...option };
+
+      if (countOptions >= 10) {
+        break;
+      }
+    }
+  }
+
+  return new Carousel({ items: options });
+}
+
+function buildCarouselOption(card: GenericCard) {
+  const dfo = new DialogflowOption("person#name", card.title, null);
+  return {
+    [dfo.toString()]: {
+      synonyms: [card.title],
+      title: card.title,
+      description: card.description,
+      image: new Image({
+        url: card.imageUrl,
+        alt: card.imageAlt
+      })
+    }
+  };
 }
