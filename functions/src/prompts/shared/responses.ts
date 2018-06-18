@@ -1,7 +1,7 @@
 import { BlogPostServiceExt } from './../../services/blog-post-service';
 // const moment = require('moment');
 import * as moment from 'moment';
-import { SimpleResponse, BrowseCarouselItem, Image, BrowseCarousel, Carousel, LinkOutSuggestion, BasicCard, Button } from 'actions-on-google';
+import { SimpleResponse, Image, Carousel, LinkOutSuggestion, BasicCard, Button } from 'actions-on-google';
 import { DialogflowOption } from './option-helper';
 import { buildBrowseCarousel } from '../../utils/responses';
 
@@ -91,76 +91,6 @@ export function buildCarouselForYouTubeVideos(items, inputMaxLength = 10) {
   }
 
   return carouselItems;
-}
-
-// export function buildBrowsingCarouselForBlogPosts(items, inputMaxLength = 10) {
-//   let maxLength = inputMaxLength;
-//   if (maxLength > 10) maxLength = 10;
-//   if (!(items && maxLength > 0)) return null;
-
-//   console.log('browse carousel items', items);
-
-//   const browseCarouselItems: BrowseCarouselItem[] = [];
-
-//   for (const item of items) {
-//     const cardTitle = item.title;
-//     const cardUrl = item.postUrl;
-//     const cardDescription = `Published ${moment(item.publishDate).fromNow()} by ${item.author}`;
-//     const cardPicture = item.postImageUrl;
-//     const cardPictureAltText = item.title;
-
-//     const newOption = new BrowseCarouselItem({
-//       title: cardTitle,
-//       url: cardUrl,
-//       description: cardDescription,
-//       image: new Image({
-//         url: cardPicture,
-//         alt: cardPictureAltText
-//       })
-//     });
-
-
-//     browseCarouselItems.push(newOption)
-//   }
-
-//   return browseCarouselItems;
-// }
-
-export function returnVideoResponse(conv, success, params) {
-  let response;
-  if (success) {
-    const videoId = params.videoId;
-    const videoTitle = params.videoTitle || '';
-    const url = 'https://www.youtube.com/watch?v=' + videoId;
-
-    const speech = `
-      <speak>
-        <p>
-          <s>I've found a video on YouTube.</s>
-          <s>It's called ${videoTitle}.</s>
-        </p>
-      </speak>`;
-
-    const displayText = 'Here\'s a video I found on YouTube';
-
-    conv.ask(new SimpleResponse({
-      speech: speech,
-      text: displayText
-    }))
-
-    // .addSuggestionLink('video on YouTube', url);
-    conv.add(new LinkOutSuggestion({
-      name: 'video on YouTube',
-      url: url
-    }));
-  } else {
-    response = conv.ask(new SimpleResponse({
-      speech: 'Sorry, I could not find the video on YouTube right now.',
-      text: 'Sorry, I could not find the video on YouTube right now'
-    }));
-  }
-
-  conv.ask(response);
 }
 
 export function returnBlogPostResponse(conv, success, params) {
