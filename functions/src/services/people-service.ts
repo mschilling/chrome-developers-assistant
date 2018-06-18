@@ -55,6 +55,8 @@ export class PeopleServiceExt {
     card.imageAlt = card.title;
     card.buttonUrl = item.homepage;
     card.buttonTitle = "Visit homepage";
+    card._optionType = 'youtube#video'
+    card._optionValue = card.title;
 
     return card;
   }

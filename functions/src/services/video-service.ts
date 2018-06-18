@@ -3,6 +3,7 @@ import { debug } from '../shared/debug';
 import { Video } from "../models/video";
 import { CoreService } from "./abstract-service";
 import { FirestoreCollections } from "../enums/firestore-collections";
+import { GenericCard } from '../models/card';
 
 interface IVideoService {
   search(searchParams, limit: number): Promise<Video[]>;
@@ -95,4 +96,30 @@ export class VideoService extends CoreService implements IVideoService {
 
   }
 
+}
+
+export class VideoServiceExt {
+  static asCards(items: Video[]): GenericCard[] {
+    if (items === null) {
+      console.log("items is null");
+      return [];
+    }
+    return items.map(p => VideoServiceExt.asCard(p));
+  }
+
+  static asCard(item: Video): GenericCard {
+    const thumbId = String(Math.ceil(Math.random() * 3));
+
+    const card = new GenericCard();
+    card._id = item.id;
+    card.title = item.name;
+    card.description = item.description;
+    card.imageUrl = `https://img.youtube.com/vi/${item.videoId}/hq${thumbId}.jpg`;
+    card.imageAlt = card.title;
+    card.buttonUrl = 'https://youtube.com/watch?v=' + item.videoId;
+    card.buttonTitle = 'Watch on YouTube';
+    card._optionType = 'youtube#video'
+    card._optionValue = item.videoId;
+    return card;
+  }
 }
