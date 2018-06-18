@@ -1,6 +1,22 @@
-import { Image, Carousel } from "actions-on-google";
+import { Image, Carousel, BasicCard, Button } from "actions-on-google";
 import { GenericCard } from "../models/card";
 import { DialogflowOption } from "../prompts/shared/option-helper";
+
+export function buildSimpleCard(item: GenericCard) {
+
+  return new BasicCard({
+    title: item.title,
+    text: item.description,
+    buttons: new Button({ // TODO: make Button optional
+      url: item.buttonUrl,
+      title: item.buttonTitle
+    }),
+    image: new Image({
+      url: item.imageUrl,
+      alt: item.imageAlt
+    })
+  });
+}
 
 export function buildCarousel(items: GenericCard[]) {
   if (items === null) {

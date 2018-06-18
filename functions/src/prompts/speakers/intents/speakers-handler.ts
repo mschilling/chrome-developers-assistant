@@ -1,12 +1,6 @@
-import {
-  SimpleResponse,
-  BasicCard,
-  Button,
-  Image
-} from "actions-on-google";
-
 import * as util from "util";
 
+import { SimpleResponse } from "actions-on-google";
 import { Firestore } from "../../../shared/firestore";
 import {
   PeopleService,
@@ -14,8 +8,7 @@ import {
 } from "../../../services/people-service";
 
 import { Translations as Strings } from "./../translations";
-import { Person } from "../../../models/person";
-import { buildCarousel } from "../../../utils/responses";
+import { buildCarousel, buildSimpleCard } from "../../../utils/responses";
 
 const peopleService = new PeopleService(Firestore.db);
 
@@ -49,7 +42,8 @@ export async function speakerInfoHandler(conv, params) {
       })
     );
 
-    conv.ask(personAsSimpleCard(person));
+    const simpleCardResponse = buildSimpleCard(PeopleServiceExt.asCard(person));
+    conv.ask(simpleCardResponse);
   } else {
     conv.ask(util.format(Strings.PersonNoInfo, person));
   }
@@ -149,21 +143,4 @@ function parseParameters(params) {
     outputParams.speakerAttribute = params[SPEAKER_ATTR_PARAM];
   }
   return params;
-}
-
-function personAsSimpleCard(person: Person) {
-  const cardData = PeopleServiceExt.asCard(person);
-
-  return new BasicCard({
-    title: cardData.title,
-    text: cardData.description,
-    buttons: new Button({
-      url: cardData.buttonUrl,
-      title: cardData.buttonTitle
-    }),
-    image: new Image({
-      url: cardData.imageUrl,
-      alt: cardData.imageAlt
-    })
-  });
 }
