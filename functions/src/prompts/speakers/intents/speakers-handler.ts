@@ -2,13 +2,11 @@ import {
   SimpleResponse,
   BasicCard,
   Button,
-  Image,
-  Carousel
+  Image
 } from "actions-on-google";
 
 import * as util from "util";
 
-import { DialogflowOption } from "../../shared/option-helper";
 import { Firestore } from "../../../shared/firestore";
 import {
   PeopleService,
@@ -17,7 +15,6 @@ import {
 
 import { Translations as Strings } from "./../translations";
 import { Person } from "../../../models/person";
-import { GenericCard } from "./../../../models/card";
 import { buildCarousel } from "../../../utils/responses";
 
 const peopleService = new PeopleService(Firestore.db);
