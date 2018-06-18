@@ -3,7 +3,7 @@ import { responseYouTubeVideoAsBasicCard } from "../../shared/responses";
 import { DialogflowOption } from "../../shared/option-helper";
 import { VideoService, VideoServiceExt } from "../../../services/video-service";
 import { Firestore } from "../../../shared/firestore";
-import { buildSimpleCard, buildCarousel } from "../../../utils/responses";
+import { buildSimpleCard, buildCarousel, buildBrowseCarousel } from "../../../utils/responses";
 import { Translations as Strings } from "../translations";
 
 const videoService = new VideoService(Firestore.db);
@@ -28,8 +28,8 @@ export async function searchVideos(conv, inputParams) {
   if (videos.length > 1) {
     conv.ask(Strings.GeneralListResultText);
 
-    const carouselResponse = buildCarousel(VideoServiceExt.asCards(videos));
-    conv.ask(carouselResponse);
+    const browseCarouselResponse = buildBrowseCarousel(VideoServiceExt.asCards(videos))
+    conv.ask(browseCarouselResponse);
 
     return;
   } else {

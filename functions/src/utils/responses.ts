@@ -1,4 +1,4 @@
-import { Image, Carousel, BasicCard, Button } from "actions-on-google";
+import { Image, Carousel, BasicCard, Button, BrowseCarouselItem, BrowseCarousel } from "actions-on-google";
 import { GenericCard } from "../models/card";
 import { DialogflowOption } from "../prompts/shared/option-helper";
 
@@ -40,6 +40,16 @@ export function buildCarousel(items: GenericCard[]) {
   return new Carousel({ items: options });
 }
 
+export function buildBrowseCarousel(items: GenericCard[]) {
+  if (items === null) {
+    console.log("items is null");
+    return null;
+  }
+
+  const options = buildBrowseCarouselOptions(items);
+  return new BrowseCarousel({ items: options });
+}
+
 function buildCarouselOption(card: GenericCard) {
   const dfo = new DialogflowOption(card._optionType, card._optionValue, null);
   return {
@@ -53,4 +63,27 @@ function buildCarouselOption(card: GenericCard) {
       })
     }
   };
+}
+
+function buildBrowseCarouselOptions(cards: GenericCard[]) {
+
+  console.log('browse carousel items', cards);
+
+  const browseCarouselItems: BrowseCarouselItem[] = [];
+
+  for (const card of cards) {
+
+    const newOption = new BrowseCarouselItem({
+      title: card.title,
+      url: card.buttonUrl,
+      description: card.description,
+      image: new Image({
+        url: card.imageUrl,
+        alt: card.imageAlt
+      })
+    });
+
+    browseCarouselItems.push(newOption)
+  }
+  return browseCarouselItems;
 }
