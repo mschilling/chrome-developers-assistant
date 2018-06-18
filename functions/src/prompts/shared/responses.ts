@@ -1,9 +1,6 @@
-import { BlogPostServiceExt } from './../../services/blog-post-service';
-// const moment = require('moment');
 import * as moment from 'moment';
 import { SimpleResponse, Image, Carousel, LinkOutSuggestion, BasicCard, Button } from 'actions-on-google';
 import { DialogflowOption } from './option-helper';
-import { buildBrowseCarousel } from '../../utils/responses';
 
 export function returnVideosResponse(conv, success, videos) {
   let response;
@@ -25,30 +22,6 @@ export function returnVideosResponse(conv, success, videos) {
       .addSimpleResponse({
         speech: 'Sorry, I could not find the video on YouTube right now.',
         displayText: 'Sorry, I could not find the video on YouTube right now'
-      });
-    conv.ask(response);
-  }
-}
-
-export function returnBlogPostsResponse(conv, success, items) {
-  let response;
-  if (success && (items || []).length > 0) {
-    const displayText = 'I\'ve found some online blogposts. Here it is.';
-    const speech = `<speak>${displayText}</speak>`;
-
-    conv.ask(new SimpleResponse({
-      speech: speech,
-      text: displayText
-    }))
-
-    conv.ask(buildBrowseCarousel(BlogPostServiceExt.asCards(items)));
-    return;
-
-  } else {
-    response = conv.buildRichResponse()
-      .addSimpleResponse({
-        speech: 'Sorry, I could not find any blogposts right now.',
-        displayText: 'Sorry, I could not find any blogposts right now.'
       });
     conv.ask(response);
   }

@@ -5,6 +5,7 @@ import { VideoService, VideoServiceExt } from "../../../services/video-service";
 import { Firestore } from "../../../shared/firestore";
 import { buildSimpleCard, buildCarousel, buildBrowseCarousel } from "../../../utils/responses";
 import { Translations as Strings } from "../translations";
+import { SimpleResponse } from "actions-on-google";
 
 const videoService = new VideoService(Firestore.db);
 
@@ -33,6 +34,12 @@ export async function searchVideos(conv, inputParams) {
 
     return;
   } else {
+
+    conv.ask(new SimpleResponse({
+      speech: 'Here is a matching video',
+      text: 'Here is a matching video'
+    }));
+
     const simpleCardResponse = buildSimpleCard(
       VideoServiceExt.asCard(videos[0])
     );
