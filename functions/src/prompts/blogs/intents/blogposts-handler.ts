@@ -1,4 +1,3 @@
-import { returnBasicCard } from "../../shared/responses";
 import { Firestore } from "../../../shared/firestore";
 import {
   BlogPostService,
@@ -30,10 +29,22 @@ export async function searchBlogPosts(conv, params) {
     conv.ask(buildBrowseCarousel(BlogPostServiceExt.asCards(results)));
     return;
   } else {
-    conv.ask(new SimpleResponse({
-      speech: 'Here is a blog post',
-      text: 'Here is a blog post'
-    }));
+    const speech = `
+      <speak>
+        <p>
+          <s>I've found a blog online.</s>
+          <s>It's called ${results[0].title}.</s>
+        </p>
+      </speak>`;
+
+    const displayText = "Here's a blog I found online";
+
+    conv.ask(
+      new SimpleResponse({
+        speech: speech,
+        text: displayText
+      })
+    );
 
     const simpleCardResponse = buildSimpleCard(
       BlogPostServiceExt.asCard(results[0])

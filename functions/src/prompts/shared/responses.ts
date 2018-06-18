@@ -66,42 +66,6 @@ export function buildCarouselForYouTubeVideos(items, inputMaxLength = 10) {
   return carouselItems;
 }
 
-export function returnBlogPostResponse(conv, success, params) {
-  if (success) {
-    const title = params.title || '';
-    const url = params.url;
-
-    const speech = `
-      <speak>
-        <p>
-          <s>I've found a blog online.</s>
-          <s>It's called ${title}.</s>
-        </p>
-      </speak>`;
-
-    const displayText = 'Here\'s a blog I found online';
-
-    conv.ask(new SimpleResponse({
-      speech: speech,
-      text: displayText
-    }));
-
-    // .addSuggestionLink('blog', url);
-    conv.add(new LinkOutSuggestion({
-      name: 'blog',
-      url: url
-    }));
-
-  } else {
-    conv.ask(new SimpleResponse({
-      speech: 'Sorry, I could not find the blogpost online right now.',
-      text: 'Sorry, I could not find the blogpost online right now.'
-    }));
-  }
-
-  conv.ask("Sorry, I could not find any blogposts right now");
-}
-
 export function responseIntentKeynoteVideo(conv, success, params) {
   if (success) {
     const videoId = params.videoId;
