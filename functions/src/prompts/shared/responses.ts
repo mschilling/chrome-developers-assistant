@@ -1,7 +1,9 @@
+import { BlogPostServiceExt } from './../../services/blog-post-service';
 // const moment = require('moment');
 import * as moment from 'moment';
 import { SimpleResponse, BrowseCarouselItem, Image, BrowseCarousel, Carousel, LinkOutSuggestion, BasicCard, Button } from 'actions-on-google';
 import { DialogflowOption } from './option-helper';
+import { buildBrowseCarousel } from '../../utils/responses';
 
 export function returnVideosResponse(conv, success, videos) {
   let response;
@@ -39,11 +41,9 @@ export function returnBlogPostsResponse(conv, success, items) {
       text: displayText
     }))
 
-    const options = buildBrowsingCarouselForBlogPosts(items, 3);
+    conv.ask(buildBrowseCarousel(BlogPostServiceExt.asCards(items)));
+    return;
 
-    conv.ask(new BrowseCarousel({
-      items: options
-    }));
   } else {
     response = conv.buildRichResponse()
       .addSimpleResponse({
@@ -93,38 +93,38 @@ export function buildCarouselForYouTubeVideos(items, inputMaxLength = 10) {
   return carouselItems;
 }
 
-export function buildBrowsingCarouselForBlogPosts(items, inputMaxLength = 10) {
-  let maxLength = inputMaxLength;
-  if (maxLength > 10) maxLength = 10;
-  if (!(items && maxLength > 0)) return null;
+// export function buildBrowsingCarouselForBlogPosts(items, inputMaxLength = 10) {
+//   let maxLength = inputMaxLength;
+//   if (maxLength > 10) maxLength = 10;
+//   if (!(items && maxLength > 0)) return null;
 
-  console.log('browse carousel items', items);
+//   console.log('browse carousel items', items);
 
-  const browseCarouselItems: BrowseCarouselItem[] = [];
+//   const browseCarouselItems: BrowseCarouselItem[] = [];
 
-  for (const item of items) {
-    const cardTitle = item.title;
-    const cardUrl = item.postUrl;
-    const cardDescription = `Published ${moment(item.publishDate).fromNow()} by ${item.author}`;
-    const cardPicture = item.postImageUrl;
-    const cardPictureAltText = item.title;
+//   for (const item of items) {
+//     const cardTitle = item.title;
+//     const cardUrl = item.postUrl;
+//     const cardDescription = `Published ${moment(item.publishDate).fromNow()} by ${item.author}`;
+//     const cardPicture = item.postImageUrl;
+//     const cardPictureAltText = item.title;
 
-    const newOption = new BrowseCarouselItem({
-      title: cardTitle,
-      url: cardUrl,
-      description: cardDescription,
-      image: new Image({
-        url: cardPicture,
-        alt: cardPictureAltText
-      })
-    });
+//     const newOption = new BrowseCarouselItem({
+//       title: cardTitle,
+//       url: cardUrl,
+//       description: cardDescription,
+//       image: new Image({
+//         url: cardPicture,
+//         alt: cardPictureAltText
+//       })
+//     });
 
 
-    browseCarouselItems.push(newOption)
-  }
+//     browseCarouselItems.push(newOption)
+//   }
 
-  return browseCarouselItems;
-}
+//   return browseCarouselItems;
+// }
 
 export function returnVideoResponse(conv, success, params) {
   let response;
