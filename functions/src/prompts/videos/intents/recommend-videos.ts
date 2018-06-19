@@ -5,27 +5,15 @@ import { YouTubeManager } from "./../../../shared/youtube-manager";
 import { YouTubeVideoServiceExt } from "../../../services/youtube-video-service";
 import { SimpleResponse } from "actions-on-google";
 import {
-  responseYouTubeVideoWithCard,
-  responseYouTubeVideosWithBrowseCarousel
+  responseYouTubeVideoResults
 } from "../responses";
 
 export async function videoRecommendationHandler(conv, params) {
   const defaultPlaylistId = "PLJ3pNpJBSfWYehQ4URTAsauypK_QLowul";
 
   const results = await YouTubeManager.getPlaylistVideos(defaultPlaylistId);
-  console.log("Number of videos found: " + (results || []).length);
-
-  if (results === null) {
-    console.log("videos is null");
-    conv.ask(Strings.GeneralListNoResultsText);
-    return;
-  }
-
-  if (results.length > 1) {
-    responseYouTubeVideosWithBrowseCarousel(conv, results);
-  } else {
-    responseYouTubeVideoWithCard(conv, results[0]);
-  }
+  console.log("videoRecommendationHandler :: number of videos found: " + results.length);
+  responseYouTubeVideoResults(conv, results);
 }
 
 export async function selectVideoByOption(conv, params) {

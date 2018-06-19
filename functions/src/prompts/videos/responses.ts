@@ -5,6 +5,21 @@ import { SimpleResponse } from "actions-on-google";
 import { buildSimpleCard, buildBrowseCarousel } from '../../utils/responses';
 import { YouTubeVideoServiceExt } from '../../services/youtube-video-service';
 
+export function responseYouTubeVideoResults(conv, videos: YouTubeVideo[]) {
+  const results = YouTubeVideoServiceExt.asCards(videos);
+  if (results === null) {
+    console.log("videos is null");
+    conv.ask(Strings.GeneralListNoResultsText);
+    return;
+  }
+
+  if (results.length > 1) {
+    responseVideosWithBrowseCarousel(conv, results);
+  } else {
+    responseVideoWithCard(conv, results[0]);
+  }
+}
+
 export function responseYouTubeVideoWithCard(conv, video: YouTubeVideo) {
   const cardData = YouTubeVideoServiceExt.asCard(video);
   responseVideoWithCard(conv, cardData);
