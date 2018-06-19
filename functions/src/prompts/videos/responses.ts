@@ -4,6 +4,23 @@ import { YouTubeVideo } from './../../models/youtube-video';
 import { SimpleResponse } from "actions-on-google";
 import { buildSimpleCard, buildBrowseCarousel } from '../../utils/responses';
 import { YouTubeVideoServiceExt } from '../../services/youtube-video-service';
+import { Video } from "../../models/video";
+import { VideoServiceExt } from "../../services/video-service";
+
+export function responseVideoResults(conv, videos: Video[]) {
+  const results = VideoServiceExt.asCards(videos);
+  if (results === null) {
+    console.log("videos is null");
+    conv.ask(Strings.GeneralListNoResultsText);
+    return;
+  }
+
+  if (results.length > 1) {
+    responseVideosWithBrowseCarousel(conv, results);
+  } else {
+    responseVideoWithCard(conv, results[0]);
+  }
+}
 
 export function responseYouTubeVideoResults(conv, videos: YouTubeVideo[]) {
   const results = YouTubeVideoServiceExt.asCards(videos);

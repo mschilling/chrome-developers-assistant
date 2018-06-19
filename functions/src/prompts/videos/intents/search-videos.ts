@@ -2,10 +2,7 @@ import { YouTubeManager } from "./../../../shared/youtube-manager";
 import { DialogflowOption } from "../../shared/option-helper";
 import { VideoService, VideoServiceExt } from "../../../services/video-service";
 import { Firestore } from "../../../shared/firestore";
-import { buildSimpleCard, buildBrowseCarousel } from "../../../utils/responses";
-import { Translations as Strings } from "../translations";
-import { SimpleResponse } from "actions-on-google";
-import { YouTubeVideoServiceExt } from "../../../services/youtube-video-service";
+import { responseVideoResults, responseYouTubeVideoResults } from "../responses";
 
 const videoService = new VideoService(Firestore.db);
 
@@ -19,60 +16,17 @@ export async function searchVideos(conv, inputParams) {
   console.log("params", params);
 
   const videos = await videoService.search(params, 10);
-  if (videos === null) {
-    console.log("videos is null");
-    conv.ask(Strings.GeneralListNoResultsText);
-    return;
-  }
-
-  console.log("Number of videos found: " + (videos || []).length);
-  if (videos.length > 1) {
-    conv.ask(Strings.GeneralListResultText);
-
-    const browseCarouselResponse = buildBrowseCarousel(
-      VideoServiceExt.asCards(videos)
-    );
-    conv.ask(browseCarouselResponse);
-
-    return;
-  } else {
-    conv.ask(
-      new SimpleResponse({
-        speech: "Here is a matching video",
-        text: "Here is a matching video"
-      })
-    );
-
-    const simpleCardResponse = buildSimpleCard(
-      VideoServiceExt.asCard(videos[0])
-    );
-    conv.ask(simpleCardResponse);
-    return;
-  }
+  responseVideoResults(conv, videos);
 }
 
 export async function selectVideoByOption(conv, params) {
   const optionData = conv.getSelectedOption(); // TODO: verify/check
   console.log("optionData", optionData);
   const dfo = DialogflowOption.fromString(optionData);
-  console.log("dfo", dfo);
 
   if (dfo && dfo.value) {
     const card = await YouTubeManager.getVideoById(dfo.value);
-    if (card) {
-      conv.ask(
-        new SimpleResponse({
-          speech: "Here is a matching video",
-          text: "Here is a matching video"
-        })
-      );
-
-      const simpleCardResponse = buildSimpleCard(
-        YouTubeVideoServiceExt.asCard(card)
-      );
-      conv.ask(simpleCardResponse);
-      return;
-    }
+    responseYouTubeVideoResults(conv, [card]);
   }
   conv.ask("Sorry, I could not find the show on YouTube");
 }
