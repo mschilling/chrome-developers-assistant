@@ -4,6 +4,10 @@ import { buildBrowseCarousel, buildSimpleCard } from "../../../utils/responses";
 import { YouTubeManager } from "./../../../shared/youtube-manager";
 import { YouTubeVideoServiceExt } from "../../../services/youtube-video-service";
 import { SimpleResponse } from "actions-on-google";
+import {
+  responseYouTubeVideoWithCard,
+  responseYouTubeVideosWithBrowseCarousel
+} from "../responses";
 
 export async function videoRecommendationHandler(conv, params) {
   const defaultPlaylistId = "PLJ3pNpJBSfWYehQ4URTAsauypK_QLowul";
@@ -18,26 +22,9 @@ export async function videoRecommendationHandler(conv, params) {
   }
 
   if (results.length > 1) {
-    conv.ask(Strings.GeneralListResultText);
-
-    const browseCarouselResponse = buildBrowseCarousel(
-      YouTubeVideoServiceExt.asCards(results)
-    );
-    conv.ask(browseCarouselResponse);
-    return;
+    responseYouTubeVideosWithBrowseCarousel(conv, results);
   } else {
-    conv.ask(
-      new SimpleResponse({
-        speech: "Here is a matching video",
-        text: "Here is a matching video"
-      })
-    );
-
-    const simpleCardResponse = buildSimpleCard(
-      YouTubeVideoServiceExt.asCard(results[0])
-    );
-    conv.ask(simpleCardResponse);
-    return;
+    responseYouTubeVideoWithCard(conv, results[0]);
   }
 }
 
