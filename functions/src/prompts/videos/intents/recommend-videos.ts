@@ -1,5 +1,4 @@
 import { DialogflowOption } from "../../shared/option-helper";
-import { Translations as Strings } from "../translations";
 import { buildBrowseCarousel, buildSimpleCard } from "../../../utils/responses";
 import { YouTubeManager } from "./../../../shared/youtube-manager";
 import { YouTubeVideoServiceExt } from "../../../services/youtube-video-service";
@@ -25,6 +24,7 @@ export async function selectVideoByOption(conv, params) {
   if (dfo && dfo.value) {
     const card = await YouTubeManager.getVideoById(dfo.value);
     if (card) {
+      // responseYouTubeVideoResults(conv, [card]);
       conv.ask(
         new SimpleResponse({
           speech: "Here is a matching video",
