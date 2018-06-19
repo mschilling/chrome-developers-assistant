@@ -1,70 +1,5 @@
 import * as moment from 'moment';
-import { SimpleResponse, Image, Carousel, LinkOutSuggestion, BasicCard, Button } from 'actions-on-google';
-import { DialogflowOption } from './option-helper';
-
-export function returnVideosResponse(conv, success, videos) {
-  let response;
-  if (success && (videos || []).length > 0) {
-    const displayText = 'I\'ve found some video\'s on YouTube. Here it is.';
-    const speech = `<speak>${displayText}</speak>`;
-
-    const options = buildCarouselForYouTubeVideos(videos, 3);
-
-    conv.ask(new SimpleResponse({
-      speech: speech,
-      text: displayText
-    }));
-
-    conv.ask(new Carousel({ items: options }));
-
-  } else {
-    response = conv.buildRichResponse()
-      .addSimpleResponse({
-        speech: 'Sorry, I could not find the video on YouTube right now.',
-        displayText: 'Sorry, I could not find the video on YouTube right now'
-      });
-    conv.ask(response);
-  }
-}
-
-export function buildCarouselForYouTubeVideos(items, inputMaxLength = 10) {
-  let maxLength = inputMaxLength;
-  if (maxLength > 10) maxLength = 10;
-  if (!(items && maxLength > 0)) return null;
-
-  console.log('carousel items', items);
-  let carouselItems = {};
-
-  for (const item of items) {
-    const uniqueId = item.videoId;
-    const cardTitle = item.name || item.title;
-    const cardDescription = item.description;
-    const thumbId = String(Math.ceil(Math.random() * 3));
-    const cardPicture = `https://img.youtube.com/vi/${item.videoId}/hq${thumbId}.jpg`;
-    const cardPictureAltText = cardTitle;
-
-    const dfo = new DialogflowOption('youtube#video', uniqueId, null);
-
-    const newOption = {
-      // Add the first item to the carousel
-      [dfo.toString()]: {
-        synonyms: [
-          uniqueId + '_alias'
-        ],
-        title: cardTitle,
-        description: cardDescription,
-        image: new Image({
-          url: cardPicture,
-          alt: cardPictureAltText,
-        }),
-      }
-
-    }
-    carouselItems = { ...carouselItems, ...newOption }
-  }
-
-  return carouselItems;
-}
+import { SimpleResponse, Image, LinkOutSuggestion, BasicCard, Button } from 'actions-on-google';
 
 export function responseIntentKeynoteVideo(conv, success, params) {
   if (success) {
@@ -97,29 +32,6 @@ export function responseIntentKeynoteVideo(conv, success, params) {
   }
 
   conv.ask("Sorry, I could not find any right now");
-}
-
-export function responseYouTubeVideoAsBasicCard(conv, cardData) {
-  const publishDate = moment(cardData.publishedAt);
-  conv.ask(new SimpleResponse({
-    text: 'Here\'s a YouTube result',
-    speech: `Here's a matching video. It's called ${cardData.title}`
-  }));
-
-  conv.ask(new BasicCard({
-    text: cardData.description,
-    title: cardData.title,
-    subtitle: `Published ${publishDate.fromNow()}`,
-    buttons: new Button({
-      title: 'Watch on YouTube',
-      url: 'https://youtube.com/watch?v=' + cardData.videoId
-    }),
-    image: new Image({
-      url: cardData.imageUrl,
-      alt: cardData.title
-    }),
-    display: 'CROPPED'
-  }))
 }
 
 export function returnBasicCard(conv, cardType, data) {

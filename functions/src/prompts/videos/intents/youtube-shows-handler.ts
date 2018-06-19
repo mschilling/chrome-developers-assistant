@@ -1,8 +1,10 @@
-import { BasicCard, SimpleResponse, Image, Button } from "actions-on-google";
-
 import * as moment from 'moment';
-import { returnVideosResponse, returnBasicCard } from "../../shared/responses";
+
+import { BasicCard, SimpleResponse, Image, Button } from "actions-on-google";
 import { YouTubeManager } from './../../../shared/youtube-manager';
+import { buildBrowseCarousel, buildSimpleCard } from '../../../utils/responses';
+import { YouTubeVideoServiceExt } from '../../../services/youtube-video-service';
+import { Translations as Strings } from "../translations";
 
 export async function findEpisode(conv, params) {
   console.log('params', params);
@@ -12,16 +14,42 @@ export async function findEpisode(conv, params) {
 
     const items = await YouTubeManager.getLatestShowEpisodes({ limit: 10 });
     console.log('items:', items);
-    if (items) {
-      const result = items[0];
-      if (items.length > 1) {
-        returnVideosResponse(conv, true, items);
-      } else {
-        returnBasicCard(conv, 'video', result);
-      }
-    } else {
-      conv.ask('Sorry, I could not find the show on YouTube');
+
+
+    if (items === null) {
+      console.log("videos is null");
+      conv.ask(Strings.GeneralListNoResultsText);
+      return;
     }
+
+    if (items.length > 1) {
+      conv.ask(Strings.GeneralListResultText);
+
+      const browseCarouselResponse = buildBrowseCarousel(
+        YouTubeVideoServiceExt.asCards(items)
+      );
+      conv.ask(browseCarouselResponse);
+      return;
+    } else {
+      conv.ask(
+        new SimpleResponse({
+          speech: "Here is a matching video",
+          text: "Here is a matching video"
+        })
+      );
+
+      const simpleCardResponse = buildSimpleCard(
+        YouTubeVideoServiceExt.asCard(items[0])
+      );
+      conv.ask(simpleCardResponse);
+      return;
+    }
+
+
+
+
+
+
   } else {
     const card = await YouTubeManager.getLastEpisode(playlistId);
     if (card) {
