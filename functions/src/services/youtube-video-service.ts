@@ -1,4 +1,3 @@
-import { debug } from '../shared/debug';
 import { YouTubeVideo } from '../models/youtube-video';
 import { GenericCard } from '../models/card';
 

@@ -6,10 +6,8 @@ import { debug } from './debug';
 import * as functions from 'firebase-functions';
 import { Firestore } from './firestore';
 import { YouTubeVideo } from '../models/youtube-video';
-import { GenericCard } from '../models/card';
 
 const axios = require('axios');
-// const api = require('../helpers/api');
 
 const BASE_URL = 'https://www.googleapis.com/youtube/v3';
 const ACCESS_TOKEN = process.env.YOUTUBE_KEY || functions.config().youtube.key;
@@ -19,21 +17,6 @@ const client = axios.create({
   timeout: 1000,
   // headers: {'Authorization': 'Bearer ' + ACCESS_TOKEN}
 });
-
-// class OpenGraphObject {
-//   static asYouTubeVideo(data) {
-//     const obj = {
-//       kind: 'youtube#video',
-//       id: data.id,
-//       title: data.snippet.title,
-//       description: data.snippet.description,
-//       imageUrl: data.snippet.thumbnails.high.url,
-//       publishedAt: data.snippet.publishedAt,
-//       videoId: data.contentDetails.videoId ||data.id
-//     };
-//     return obj;
-//   }
-// }
 
 export class YouTubeManager {
 

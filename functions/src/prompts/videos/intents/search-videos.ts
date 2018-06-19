@@ -3,7 +3,7 @@ import { responseYouTubeVideoAsBasicCard } from "../../shared/responses";
 import { DialogflowOption } from "../../shared/option-helper";
 import { VideoService, VideoServiceExt } from "../../../services/video-service";
 import { Firestore } from "../../../shared/firestore";
-import { buildSimpleCard, buildCarousel, buildBrowseCarousel } from "../../../utils/responses";
+import { buildSimpleCard, buildBrowseCarousel } from "../../../utils/responses";
 import { Translations as Strings } from "../translations";
 import { SimpleResponse } from "actions-on-google";
 
