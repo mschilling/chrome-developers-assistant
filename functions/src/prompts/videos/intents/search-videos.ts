@@ -1,6 +1,6 @@
 import { YouTubeManager } from "./../../../shared/youtube-manager";
 import { DialogflowOption } from "../../shared/option-helper";
-import { VideoService, VideoServiceExt } from "../../../services/video-service";
+import { VideoService } from "../../../services/video-service";
 import { Firestore } from "../../../shared/firestore";
 import { responseVideoResults, responseYouTubeVideoResults } from "../responses";
 

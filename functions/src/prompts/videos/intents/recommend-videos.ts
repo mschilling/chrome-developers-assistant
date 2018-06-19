@@ -1,8 +1,5 @@
 import { DialogflowOption } from "../../shared/option-helper";
-import { buildBrowseCarousel, buildSimpleCard } from "../../../utils/responses";
 import { YouTubeManager } from "./../../../shared/youtube-manager";
-import { YouTubeVideoServiceExt } from "../../../services/youtube-video-service";
-import { SimpleResponse } from "actions-on-google";
 import {
   responseYouTubeVideoResults
 } from "../responses";
@@ -23,21 +20,7 @@ export async function selectVideoByOption(conv, params) {
 
   if (dfo && dfo.value) {
     const card = await YouTubeManager.getVideoById(dfo.value);
-    if (card) {
-      // responseYouTubeVideoResults(conv, [card]);
-      conv.ask(
-        new SimpleResponse({
-          speech: "Here is a matching video",
-          text: "Here is a matching video"
-        })
-      );
-
-      const simpleCardResponse = buildSimpleCard(
-        YouTubeVideoServiceExt.asCard(card)
-      );
-      conv.ask(simpleCardResponse);
-      return;
-    }
+    responseYouTubeVideoResults(conv, [card]);
   }
   conv.ask("Sorry, I could not find the show on YouTube");
 }
