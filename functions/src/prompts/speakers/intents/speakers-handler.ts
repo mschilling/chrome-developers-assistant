@@ -8,8 +8,7 @@ import {
 } from "../../../services/people-service";
 
 import { Translations as Strings } from "./../translations";
-import { buildCarousel, buildSimpleCard } from "../../../utils/responses";
-import { showOrBrowseSpeakers } from "../responses";
+import { buildSimpleCard } from "../../../utils/responses";
 
 const peopleService = new PeopleService(Firestore.db);
 
@@ -61,13 +60,6 @@ export async function selectSpeakerByOption(conv, params) {
   } else {
     conv.ask(util.format(Strings.PersonNoInfo, person));
   }
-}
-
-export async function speakerSelection(conv, params) {
-  console.log(`Handle intent :: speakerSelection`, conv.actions, params);
-
-  const items = await peopleService.getPeople(20);
-  showOrBrowseSpeakers(conv, items);
 }
 
 export async function knownForHandler(conv, params) {
