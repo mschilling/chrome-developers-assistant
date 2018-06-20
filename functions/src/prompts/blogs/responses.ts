@@ -64,6 +64,8 @@ function showBlogPostNoResult(conv) {
     })
   );
 
+  conversation.addSuggestions(['Blogs by Jake', 'Blogs by Rob Dodson', 'Blogs by Monica']);
+
   conversation.complete();
 }
 
