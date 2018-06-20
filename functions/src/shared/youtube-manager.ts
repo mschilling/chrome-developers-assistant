@@ -5,9 +5,9 @@ import { debug } from './debug';
 
 import * as functions from 'firebase-functions';
 import { Firestore } from './firestore';
+import { YouTubeVideo } from '../models/youtube-video';
 
 const axios = require('axios');
-// const api = require('../helpers/api');
 
 const BASE_URL = 'https://www.googleapis.com/youtube/v3';
 const ACCESS_TOKEN = process.env.YOUTUBE_KEY || functions.config().youtube.key;
@@ -18,24 +18,9 @@ const client = axios.create({
   // headers: {'Authorization': 'Bearer ' + ACCESS_TOKEN}
 });
 
-class OpenGraphObject {
-  static asYouTubeVideo(data) {
-    const obj = {
-      kind: 'youtube#video',
-      id: data.id,
-      title: data.snippet.title,
-      description: data.snippet.description,
-      imageUrl: data.snippet.thumbnails.high.url,
-      publishedAt: data.snippet.publishedAt,
-      videoId: data.contentDetails.videoId ||data.id
-    };
-    return obj;
-  }
-}
-
 export class YouTubeManager {
 
-  static getVideoById(videoId) {
+  static getVideoById(videoId): Promise<YouTubeVideo> {
     debug('getVideoById', videoId);
 
     return client.get('/videos', {
@@ -49,14 +34,13 @@ export class YouTubeManager {
       .then((response) => {
         const items = response.data.items || [];
         if (items.length > 0) {
-          // console.log(items[0]);
-          return OpenGraphObject.asYouTubeVideo(items[0]);
+          return YouTubeManager.asYouTubeVideo(items[0]);
         }
         return null;
       });
   }
 
-  static getLastEpisode(playlistId) {
+  static getLastEpisode(playlistId): Promise<YouTubeVideo> {
     debug('getLastEpisode', playlistId);
 
     return client.get('/playlistItems', {
@@ -70,14 +54,13 @@ export class YouTubeManager {
       .then((response) => {
         const items = response.data.items || [];
         if (items.length > 0) {
-          // console.log(items[0]);
-          return OpenGraphObject.asYouTubeVideo(items[0]);
+          return YouTubeManager.asYouTubeVideo(items[0]);
         }
         return null;
       });
   }
 
-  static getPlaylistVideos(playlistId) {
+  static getPlaylistVideos(playlistId): Promise<YouTubeVideo[]> {
     debug('getPlaylistVideos', playlistId);
 
     return client.get('/playlistItems', {
@@ -91,10 +74,9 @@ export class YouTubeManager {
       .then((response) => {
         const items = response.data.items || [];
         if (items.length > 0) {
-          // console.log(items[0]);
-          const docs = [];
+          const docs: YouTubeVideo[] = [];
           for (const item of items) {
-            docs.push(OpenGraphObject.asYouTubeVideo(item));
+            docs.push(YouTubeManager.asYouTubeVideo(item));
           }
           return docs;
         }
@@ -102,15 +84,29 @@ export class YouTubeManager {
       });
   }
 
-  static getLatestShowEpisodes(filters) {
+  static getLatestShowEpisodes(filters): Promise<YouTubeVideo[]> {
     const showService = new ShowService(Firestore.db);
     return showService.getItems(filters)
     .then( (items) => {
       const actions = items.map( (p: any) => YouTubeManager.getLastEpisode(p.playlistId));
       return Promise.all(actions)
-      .then((videos) => {
+      .then((videos: YouTubeVideo[]) => {
         return videos;
       });
     });
   }
+
+  static asYouTubeVideo(data): YouTubeVideo {
+    const obj = <YouTubeVideo>{
+      kind: 'youtube#video',
+      id: data.id,
+      title: data.snippet.title,
+      description: data.snippet.description,
+      imageUrl: data.snippet.thumbnails.high.url,
+      publishedAt: data.snippet.publishedAt,
+      videoId: data.contentDetails.videoId ||data.id
+    };
+    return obj;
+  }
+
 }

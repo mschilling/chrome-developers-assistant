@@ -1,38 +1,26 @@
-import { YouTubeManager } from './../../../shared/youtube-manager';
-import { returnVideosResponse, returnBasicCard, responseYouTubeVideoAsBasicCard } from '../../shared/responses';
-import { DialogflowOption } from '../../shared/option-helper';
-
+import { DialogflowOption } from "../../shared/option-helper";
+import { YouTubeManager } from "./../../../shared/youtube-manager";
+import {
+  responseYouTubeVideoResults
+} from "../responses";
 
 export async function videoRecommendationHandler(conv, params) {
-
-  const defaultPlaylistId = 'PLJ3pNpJBSfWYehQ4URTAsauypK_QLowul';
+  const defaultPlaylistId = "PLJ3pNpJBSfWYehQ4URTAsauypK_QLowul";
 
   const results = await YouTubeManager.getPlaylistVideos(defaultPlaylistId);
-  console.log('Number of videos found: ' + (results || []).length);
-  if (results && results.length > 0) {
-    const result = results[0];
-    if (results.length > 1) {
-      returnVideosResponse(conv, true, results); // Verify implementation
-    } else {
-      returnBasicCard(conv, 'video', result); // Verify implementation
-    }
-  } else {
-    conv.ask('Sorry, there\'s no result right now. Please try something else.');
-  }
+  console.log("videoRecommendationHandler :: number of videos found: " + results.length);
+  responseYouTubeVideoResults(conv, results);
 }
 
 export async function selectVideoByOption(conv, params) {
   const optionData = conv.getSelectedOption(); // TODO: verify/check
-  console.log('optionData', optionData);
+  console.log("optionData", optionData);
   const dfo = DialogflowOption.fromString(optionData);
-  console.log('dfo', dfo);
+  console.log("dfo", dfo);
 
   if (dfo && dfo.value) {
     const card = await YouTubeManager.getVideoById(dfo.value);
-    if (card) {
-      responseYouTubeVideoAsBasicCard(conv, card); // Verify implementation
-      return;
-    }
-  };
-  conv.ask('Sorry, I could not find the show on YouTube');
+    responseYouTubeVideoResults(conv, [card]);
+  }
+  conv.ask("Sorry, I could not find the show on YouTube");
 }
