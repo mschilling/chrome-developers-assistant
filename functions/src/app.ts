@@ -30,7 +30,7 @@ app.intent([
 ], speaker);
 
 app.intent([
-  'Read Blogpost',
+  'browse-blogs',
 ], blog);
 
 export { app };
