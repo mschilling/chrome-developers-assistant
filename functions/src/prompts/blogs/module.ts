@@ -1,4 +1,4 @@
-import { browseBlogs } from "./intents/blogposts-handler";
+import { browseBlogs } from "./intents/browse-blogs";
 
 const intents = {
   "browse-blogs": browseBlogs
