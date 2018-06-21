@@ -26,11 +26,11 @@ app.intent([
   'Speaker Information',
   'Speakers - Speaker info',
   'Speakers - Speaker info - known for',
-  'Speaker Selection',
+  'browse-speakers',
 ], speaker);
 
 app.intent([
-  'Read Blogpost',
+  'browse-blogs',
 ], blog);
 
 export { app };
