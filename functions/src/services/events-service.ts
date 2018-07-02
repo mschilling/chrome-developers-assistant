@@ -5,13 +5,14 @@ import { FirestoreCollections } from "../enums/firestore-collections";
 import * as moment from 'moment';
 
 interface IEventService {
-  getNextEvent(minDateIsoString: any): Promise<Event>;
+  getNextEvent(filter: IEventSearchFilter): Promise<Event>;
   getPreviousEvent(maxDateIsoString?: any): Promise<Event>;
   getPreviousEventByCountry(maxDateIsoString: any, country: string): Promise<Event>;
 }
 
 interface IEventSearchFilter {
   name?: string;
+  minDate?: string;
 }
 export class EventService extends CoreService implements IEventService {
 
@@ -19,14 +20,14 @@ export class EventService extends CoreService implements IEventService {
     super(db);
   }
 
-  async getNextEvent(minDateIsoString: any, filter?: IEventSearchFilter): Promise<Event> {
+  async getNextEvent(filter?: IEventSearchFilter): Promise<Event> {
     console.log('Service getNextEvent with filters ', filter);
+    const { name, minDate: minDateIsoString } = filter;
+
     let date = moment().toDate();
     if (minDateIsoString) {
       date = moment(minDateIsoString).toDate();
     };
-
-    const { name } = filter;
 
     let query: any = this.db.collection(FirestoreCollections.Events);
 

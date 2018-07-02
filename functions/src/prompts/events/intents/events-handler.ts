@@ -66,7 +66,7 @@ export async function nextEvent(conv, params) {
   }
   filter.minDate = inputDate;
 
-  const event: any = await eventService.getNextEvent(inputDate, filter);
+  const event: any = await eventService.getNextEvent(filter);
 
   if (event && event.name) {
     if(event.videoId) {
