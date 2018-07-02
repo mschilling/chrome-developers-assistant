@@ -1,5 +1,5 @@
 import * as moment from 'moment';
-import { BasicCard, Button, Image } from "actions-on-google";
+import { BasicCard, Button, Image, SimpleResponse } from "actions-on-google";
 import { Firestore } from '../../../shared/firestore';
 import { EventService } from '../../../services/events-service';
 
@@ -69,17 +69,28 @@ export async function nextEvent(conv, params) {
   const event: any = await eventService.getNextEvent(inputDate, filter);
 
   if (event && event.name) {
-    const speech = `<speak>
-              The next event is ${event.name}.<break time="1"/>
-              Anything else?
-              </speak>`;
-              if(event.videoId) {
-                event.imageUrl = `https://img.youtube.com/vi/${event.videoId}/hq1.jpg`;
-              } else {
-                event.imageUrl = FALLBACK_HEADER_IMAGE;
-              }
+    if(event.videoId) {
+      event.imageUrl = `https://img.youtube.com/vi/${event.videoId}/hq1.jpg`;
+    } else {
+      event.imageUrl = FALLBACK_HEADER_IMAGE;
+    }
 
-    conv.ask(speech);
+    const response = {
+      speech: `
+        <speak>The next event is ${event.name}.<break time="1"/>.
+        It will take place on ${moment(event.startDate).format('dddd, MMMM Do')} in ${event.location}
+        Anything Else?</speak>`,
+      text: `Checkout these event details`
+    }
+
+    if(filterEvent) {
+      response.speech = `
+        <speak>The next ${event.name} will take place on ${moment(event.startDate).format('dddd, MMMM Do')}.
+        <break time="1"/> Anything Else?</speak>`;
+    }
+
+
+    conv.ask(new SimpleResponse(response));
     conv.ask(buildBasicCard(event));
   } else {
     conv.ask('Sorry, I couldn\'t find any. Anything else?');
