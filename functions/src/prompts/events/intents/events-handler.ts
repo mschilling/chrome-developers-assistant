@@ -58,7 +58,15 @@ export async function nextEvent(conv, params) {
     inputDate = moment(searchDate, SEARCH_DATE_FORMAT).toDate();
   }
 
-  const event: any = await eventService.getNextEvent(inputDate);
+  const { event: filterEvent } = params;
+
+  const filter: any = {};
+  if(filterEvent) {
+    filter.name = filterEvent;
+  }
+  filter.minDate = inputDate;
+
+  const event: any = await eventService.getNextEvent(inputDate, filter);
 
   if (event && event.name) {
     const speech = `<speak>
@@ -74,7 +82,7 @@ export async function nextEvent(conv, params) {
     conv.ask(speech);
     conv.ask(buildBasicCard(event));
   } else {
-    conv.ask('Sorry, I couldn\'t find any event right now');
+    conv.ask('Sorry, I couldn\'t find any. Anything else?');
   }
 }
 

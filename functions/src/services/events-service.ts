@@ -20,6 +20,7 @@ export class EventService extends CoreService implements IEventService {
   }
 
   async getNextEvent(minDateIsoString: any, filter?: IEventSearchFilter): Promise<Event> {
+    console.log('Service getNextEvent with filters ', filter);
     let date = moment().toDate();
     if (minDateIsoString) {
       date = moment(minDateIsoString).toDate();
