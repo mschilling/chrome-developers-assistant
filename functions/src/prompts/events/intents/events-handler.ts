@@ -9,6 +9,8 @@ const SEARCH_DATE_FORMAT = 'YYYY-MM-DD';
 const SEARCH_DATE_PARAM = 'search-date';
 const FILTER_COUNTRY_PARAM = 'country';
 
+const FALLBACK_HEADER_IMAGE = 'https://chrome-developers-assistant.firebaseapp.com/assets/google_header.jpg';
+
 export async function previousEvent(conv, params) {
   let inputDate = new Date();
 
@@ -63,7 +65,11 @@ export async function nextEvent(conv, params) {
               The next event is ${event.name}.<break time="1"/>
               Anything else?
               </speak>`;
-    event.imageUrl = `https://img.youtube.com/vi/${event.videoId}/hq1.jpg`;
+              if(event.videoId) {
+                event.imageUrl = `https://img.youtube.com/vi/${event.videoId}/hq1.jpg`;
+              } else {
+                event.imageUrl = FALLBACK_HEADER_IMAGE;
+              }
 
     conv.ask(speech);
     conv.ask(buildBasicCard(event));
