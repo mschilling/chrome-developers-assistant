@@ -107,7 +107,7 @@ export class EventServiceExt {
     card.imageUrl = FALLBACK_HEADER_IMAGE;
     card.imageAlt = item.name;
     card.buttonUrl = item.website;
-    card.buttonTitle = "Visit Website";
+    card.buttonTitle = "Visit website";
     // card._optionType = 'event#event'
     card._optionValue = card.title;
 
