@@ -111,7 +111,7 @@ async function handleEvent(conv, dfo) {
 
       const simpleCardResponse = buildSimpleCard( EventServiceExt.asCard(data) );
       conversation.addElement(simpleCardResponse);
-      conversation.addSuggestions(['Show Keynotes', 'Show Summit Reports']);
+      conversation.addSuggestions(['Show Keynotes', 'Show Summit Reports', 'Browse Events']);
       conversation.complete();
       // conv.contexts.set('BROWSE_EVENTS',5, { event: data.id})
       return;
