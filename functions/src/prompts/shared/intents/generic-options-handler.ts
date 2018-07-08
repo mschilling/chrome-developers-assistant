@@ -6,6 +6,7 @@ import { SimpleResponse } from "actions-on-google";
 import { buildSimpleCard } from "../../../utils/responses";
 import { YouTubeVideoServiceExt } from "../../../services/youtube-video-service";
 import { EventService, EventServiceExt } from "../../../services/events-service";
+import { Conversation } from "../../../utils/conversation";
 // import { responseYouTubeVideoAsBsicCard, returnBasicCard } from '../responses';
 
 export async function handleOption(conv, params, option) {
@@ -92,23 +93,26 @@ async function handleEvent(conv, dfo) {
       const speech = `
       <speak>
         <p>
-          <s>${data.name} is a ${data.numberOfDays} day event. Is there anything else you'd like to know?</s>
+          <s>${data.name} is a ${data.numberOfDays} day event.
+          Is there anything else you'd like to know?</s>
         </p>
       </speak>`;
 
       const displayText = "Checkout these event details";
 
-      conv.ask(
+      const conversation = new Conversation(conv);
+
+      conversation.addElement(
         new SimpleResponse({
           speech: speech,
           text: displayText
         })
       );
 
-      const simpleCardResponse = buildSimpleCard(
-        EventServiceExt.asCard(data)
-      );
-      conv.ask(simpleCardResponse);
+      const simpleCardResponse = buildSimpleCard( EventServiceExt.asCard(data) );
+      conversation.addElement(simpleCardResponse);
+      conversation.addSuggestions(['Show Keynotes', 'Show Summit Reports']);
+      conversation.complete();
       return;
     }
   }
