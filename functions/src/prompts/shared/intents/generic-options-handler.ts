@@ -113,6 +113,7 @@ async function handleEvent(conv, dfo) {
       conversation.addElement(simpleCardResponse);
       conversation.addSuggestions(['Show Keynotes', 'Show Summit Reports']);
       conversation.complete();
+      // conv.contexts.set('BROWSE_EVENTS',5, { event: data.id})
       return;
     }
   }
