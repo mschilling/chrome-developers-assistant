@@ -11,6 +11,7 @@ interface IEventService {
   getNextEvent(filter: IEventSearchFilter): Promise<Event>;
   getPreviousEvent(maxDateIsoString?: any): Promise<Event>;
   getPreviousEventByCountry(maxDateIsoString: any, country: string): Promise<Event>;
+  searchEvents(filter?: IEventSearchFilter): Promise<Event[]>
 }
 
 interface IEventSearchFilter {
@@ -55,7 +56,7 @@ export class EventService extends CoreService implements IEventService {
     }
 
     return query
-    .limit(10)
+    .limit(100)
     .get()
     .then(snapshot => this.wrapAll<Event>(snapshot));
 
@@ -148,9 +149,11 @@ export class EventServiceExt {
     card.buttonUrl = item.website;
     card.buttonTitle = "Visit website";
     card._optionType = 'event#id'
-    card._optionValue = card.title;
+    card._optionValue = card._id;
 
-    if(item.videoId) {
+    if(item.imageUrl) {
+      card.imageUrl = item.imageUrl;
+    } else if(item.videoId) {
       card.imageUrl = `https://img.youtube.com/vi/${item.videoId}/hq1.jpg`;
     }
 

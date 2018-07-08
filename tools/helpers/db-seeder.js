@@ -70,6 +70,7 @@ class DbLoader {
         tags: asFbArrayAsObjectKeys(row.tags),
         numberOfDays: asFbNumber(row.numberofdays),
         videoId: asFbString(row.videoid),
+        imageUrl: asFbString(row.bannerurl)
       };
       actions.push(dbRef.doc(docId).set(obj, { merge: true }));
     };

@@ -9,4 +9,5 @@ export class Event {
   startDate: Date;
   endDate: Date;
   videoId?: string;
+  imageUrl?: string;
 }
