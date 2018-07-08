@@ -12,6 +12,12 @@ interface IVideoService {
   filterVideosBySpeakers(speakers, limit: number): Promise<Video[]>;
 }
 
+interface IVideoSearchFilter {
+  event?: string;
+  tags?: string[];
+  speakers?: string[];
+}
+
 export class VideoService extends CoreService implements IVideoService {
 
   constructor(db: any) {
