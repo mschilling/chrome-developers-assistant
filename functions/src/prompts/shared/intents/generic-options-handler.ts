@@ -92,12 +92,11 @@ async function handleEvent(conv, dfo) {
       const speech = `
       <speak>
         <p>
-          <s>I've found an event.</s>
-          <s>It's called ${data.name}.</s>
+          <s>${data.name} is a ${data.numberOfDays} day event. Is there anything else you'd like to know?</s>
         </p>
       </speak>`;
 
-      const displayText = "Here's a event I found";
+      const displayText = "Checkout these event details";
 
       conv.ask(
         new SimpleResponse({
