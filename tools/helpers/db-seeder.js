@@ -67,6 +67,7 @@ class DbLoader {
         website: asFbString(row.website),
         startDate: asFbDate(row.startdate),
         endDate: asFbDate(row.enddate),
+        tags: asFbArrayAsObjectKeys(row.tags),
         numberOfDays: asFbNumber(row.numberofdays),
         videoId: asFbString(row.videoid),
       };

@@ -18,6 +18,7 @@ app.intent([
 ], video);
 
 app.intent([
+  'browse-events',
   'next-event-date',
 ], event);
 

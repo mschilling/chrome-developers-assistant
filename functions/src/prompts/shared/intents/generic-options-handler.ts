@@ -1,10 +1,11 @@
-import { Firestore } from "./../../../shared/firestore";
-import { BlogPostService, BlogPostServiceExt } from "./../../../services/blog-post-service";
-import { YouTubeManager } from "./../../../shared/youtube-manager";
+import { Firestore } from "../../../shared/firestore";
+import { BlogPostService, BlogPostServiceExt } from "../../../services/blog-post-service";
+import { YouTubeManager } from "../../../shared/youtube-manager";
 import { DialogflowOption } from "../option-helper";
 import { SimpleResponse } from "actions-on-google";
 import { buildSimpleCard } from "../../../utils/responses";
 import { YouTubeVideoServiceExt } from "../../../services/youtube-video-service";
+import { EventService, EventServiceExt } from "../../../services/events-service";
 // import { responseYouTubeVideoAsBsicCard, returnBasicCard } from '../responses';
 
 export async function handleOption(conv, params, option) {
@@ -17,6 +18,8 @@ export async function handleOption(conv, params, option) {
       return handleVideo(conv, dfo);
     case "blogpost#id":
       return handleBlogpost(conv, dfo);
+      case "event#id":
+      return handleEvent(conv, dfo);
     case "person#name":
       return conv.ask(
         `${
@@ -79,4 +82,36 @@ async function handleBlogpost(conv, dfo) {
     }
   }
   conv.ask("Sorry, I could not find the show on YouTube");
+}
+
+async function handleEvent(conv, dfo) {
+  if (dfo && dfo.value) {
+    const eventService = new EventService(Firestore.db);
+    const data = await eventService.getEvent(dfo.value);
+    if (data) {
+      const speech = `
+      <speak>
+        <p>
+          <s>I've found an event.</s>
+          <s>It's called ${data.name}.</s>
+        </p>
+      </speak>`;
+
+      const displayText = "Here's a event I found";
+
+      conv.ask(
+        new SimpleResponse({
+          speech: speech,
+          text: displayText
+        })
+      );
+
+      const simpleCardResponse = buildSimpleCard(
+        EventServiceExt.asCard(data)
+      );
+      conv.ask(simpleCardResponse);
+      return;
+    }
+  }
+  conv.ask("Sorry, I could not find the event just now");
 }
