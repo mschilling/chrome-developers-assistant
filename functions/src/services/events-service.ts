@@ -3,7 +3,9 @@ import { CoreService } from "./abstract-service";
 import { FirestoreCollections } from "../enums/firestore-collections";
 
 import * as moment from 'moment';
+import { GenericCard } from "../models/card";
 
+const FALLBACK_HEADER_IMAGE = 'https://chrome-developers-assistant.firebaseapp.com/assets/google_header.jpg';
 interface IEventService {
   getNextEvent(filter: IEventSearchFilter): Promise<Event>;
   getPreviousEvent(maxDateIsoString?: any): Promise<Event>;
@@ -85,4 +87,34 @@ export class EventService extends CoreService implements IEventService {
       });
   }
 
+}
+
+export class EventServiceExt {
+  static asCards(items: Event[]): GenericCard[] {
+    if (items === null) {
+      console.log("items is null");
+      return [];
+    }
+    return items.map(p => EventServiceExt.asCard(p));
+  }
+
+  static asCard(item: Event): GenericCard {
+    const card = new GenericCard();
+    card._id = item.id;
+    card.title = `${item.name}`;
+    card.description = item.description;
+    card.subTitle = `${item.venue}, ${item.location}`
+    card.imageUrl = FALLBACK_HEADER_IMAGE;
+    card.imageAlt = item.name;
+    card.buttonUrl = item.website;
+    card.buttonTitle = "Visit website";
+    // card._optionType = 'event#event'
+    card._optionValue = card.title;
+
+    if(item.videoId) {
+      card.imageUrl = `https://img.youtube.com/vi/${item.videoId}/hq1.jpg`;
+    }
+
+    return card;
+  }
 }

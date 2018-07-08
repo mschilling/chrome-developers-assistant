@@ -1,8 +1,7 @@
 import { nextEvent, previousEvent } from "./intents/events-handler";
 
 const intents = {
-  'Events - Next Event': nextEvent,
-  'Events - Previous Event': previousEvent,
+  'next-event-date': nextEvent,
 };
 
 export const module = (conv, ...args): any => {

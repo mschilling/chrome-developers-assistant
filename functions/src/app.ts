@@ -18,8 +18,7 @@ app.intent([
 ], video);
 
 app.intent([
-  'Events - Next Event',
-  'Events - Previous Event',
+  'next-event-date',
 ], event);
 
 app.intent([

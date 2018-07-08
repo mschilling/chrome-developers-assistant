@@ -1,7 +1,9 @@
 import * as moment from 'moment';
 import { BasicCard, Button, Image, SimpleResponse } from "actions-on-google";
 import { Firestore } from '../../../shared/firestore';
-import { EventService } from '../../../services/events-service';
+import { EventService, EventServiceExt } from '../../../services/events-service';
+import { buildSimpleCard } from '../../../utils/responses';
+import { Event } from '../../../models/event';
 
 const eventService = new EventService(Firestore.db);
 
@@ -9,7 +11,6 @@ const SEARCH_DATE_FORMAT = 'YYYY-MM-DD';
 const SEARCH_DATE_PARAM = 'search-date';
 const FILTER_COUNTRY_PARAM = 'country';
 
-const FALLBACK_HEADER_IMAGE = 'https://chrome-developers-assistant.firebaseapp.com/assets/google_header.jpg';
 
 export async function previousEvent(conv, params) {
   let inputDate = new Date();
@@ -27,7 +28,7 @@ export async function previousEvent(conv, params) {
     filterCountry = filterCountry.toLowerCase();
   }
 
-  let event;
+  let event: Event;
   if (filterCountry) {
     event = await eventService.getPreviousEventByCountry(inputDate, filterCountry);
   } else {
@@ -40,10 +41,9 @@ export async function previousEvent(conv, params) {
             Anything else?
             </speak>`;
 
-    event.imageUrl = `https://img.youtube.com/vi/${event.videoId}/hq1.jpg`;
 
     conv.ask(speech);
-    conv.ask(buildBasicCard(event));
+    conv.ask(buildSimpleCard(EventServiceExt.asCard(event)));
 
   } else {
     conv.ask('Sorry, I couldn\'t find any event right now');
@@ -66,14 +66,9 @@ export async function nextEvent(conv, params) {
   }
   filter.minDate = inputDate;
 
-  const event: any = await eventService.getNextEvent(filter);
+  const event: Event = await eventService.getNextEvent(filter);
 
   if (event && event.name) {
-    if(event.videoId) {
-      event.imageUrl = `https://img.youtube.com/vi/${event.videoId}/hq1.jpg`;
-    } else {
-      event.imageUrl = FALLBACK_HEADER_IMAGE;
-    }
 
     const response = {
       speech: `
@@ -89,28 +84,9 @@ export async function nextEvent(conv, params) {
         <break time="1"/> Anything Else?</speak>`;
     }
 
-
     conv.ask(new SimpleResponse(response));
-    conv.ask(buildBasicCard(event));
+    conv.ask(buildSimpleCard(EventServiceExt.asCard(event)))
   } else {
     conv.ask('Sorry, I couldn\'t find any. Anything else?');
   }
-}
-
-function buildBasicCard(cardData): BasicCard {
-  console.log('buildBasicCard', cardData);
-  return new BasicCard({
-    text: cardData.description,
-    title: cardData.name,
-    subtitle: `${cardData.venue}, ${cardData.location}`,
-    buttons: new Button({
-      title: 'Visit website',
-      url: cardData.website
-    }),
-    image: new Image({
-      url: cardData.imageUrl,
-      alt: cardData.name
-    }),
-    display: 'CROPPED'
-  })
 }
