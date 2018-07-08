@@ -73,7 +73,7 @@ export async function nextEvent(conv, params) {
     const response = {
       speech: `
         <speak>The next event is ${event.name}.<break time="1"/>.
-        It will take place on ${moment(event.startDate).format('dddd, MMMM Do')} in ${event.location}
+        It will take place on ${moment(event.startDate).format('dddd, MMMM Do')} in ${event.location}.
         Anything Else?</speak>`,
       text: `Checkout these event details`
     }
