@@ -7,6 +7,7 @@ import { GenericCard } from "../models/card";
 
 const FALLBACK_HEADER_IMAGE = 'https://chrome-developers-assistant.firebaseapp.com/assets/google_header.jpg';
 interface IEventService {
+  getEvent(id: string): Promise<Event>;
   getNextEvent(filter: IEventSearchFilter): Promise<Event>;
   getPreviousEvent(maxDateIsoString?: any): Promise<Event>;
   getPreviousEventByCountry(maxDateIsoString: any, country: string): Promise<Event>;
@@ -15,11 +16,49 @@ interface IEventService {
 interface IEventSearchFilter {
   name?: string;
   minDate?: string;
+  isShowcase?: boolean;
 }
 export class EventService extends CoreService implements IEventService {
 
   constructor(db: any) {
     super(db);
+  }
+
+  async getEvent(id: string): Promise<Event> {
+    console.log('getEvent ' + id);
+    const query: any = this.db.collection(FirestoreCollections.Events);
+    return query
+      .doc(id)
+      .get()
+      .then(snapshot => {
+        return snapshot.data();
+      });
+  }
+
+  async searchEvents(filter?: IEventSearchFilter): Promise<Event[]> {
+    console.log('Service searchEvents with filters ', filter);
+    const { name, minDate, isShowcase } = filter;
+
+    let date = moment().toDate();
+    if (minDate) {
+      date = moment(minDate).toDate();
+    };
+
+    let query: any = this.db.collection(FirestoreCollections.Events);
+
+    if( name !== undefined) {
+      query = query.where('eventKey', '==', name);
+    }
+
+    if( isShowcase === true) {
+      query = query.where(`tags.showcase`, '==', true);
+    }
+
+    return query
+    .limit(10)
+    .get()
+    .then(snapshot => this.wrapAll<Event>(snapshot));
+
   }
 
   async getNextEvent(filter?: IEventSearchFilter): Promise<Event> {
@@ -108,7 +147,7 @@ export class EventServiceExt {
     card.imageAlt = item.name;
     card.buttonUrl = item.website;
     card.buttonTitle = "Visit website";
-    // card._optionType = 'event#event'
+    card._optionType = 'event#id'
     card._optionValue = card.title;
 
     if(item.videoId) {

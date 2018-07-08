@@ -1,6 +1,8 @@
 import { nextEvent, previousEvent } from "./intents/events-handler";
+import { browseEvents } from "./intents/browse-events";
 
 const intents = {
+  'browse-events': browseEvents,
   'next-event-date': nextEvent,
 };
 
