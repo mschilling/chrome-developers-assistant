@@ -16,4 +16,4 @@ cache:
   - node_modules
 notifications:
   email: false
-  webhooks: https://coders.move4mobile.io/webhooks/travis
+  webhooks: https://travis.webhooks.m4m.io
