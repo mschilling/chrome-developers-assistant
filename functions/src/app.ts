@@ -7,6 +7,10 @@ import { module as speaker } from './prompts/speakers/module';
 
 const app = dialogflow();
 
+app.middleware(conv => {
+  console.log(`Intent ${conv.intent} matched with params ${JSON.stringify(conv.parameters)}`)
+})
+
 app.intent([
   'Options Handler Fallback',
 ], shared);
@@ -24,6 +28,7 @@ app.intent([
 
 app.intent([
   'speaker_intent',
+  'speaker_videos_intent',
   'Speakers - Speaker info',
   'Speakers - Speaker info - known for',
   'browse-speakers',
