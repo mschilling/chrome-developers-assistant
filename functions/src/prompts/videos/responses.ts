@@ -51,7 +51,7 @@ function responseVideoWithCard(conv, cardData: GenericCard) {
   console.log('Response video with BasicCard', cardData);
 
   const simpleResponse = new SimpleResponse({
-    speech: "Here is a matching video",
+    speech: "Here is a matching video. Anything else I can do for you?",
     text: "Here is a matching video"
   });
   conv.ask(simpleResponse);
