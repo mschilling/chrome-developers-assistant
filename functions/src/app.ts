@@ -23,7 +23,7 @@ app.intent([
 ], event);
 
 app.intent([
-  'Speaker Information',
+  'speaker_intent',
   'Speakers - Speaker info',
   'Speakers - Speaker info - known for',
   'browse-speakers',

@@ -2,7 +2,7 @@ import { speakerInfoHandler, knownForHandler } from "./intents/speakers-handler"
 import { browseSpeaker } from "./intents/browse-speakers";
 
 const intents = {
-  'Speaker Information': speakerInfoHandler,
+  'speaker_intent': speakerInfoHandler,
   'Speakers - Speaker info - known for': knownForHandler,
   'Speakers - Speaker info': speakerInfoHandler,
   'browse-speakers': browseSpeaker,
