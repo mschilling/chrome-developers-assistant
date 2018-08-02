@@ -1,26 +1,38 @@
-import { Image, Carousel, BasicCard, Button, BrowseCarouselItem, BrowseCarousel } from "actions-on-google";
-import { GenericCard } from "../models/card";
-import { DialogflowOption } from "../prompts/shared/option-helper";
+import {
+  Image,
+  Carousel,
+  BasicCard,
+  Button,
+  BrowseCarouselItem,
+  BrowseCarousel
+} from 'actions-on-google';
+import { GenericCard } from '../models/card';
+import { DialogflowOption } from '../prompts/shared/option-helper';
 
 export function buildSimpleCard(item: GenericCard) {
-
-  return new BasicCard({
+  const card = new BasicCard({
     title: item.title,
     text: item.description,
-    buttons: new Button({ // TODO: make Button optional
-      url: item.buttonUrl,
-      title: item.buttonTitle
-    }),
     image: new Image({
       url: item.imageUrl,
       alt: item.imageAlt
-    })
+    }),
+    buttons: []
   });
+
+  card.buttons = [
+    new Button({
+      url: item.buttonUrl,
+      title: item.buttonTitle || item.title
+    })
+  ];
+
+  return card;
 }
 
 export function buildCarousel(items: GenericCard[]) {
   if (items === null) {
-    console.log("items is null");
+    console.log('items is null');
     return null;
   }
 
@@ -42,7 +54,7 @@ export function buildCarousel(items: GenericCard[]) {
 
 export function buildBrowseCarousel(items: GenericCard[]) {
   if (items === null) {
-    console.log("items is null");
+    console.log('items is null');
     return null;
   }
 
@@ -66,13 +78,11 @@ function buildCarouselOption(card: GenericCard) {
 }
 
 function buildBrowseCarouselOptions(cards: GenericCard[]) {
-
   console.log('browse carousel items', cards);
 
   const browseCarouselItems: BrowseCarouselItem[] = [];
 
   for (const card of cards) {
-
     const newOption = new BrowseCarouselItem({
       title: card.title,
       url: card.buttonUrl,
@@ -83,7 +93,7 @@ function buildBrowseCarouselOptions(cards: GenericCard[]) {
       })
     });
 
-    browseCarouselItems.push(newOption)
+    browseCarouselItems.push(newOption);
   }
   return browseCarouselItems;
 }
