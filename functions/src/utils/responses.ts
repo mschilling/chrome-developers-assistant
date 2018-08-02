@@ -16,8 +16,7 @@ export function buildSimpleCard(item: GenericCard) {
     image: new Image({
       url: item.imageUrl,
       alt: item.imageAlt
-    }),
-    buttons: []
+    })
   });
 
   card.buttons = [
