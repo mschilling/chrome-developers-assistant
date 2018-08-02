@@ -4,19 +4,18 @@ import { Firestore } from '../../../shared/firestore';
 import { EventService, EventServiceExt } from '../../../services/events-service';
 import { buildSimpleCard } from '../../../utils/responses';
 import { Event } from '../../../models/event';
+import { Parameters } from '../../../dialogflow-constants';
 
 const eventService = new EventService(Firestore.db);
 
 const SEARCH_DATE_FORMAT = 'YYYY-MM-DD';
-const SEARCH_DATE_PARAM = 'search-date';
-const FILTER_COUNTRY_PARAM = 'country';
 
 
 export async function previousEvent(conv, params) {
   let inputDate = new Date();
 
-  const searchDate = params[SEARCH_DATE_PARAM];
-  let filterCountry = params[FILTER_COUNTRY_PARAM];
+  const searchDate = params[Parameters.DATE];
+  let filterCountry = params[Parameters.COUNTRY];
 
   console.log(searchDate, filterCountry);
 
@@ -53,7 +52,7 @@ export async function previousEvent(conv, params) {
 export async function nextEvent(conv, params) {
   let inputDate = new Date();
 
-  const searchDate = params[SEARCH_DATE_PARAM];
+  const searchDate = params[Parameters.DATE];
   if (searchDate) {
     inputDate = moment(searchDate, SEARCH_DATE_FORMAT).toDate();
   }
