@@ -1,66 +1,16 @@
 import * as util from 'util';
 
-import {
-  SimpleResponse,
-  Contexts,
-  DialogflowConversation
-} from 'actions-on-google';
+import { SimpleResponse } from 'actions-on-google';
 import { Firestore } from '../../../shared/firestore';
-import {
-  PeopleService,
-  PeopleServiceExt
-} from '../../../services/people-service';
+import { PeopleService } from '../../../services/people-service';
 
 import { Translations as Strings } from './../translations';
-import { buildSimpleCard } from '../../../utils/responses';
 
 const peopleService = new PeopleService(Firestore.db);
 
 // Context Parameters
 const SPEAKER_PARAM = 'speaker';
 const SPEAKER_ATTR_PARAM = 'speakerAttribute';
-
-export async function speakerInfoHandler(
-  conv: DialogflowConversation<{}, {}, Contexts>,
-  params
-) {
-  console.log('speakerInfoHandler', conv.query, params);
-
-  const key = params[SPEAKER_PARAM];
-  if (!key) {
-    conv.ask(util.format(Strings.PersonNoInfo, key));
-  }
-
-  const ctx = conv.contexts.get('speaker-followup');
-  console.log('speaker-followup ctx:' + JSON.stringify(ctx));
-
-  // conv.arguments.get()
-
-  const person = await peopleService.getPerson(key);
-  if (person) {
-    let speechText = util.format(
-      Strings.PersonDefaultWhoIs,
-      `${person.first_name} ${person.last_name}`
-    );
-    if (person.short_bio) {
-      speechText = person.short_bio;
-    }
-
-    const speech = `<speak>${speechText}</speak>`;
-
-    conv.ask(
-      new SimpleResponse({
-        speech: speech,
-        text: speechText
-      })
-    );
-
-    const simpleCardResponse = buildSimpleCard(PeopleServiceExt.asCard(person));
-    conv.ask(simpleCardResponse);
-  } else {
-    conv.ask(util.format(Strings.PersonNoInfo, person));
-  }
-}
 
 export async function selectSpeakerByOption(conv, params) {
   console.log('getSelectedOption', conv.getSelectedOption());
