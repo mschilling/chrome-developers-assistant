@@ -18,7 +18,7 @@ app.intent([
 app.intent([
   'video_search_intent',
   'recommended_videos',
-  'Watch Show Episodes',
+  'watch_show_episode_intent',
 ], video);
 
 app.intent([
