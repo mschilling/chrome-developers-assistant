@@ -6,7 +6,6 @@ const intents = {
   'speaker_intent': speakerIntent,
   'speaker_followup_videos_intent': speakerVideosIntent,
   'speaker_followup_known_for_intent': knownForHandler,
-  'Speakers - Speaker info': speakerIntent,
   'browse_speakers_intent': browseSpeaker,
 };
 
