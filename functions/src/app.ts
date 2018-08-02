@@ -30,6 +30,7 @@ app.intent([
   'speaker_intent',
   'speaker_followup_videos_intent',
   'speaker_followup_known_for_intent',
+  'speaker_followup_about',
   'browse_speakers_intent',
 ], speaker);
 
