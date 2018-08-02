@@ -13,8 +13,6 @@ import {
 
 import { Translations as Strings } from './../translations';
 import { buildSimpleCard } from '../../../utils/responses';
-import { VideoService } from '../../../services/video-service';
-import { responseVideoResults } from '../../videos/responses';
 
 const peopleService = new PeopleService(Firestore.db);
 
@@ -62,25 +60,6 @@ export async function speakerInfoHandler(
   } else {
     conv.ask(util.format(Strings.PersonNoInfo, person));
   }
-}
-
-export async function speakerVideosIntent(
-  conv: DialogflowConversation<{}, {}, Contexts>,
-  params
-) {
-  console.log('speakerVideosIntent', conv.query, params);
-
-  const speakerKey = params[SPEAKER_PARAM];
-  const person = await peopleService.getPerson(speakerKey);
-
-  if (!person) {
-    conv.ask(util.format(Strings.PersonNoInfo, speakerKey));
-  }
-
-  const videoService = new VideoService(Firestore.db);
-  const videos = await videoService.search({ speakers: [speakerKey] }, 10);
-  responseVideoResults(conv, videos);
-
 }
 
 export async function selectSpeakerByOption(conv, params) {
