@@ -3,9 +3,9 @@ import { videoRecommendationHandler } from "./intents/recommend-videos";
 import { findEpisode } from "./intents/youtube-shows-handler";
 
 const intents = {
-  'Video Search': searchVideos,
-  'Recommend Videos': videoRecommendationHandler,
-  'Watch Show Episodes': findEpisode
+  'video_search_intent': searchVideos,
+  'recommended_videos': videoRecommendationHandler,
+  'watch_show_episode_intent': findEpisode
 };
 
 export const module = (conv, ...args): any => {
