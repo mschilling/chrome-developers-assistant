@@ -7,7 +7,7 @@ const intents = {
   'speaker_videos_intent': speakerVideosIntent,
   'Speakers - Speaker info - known for': knownForHandler,
   'Speakers - Speaker info': speakerIntent,
-  'browse-speakers': browseSpeaker,
+  'browse_speakers_intent': browseSpeaker,
 };
 
 export const module = (conv, ...args): any => {

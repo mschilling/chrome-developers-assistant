@@ -1,7 +1,7 @@
 import { handleOption } from "./intents/generic-options-handler";
 
 const intents = {
-  'Options Handler Fallback': handleOption,
+  'options_fallback': handleOption,
 };
 
 export const module = (conv, ...args): any => {

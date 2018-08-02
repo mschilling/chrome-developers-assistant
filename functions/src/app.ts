@@ -12,18 +12,18 @@ app.middleware(conv => {
 })
 
 app.intent([
-  'Options Handler Fallback',
+  'options_fallback',
 ], shared);
 
 app.intent([
-  'Video Search',
-  'Recommend Videos',
+  'video_search_intent',
+  'recommended_videos',
   'Watch Show Episodes',
 ], video);
 
 app.intent([
-  'browse-events',
-  'next-event-date',
+  'browse_events_intent',
+  'next_event_intent',
 ], event);
 
 app.intent([
@@ -31,11 +31,11 @@ app.intent([
   'speaker_videos_intent',
   'Speakers - Speaker info',
   'Speakers - Speaker info - known for',
-  'browse-speakers',
+  'browse_speakers_intent',
 ], speaker);
 
 app.intent([
-  'browse-blogs',
+  'browse_blogs_intent',
 ], blog);
 
 export { app };
