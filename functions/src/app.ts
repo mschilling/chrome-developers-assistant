@@ -28,8 +28,8 @@ app.intent([
 
 app.intent([
   'speaker_intent',
-  'speaker_videos_intent',
-  'speaker_known_for_intent',
+  'speaker_followup_videos_intent',
+  'speaker_followup_known_for_intent',
   'Speakers - Speaker info',
   'Speakers - Speaker info - known for',
   'browse_speakers_intent',
