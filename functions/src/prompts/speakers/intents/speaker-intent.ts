@@ -14,10 +14,9 @@ import { Firestore } from '../../../shared/firestore';
 import { VideoService } from '../../../services/video-service';
 import { responseVideoResults } from '../../videos/responses';
 import { buildSimpleCard } from '../../../utils/responses';
+import { Parameters } from '../../../dialogflow-constants';
 
 const peopleService = new PeopleService(Firestore.db);
-
-const SPEAKER_PARAM = 'speaker';
 
 export async function speakerIntent(
   conv: DialogflowConversation<{}, {}, Contexts>,
@@ -28,7 +27,7 @@ export async function speakerIntent(
       ` [params=${JSON.stringify(params)}]`
   );
 
-  const key = params[SPEAKER_PARAM];
+  const key = params[Parameters.SPEAKER];
   if (!key) {
     conv.ask(util.format(Strings.PersonNoInfo, key));
   }
@@ -68,7 +67,7 @@ export async function speakerVideosIntent(
       ` [params=${JSON.stringify(params)}]`
   );
 
-  const speakerKey = params[SPEAKER_PARAM];
+  const speakerKey = params[Parameters.SPEAKER];
   const person = await peopleService.getPerson(speakerKey);
 
   if (!person) {

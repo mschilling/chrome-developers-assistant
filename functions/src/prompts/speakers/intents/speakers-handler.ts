@@ -5,11 +5,11 @@ import { Firestore } from '../../../shared/firestore';
 import { PeopleService } from '../../../services/people-service';
 
 import { Translations as Strings } from './../translations';
+import { Parameters } from '../../../dialogflow-constants';
 
 const peopleService = new PeopleService(Firestore.db);
 
 // Context Parameters
-const SPEAKER_PARAM = 'speaker';
 const SPEAKER_ATTR_PARAM = 'speakerAttribute';
 
 export async function selectSpeakerByOption(conv, params) {
@@ -26,7 +26,7 @@ export async function selectSpeakerByOption(conv, params) {
 }
 
 export async function knownForHandler(conv, params) {
-  const key = params[SPEAKER_PARAM];
+  const key = params[Parameters.SPEAKER];
   const person = await peopleService.getPerson(key);
 
   if (person && person.bio) {
@@ -79,8 +79,8 @@ export async function handlePersonAttribute(conv, inputParams) {
 
 function parseParameters(params) {
   const outputParams = <any>{};
-  if (params[SPEAKER_PARAM]) {
-    outputParams.speaker = params[SPEAKER_PARAM];
+  if (params[Parameters.SPEAKER]) {
+    outputParams.speaker = params[Parameters.SPEAKER];
   }
 
   if (params[SPEAKER_ATTR_PARAM]) {
