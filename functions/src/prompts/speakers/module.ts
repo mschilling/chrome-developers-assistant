@@ -5,7 +5,7 @@ import { speakerVideosIntent, speakerIntent } from './intents/speaker-intent';
 const intents = {
   'speaker_intent': speakerIntent,
   'speaker_videos_intent': speakerVideosIntent,
-  'Speakers - Speaker info - known for': knownForHandler,
+  'speaker_known_for_intent': knownForHandler,
   'Speakers - Speaker info': speakerIntent,
   'browse_speakers_intent': browseSpeaker,
 };
