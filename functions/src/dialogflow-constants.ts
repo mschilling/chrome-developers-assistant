@@ -1,3 +1,6 @@
 export const Parameters = {
-  SPEAKER: 'speaker'
-}
+  SPEAKER: 'speaker',
+  SPEAKERS: 'speakers',
+  EVENT: 'summit',
+  TAGS: 'tags'
+};

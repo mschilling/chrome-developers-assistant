@@ -1,3 +1,4 @@
+import { Parameters } from './../../../dialogflow-constants';
 import { YouTubeManager } from "./../../../shared/youtube-manager";
 import { DialogflowOption } from "../../shared/option-helper";
 import { VideoService } from "../../../services/video-service";
@@ -5,11 +6,6 @@ import { Firestore } from "../../../shared/firestore";
 import { responseVideoResults, responseYouTubeVideoResults } from "../responses";
 
 const videoService = new VideoService(Firestore.db);
-
-// Context Parameters
-const EVENT_PARAM = "summit";
-const TAGS_PARAM = "tags";
-const SPEAKERS_PARAM = "speakers";
 
 export async function searchVideos(conv, inputParams) {
   const params = parseParameters(inputParams);
@@ -32,9 +28,9 @@ export async function selectVideoByOption(conv, params) {
 }
 
 function parseParameters(inputParams) {
-  const eventParam = inputParams[EVENT_PARAM];
-  const tagsParam = inputParams[TAGS_PARAM] || [];
-  const speakersParam = inputParams[SPEAKERS_PARAM] || [];
+  const eventParam = inputParams[Parameters.EVENT];
+  const tagsParam = inputParams[Parameters.TAGS] || [];
+  const speakersParam = inputParams[Parameters.SPEAKERS] || [];
 
   console.log(eventParam, tagsParam, speakersParam);
 
