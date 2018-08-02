@@ -1,56 +1,19 @@
-import * as util from "util";
+import * as util from 'util';
 
-import { SimpleResponse } from "actions-on-google";
-import { Firestore } from "../../../shared/firestore";
-import {
-  PeopleService,
-  PeopleServiceExt
-} from "../../../services/people-service";
+import { SimpleResponse } from 'actions-on-google';
+import { Firestore } from '../../../shared/firestore';
+import { PeopleService } from '../../../services/people-service';
 
-import { Translations as Strings } from "./../translations";
-import { buildSimpleCard } from "../../../utils/responses";
+import { Translations as Strings } from './../translations';
 
 const peopleService = new PeopleService(Firestore.db);
 
 // Context Parameters
-const SPEAKER_PARAM = "speaker";
-const SPEAKER_ATTR_PARAM = "speakerAttribute";
-const PERSON_PARAM = "person";
-
-export async function speakerInfoHandler(conv, params) {
-  let key = params[SPEAKER_PARAM];
-  if (params[PERSON_PARAM]) {
-    key = params[PERSON_PARAM];
-  }
-
-  const person = await peopleService.getPerson(key);
-  if (person) {
-    let speechText = util.format(
-      Strings.PersonDefaultWhoIs,
-      `${person.first_name} ${person.last_name}`
-    );
-    if (person.short_bio) {
-      speechText = person.short_bio;
-    }
-
-    const speech = `<speak>${speechText}</speak>`;
-
-    conv.ask(
-      new SimpleResponse({
-        speech: speech,
-        text: speechText
-      })
-    );
-
-    const simpleCardResponse = buildSimpleCard(PeopleServiceExt.asCard(person));
-    conv.ask(simpleCardResponse);
-  } else {
-    conv.ask(util.format(Strings.PersonNoInfo, person));
-  }
-}
+const SPEAKER_PARAM = 'speaker';
+const SPEAKER_ATTR_PARAM = 'speakerAttribute';
 
 export async function selectSpeakerByOption(conv, params) {
-  console.log("getSelectedOption", conv.getSelectedOption());
+  console.log('getSelectedOption', conv.getSelectedOption());
   const speakerId = conv.getSelectedOption();
   const person = await peopleService.getPerson(speakerId);
 
@@ -63,7 +26,7 @@ export async function selectSpeakerByOption(conv, params) {
 }
 
 export async function knownForHandler(conv, params) {
-  const key = params[PERSON_PARAM];
+  const key = params[SPEAKER_PARAM];
   const person = await peopleService.getPerson(key);
 
   if (person && person.bio) {
@@ -76,7 +39,7 @@ export async function knownForHandler(conv, params) {
 
 export async function handlePersonAttribute(conv, inputParams) {
   const params = parseParameters(inputParams);
-  console.log("handlePersonAttribute", params);
+  console.log('handlePersonAttribute', params);
 
   const person = await peopleService.getPerson(params.speaker);
   if (person) {
@@ -84,13 +47,13 @@ export async function handlePersonAttribute(conv, inputParams) {
     let speech = `<speak>${displayText}</speak>`;
 
     switch (params.speakerAttribute) {
-      case "twitter":
+      case 'twitter':
         displayText = `${person.first_name}'s Twitter handle is @${
           person.twitter
         }`;
         speech = `<speak>${displayText}<break time="1"/>Anything else?</speak>`;
         break;
-      case "github":
+      case 'github':
         if (person.github) {
           displayText = `${person.first_name}'s Github handle is ${
             person.github
@@ -98,7 +61,7 @@ export async function handlePersonAttribute(conv, inputParams) {
           speech = `<speak>${displayText}<break time="1"/>Anything else?</speak>`;
         }
         break;
-      case "homepage":
+      case 'homepage':
         if (person.homepage) {
           displayText = `${person.first_name}'s personal website is ${
             person.homepage
