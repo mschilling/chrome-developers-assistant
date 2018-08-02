@@ -1,7 +1,8 @@
 import { browseBlogs } from './intents/browse-blogs';
 
 const intents = {
-  'browse_blogs_intent': browseBlogs
+  'browse_blogs_intent': browseBlogs,
+  'speaker_followup_blogs_intent': browseBlogs
 };
 
 export const module = (conv, ...args): any => {

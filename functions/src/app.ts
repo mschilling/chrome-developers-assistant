@@ -36,6 +36,7 @@ app.intent([
 
 app.intent([
   'browse_blogs_intent',
+  'speaker_followup_blogs_intent'
 ], blog);
 
 export { app };

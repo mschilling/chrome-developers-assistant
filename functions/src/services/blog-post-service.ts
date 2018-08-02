@@ -22,6 +22,8 @@ export class BlogPostService extends CoreService implements IBlogPostService {
       return undefined;
     };
 
+    console.log(`[BLOGS] [params=${JSON.stringify(searchParams)}]`)
+
     let query: any = this.db.collection(FirestoreCollections.BlogPosts);
 
     if (searchParams.person) {
