@@ -1,8 +1,9 @@
-import { speakerInfoHandler, knownForHandler } from "./intents/speakers-handler";
+import { speakerInfoHandler, knownForHandler, speakerVideosIntent } from "./intents/speakers-handler";
 import { browseSpeaker } from "./intents/browse-speakers";
 
 const intents = {
   'speaker_intent': speakerInfoHandler,
+  'speaker_videos_intent': speakerVideosIntent,
   'Speakers - Speaker info - known for': knownForHandler,
   'Speakers - Speaker info': speakerInfoHandler,
   'browse-speakers': browseSpeaker,
