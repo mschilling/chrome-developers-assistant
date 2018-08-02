@@ -19,12 +19,14 @@ export function buildSimpleCard(item: GenericCard) {
     })
   });
 
-  card.buttons = [
-    new Button({
-      url: item.buttonUrl,
-      title: item.buttonTitle || item.title
-    })
-  ];
+  if(item.buttonUrl) {
+    card.buttons = [
+      new Button({
+        url: item.buttonUrl,
+        title: item.buttonTitle || item.title
+      })
+    ];
+  }
 
   return card;
 }
