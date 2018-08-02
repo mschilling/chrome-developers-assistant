@@ -35,6 +35,9 @@ export async function knownForHandler(conv, params) {
   } else {
     conv.ask(util.format(Strings.PersonNoInfo, person));
   }
+
+  // Could add some suggerstion chips?
+
 }
 
 export async function handlePersonAttribute(conv, inputParams) {

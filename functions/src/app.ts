@@ -28,9 +28,9 @@ app.intent([
 
 app.intent([
   'speaker_intent',
-  'speaker_videos_intent',
-  'Speakers - Speaker info',
-  'Speakers - Speaker info - known for',
+  'speaker_followup_videos_intent',
+  'speaker_followup_known_for_intent',
+  'speaker_followup_about_intent',
   'browse_speakers_intent',
 ], speaker);
 
