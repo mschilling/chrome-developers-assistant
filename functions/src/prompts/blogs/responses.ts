@@ -42,7 +42,6 @@ function browseBlogPosts(conv, blogPosts: BlogPost[]) {
   const conversation = new Conversation(conv);
 
   const surfaceCapabilities = conv.capabilities as Capabilities;
-  console.log('initialized helper. HasScreen, HasBrowser: ', surfaceCapabilities.hasScreen, surfaceCapabilities.hasWebBrowser);
 
   conversation.addElement(
     new SimpleResponse({
