@@ -43,10 +43,7 @@ export function responseYouTubeVideoWithCard(conv, video: YouTubeVideo) {
   responseVideoWithCard(conv, cardData);
 }
 
-export function responseYouTubeVideosWithBrowseCarousel(
-  conv,
-  videos: YouTubeVideo[]
-) {
+export function responseYouTubeVideosWithBrowseCarousel(conv, videos: YouTubeVideo[]) {
   const items = YouTubeVideoServiceExt.asCards(videos);
   responseVideosWithBrowseCarousel(conv, items);
 }
@@ -56,7 +53,7 @@ function responseVideoWithCard(conv, cardData: GenericCard) {
 
   const simpleResponse = new SimpleResponse({
     speech: 'Here is a matching video. Anything else I can do for you?',
-    text: 'Here is a matching video'
+    text: 'Here is a matching video',
   });
   conv.ask(simpleResponse);
 
@@ -77,7 +74,7 @@ function responseVideosWithBrowseCarousel(conv, cardsData: GenericCard[]) {
   } else if (surfaceCapabilities.hasScreen) {
     const simpleResponse = new SimpleResponse({
       speech: 'I can only show the results on a web browser compatible device',
-      text: 'Results can not be displayed on this device.'
+      text: 'Results can not be displayed on this device.',
     });
     conv.ask(simpleResponse);
   } else {
