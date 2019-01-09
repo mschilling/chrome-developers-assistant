@@ -1,16 +1,17 @@
-import { Translations as Strings } from "./translations";
+import { Translations as Strings } from './translations';
 import { GenericCard } from './../../models/card';
 import { YouTubeVideo } from './../../models/youtube-video';
-import { SimpleResponse } from "actions-on-google";
-import { buildSimpleCard, buildBrowseCarousel } from '../../utils/responses';
+import { SimpleResponse } from 'actions-on-google';
+import { buildSimpleCard, buildBrowseCarousel, buildCarousel } from '../../utils/responses';
 import { YouTubeVideoServiceExt } from '../../services/youtube-video-service';
-import { Video } from "../../models/video";
-import { VideoServiceExt } from "../../services/video-service";
+import { Video } from '../../models/video';
+import { VideoServiceExt } from '../../services/video-service';
+import { Capabilities } from '../../utils/capabilities';
 
 export function responseVideoResults(conv, videos: Video[]) {
   const results = VideoServiceExt.asCards(videos);
   if (results === null) {
-    console.log("videos is null");
+    console.log('videos is null');
     conv.ask(Strings.GeneralListNoResultsText);
     return;
   }
@@ -25,7 +26,7 @@ export function responseVideoResults(conv, videos: Video[]) {
 export function responseYouTubeVideoResults(conv, videos: YouTubeVideo[]) {
   const results = YouTubeVideoServiceExt.asCards(videos);
   if (results === null) {
-    console.log("videos is null");
+    console.log('videos is null');
     conv.ask(Strings.GeneralListNoResultsText);
     return;
   }
@@ -44,15 +45,15 @@ export function responseYouTubeVideoWithCard(conv, video: YouTubeVideo) {
 
 export function responseYouTubeVideosWithBrowseCarousel(conv, videos: YouTubeVideo[]) {
   const items = YouTubeVideoServiceExt.asCards(videos);
-  responseVideosWithBrowseCarousel(conv, items)
+  responseVideosWithBrowseCarousel(conv, items);
 }
 
 function responseVideoWithCard(conv, cardData: GenericCard) {
   console.log('Response video with BasicCard', cardData);
 
   const simpleResponse = new SimpleResponse({
-    speech: "Here is a matching video. Anything else I can do for you?",
-    text: "Here is a matching video"
+    speech: 'Here is a matching video. Anything else I can do for you?',
+    text: 'Here is a matching video',
   });
   conv.ask(simpleResponse);
 
@@ -63,8 +64,24 @@ function responseVideoWithCard(conv, cardData: GenericCard) {
 function responseVideosWithBrowseCarousel(conv, cardsData: GenericCard[]) {
   console.log('Response videos with Browse Carousel', cardsData);
 
-  conv.ask(Strings.GeneralListResultText);
+  const surfaceCapabilities = conv.capabilities as Capabilities;
 
-  const browseCarouselResponse = buildBrowseCarousel(cardsData);
-  conv.ask(browseCarouselResponse);
+  if (surfaceCapabilities.hasScreen && surfaceCapabilities.hasWebBrowser) {
+    conv.ask(Strings.GeneralListResultText);
+
+    const browseCarouselResponse = buildBrowseCarousel(cardsData);
+    conv.ask(browseCarouselResponse);
+  } else if (surfaceCapabilities.hasScreen) {
+    const simpleResponse = new SimpleResponse({
+      speech: 'I can only show the results on a web browser compatible device',
+      text: 'Results can not be displayed on this device.',
+    });
+    conv.ask(simpleResponse);
+
+    // conv.ask(Strings.GeneralListResultText);
+    // conv.ask(buildCarousel(cardsData));
+
+  } else {
+    conv.ask('I can only show the results on a web browser compatible device');
+  }
 }
