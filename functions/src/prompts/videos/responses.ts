@@ -2,7 +2,7 @@ import { Translations as Strings } from './translations';
 import { GenericCard } from './../../models/card';
 import { YouTubeVideo } from './../../models/youtube-video';
 import { SimpleResponse } from 'actions-on-google';
-import { buildSimpleCard, buildBrowseCarousel } from '../../utils/responses';
+import { buildSimpleCard, buildBrowseCarousel, buildCarousel } from '../../utils/responses';
 import { YouTubeVideoServiceExt } from '../../services/youtube-video-service';
 import { Video } from '../../models/video';
 import { VideoServiceExt } from '../../services/video-service';
@@ -77,6 +77,10 @@ function responseVideosWithBrowseCarousel(conv, cardsData: GenericCard[]) {
       text: 'Results can not be displayed on this device.',
     });
     conv.ask(simpleResponse);
+
+    // conv.ask(Strings.GeneralListResultText);
+    // conv.ask(buildCarousel(cardsData));
+
   } else {
     conv.ask('I can only show the results on a web browser compatible device');
   }
