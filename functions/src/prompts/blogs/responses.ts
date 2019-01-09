@@ -3,6 +3,7 @@ import { SimpleResponse } from "actions-on-google";
 import { buildSimpleCard, buildBrowseCarousel } from '../../utils/responses';
 import { BlogPostServiceExt } from '../../services/blog-post-service';
 import { Conversation } from '../../utils/conversation';
+import { Capabilities } from '../../utils/capabilities';
 
 export function showOrBrowseBlogPosts(conv, items: BlogPost[]) {
   if (items.length === 1) {
@@ -40,6 +41,9 @@ function browseBlogPosts(conv, blogPosts: BlogPost[]) {
 
   const conversation = new Conversation(conv);
 
+  const surfaceCapabilities = conv.capabilities as Capabilities;
+  console.log('initialized helper. HasScreen, HasBrowser: ', surfaceCapabilities.hasScreen, surfaceCapabilities.hasWebBrowser);
+
   conversation.addElement(
     new SimpleResponse({
       speech: `I've found some blogs online.`,
@@ -48,7 +52,9 @@ function browseBlogPosts(conv, blogPosts: BlogPost[]) {
   );
 
   const cardsData = BlogPostServiceExt.asCards(blogPosts);
-  conversation.addElement(buildBrowseCarousel(cardsData));
+  if(surfaceCapabilities.hasScreen && surfaceCapabilities.hasWebBrowser) {
+    conversation.addElement(buildBrowseCarousel(cardsData));
+  }
 
   conversation.complete();
 }
