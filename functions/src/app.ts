@@ -4,11 +4,14 @@ import { module as video } from './prompts/videos/module';
 import { module as blog } from './prompts/blogs/module';
 import { module as event } from './prompts/events/module';
 import { module as speaker } from './prompts/speakers/module';
+import { Capabilities } from './utils/capabilities';
 
 const app = dialogflow();
 
-app.middleware(conv => {
+app.middleware((conv: any) => {
   console.log(`Intent ${conv.intent} matched with params ${JSON.stringify(conv.parameters)}`)
+
+  conv.capabilities = new Capabilities(conv);
 })
 
 app.intent([
