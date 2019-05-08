@@ -7,15 +7,15 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
-    "async": "^2.5.0",
+    "async": "^2.6.2",
     "axios": "^0.17.1",
     "dotenv": "^4.0.0",
-    "firebase-admin": "^5.4.2",
-    "google-spreadsheet": "^2.0.4",
-    "moment": "^2.19.1",
-    "open-graph": "^0.2.3",
-    "open-graph-scraper": "^3.1.4",
-    "rss-parser": "^3.1.1"
+    "firebase-admin": "^5.13.1",
+    "google-spreadsheet": "^2.0.7",
+    "moment": "^2.24.0",
+    "open-graph": "^0.2.4",
+    "open-graph-scraper": "^3.6.1",
+    "rss-parser": "^3.7.0"
   },
   "author": "mschilling",
   "license": "ISC"
