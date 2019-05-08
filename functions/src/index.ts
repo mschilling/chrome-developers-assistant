@@ -9,4 +9,6 @@ Firestore.initialize(admin.firestore());
 
 import { app } from './app';
 
-exports.assistant = functions.https.onRequest(app);
+exports.assistant = functions
+  .runWith({ memory: '2GB', timeoutSeconds: 120 })
+  .https.onRequest(app);
