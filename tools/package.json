@@ -15,7 +15,7 @@
     "moment": "^2.24.0",
     "open-graph": "^0.2.4",
     "open-graph-scraper": "^3.6.2",
-    "rss-parser": "^3.7.3"
+    "rss-parser": "^3.7.5"
   },
   "author": "mschilling",
   "license": "ISC"
