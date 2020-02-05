@@ -11,7 +11,7 @@
     "axios": "^0.19.0",
     "dotenv": "^8.2.0",
     "firebase-admin": "^5.13.1",
-    "google-spreadsheet": "^2.0.8",
+    "google-spreadsheet": "^3.0.4",
     "moment": "^2.24.0",
     "open-graph": "^0.2.4",
     "open-graph-scraper": "^3.6.2",
