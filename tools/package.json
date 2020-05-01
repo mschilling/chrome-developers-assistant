@@ -12,7 +12,7 @@
     "dotenv": "^8.2.0",
     "firebase-admin": "^5.13.1",
     "google-spreadsheet": "^2.0.8",
-    "moment": "^2.24.0",
+    "moment": "^2.25.0",
     "open-graph": "^0.2.4",
     "open-graph-scraper": "^3.6.2",
     "rss-parser": "^3.7.3"
