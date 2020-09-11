@@ -14,7 +14,7 @@
     "google-spreadsheet": "^2.0.8",
     "moment": "^2.24.0",
     "open-graph": "^0.2.4",
-    "open-graph-scraper": "^3.6.2",
+    "open-graph-scraper": "^4.6.0",
     "rss-parser": "^3.7.3"
   },
   "author": "mschilling",
