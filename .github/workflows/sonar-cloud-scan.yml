@@ -1,3 +1,11 @@
+---
+###########################
+###########################
+## Sonar Cloud GitHub Actions ##
+###########################
+###########################
+name: Sonar Cloud Scan
+
 on:
   # Trigger analysis when pushing in master or pull requests, and when creating
   # a pull request.
@@ -6,7 +14,6 @@ on:
       - master
   pull_request:
       types: [opened, synchronize, reopened]
-name: Main Workflow
 jobs:
   sonarcloud:
     runs-on: ubuntu-latest
