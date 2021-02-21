@@ -10,7 +10,7 @@
     "async": "^2.6.2",
     "axios": "^0.21.1",
     "dotenv": "^8.2.0",
-    "firebase-admin": "^5.13.1",
+    "firebase-admin": "^9.5.0",
     "google-spreadsheet": "^2.0.8",
     "moment": "^2.29.1",
     "open-graph": "^0.2.4",
