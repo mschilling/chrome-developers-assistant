@@ -33,12 +33,15 @@ class DbLoader {
         github: asFbString(row.githubhandle),
         lanyrd: asFbString(row.lanyrdhandle),
         youtube: asFbString(row.youtubehandle),
+        google_plus: asFbString(row.googleplus),
+        medium: asFbString(row.medium),
         speaker_deck: asFbString(row.speakerdeck),
         bio: asFbString(row.bio),
         short_bio: asFbString(row.shortbio),
         email: asFbString(row.email),
         pictureUrl: asFbString(row.pictureurl),
         homepage: asFbString(row.homepage),
+        rss_feed: asFbString(row.rssfeed),
         is_speaker: asFbBool(row.isspeaker)
       };
       actions.push(dbRef.doc(docId).set(obj, { merge: true }));
@@ -64,8 +67,10 @@ class DbLoader {
         website: asFbString(row.website),
         startDate: asFbDate(row.startdate),
         endDate: asFbDate(row.enddate),
+        tags: asFbArrayAsObjectKeys(row.tags),
         numberOfDays: asFbNumber(row.numberofdays),
         videoId: asFbString(row.videoid),
+        imageUrl: asFbString(row.bannerurl)
       };
       actions.push(dbRef.doc(docId).set(obj, { merge: true }));
     };

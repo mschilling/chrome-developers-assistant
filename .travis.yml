@@ -1,6 +1,6 @@
 language: node_js
 node_js:
-- '6.9'
+- '8.6'
 dist: trusty
 before_script:
 - npm list -g firebase-tools --depth=0 || npm install -g firebase-tools
@@ -16,4 +16,4 @@ cache:
   - node_modules
 notifications:
   email: false
-  webhooks: https://coders.move4mobile.io/webhooks/travis
+  webhooks: https://travis.webhooks.m4m.io

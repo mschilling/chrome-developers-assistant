@@ -22,7 +22,7 @@ Chrome Developers Assistant can:
 
 # Developer docs and resources
 
-A lot of online docs are available to build a Google Assistant using Dialogflow and Firebase (Functions). Let's compile a list of useful resources. 
+A lot of online docs are available to build a Google Assistant using Dialogflow and Firebase (Functions). Let's compile a list of useful resources.
 
 ## Dialogflow (API.ai)
 - [Contexts](https://dialogflow.com/docs/contexts)
@@ -34,7 +34,11 @@ A lot of online docs are available to build a Google Assistant using Dialogflow 
 - [Speech Synthesis Markup Language (SSML) reference](https://developers.google.com/actions/reference/ssml)
 - [UI Toolkit](https://developers.google.com/actions/design/ui-toolkit)
 
+### V2
+- [Dialogflow v2](https://actions-on-google.github.io/actions-on-google-nodejs/modules/dialogflow.html)
+
 ## Firebase Firestore
 - [Firebase Firestore Javascript reference](https://firebase.google.com/docs/reference/js/firebase.firestore)
 - [Get Data with Cloud Firestore](https://firebase.google.com/docs/firestore/query-data/get-data)
 - [Working with Arrays, Lists, and Sets](https://firebase.google.com/docs/firestore/solutions/arrays)
+
