@@ -1,0 +1,23 @@
+version: 2
+updates:
+- package-ecosystem: npm
+  directory: "/tools"
+  schedule:
+    interval: daily
+    time: "04:00"
+  open-pull-requests-limit: 10
+  ignore:
+  - dependency-name: firebase-admin
+    versions:
+    - 9.4.2
+    - 9.5.0
+    - 9.6.0
+  - dependency-name: open-graph-scraper
+    versions:
+    - 4.7.1
+    - 4.8.0
+    - 4.8.1
+  - dependency-name: rss-parser
+    versions:
+    - 3.10.0
+    - 3.11.0
